@@ -48,6 +48,24 @@ export interface WPCategory {
   slug: string;
   description?: string;
   count?: number;
+  parentId?: string | null;
+  parent?: {
+    node: {
+      id: string;
+      databaseId: number;
+      name: string;
+      slug: string;
+    };
+  };
+  children?: {
+    nodes: Array<{
+      id: string;
+      databaseId: number;
+      name: string;
+      slug: string;
+      count?: number;
+    }>;
+  };
 }
 
 export interface WPTag {

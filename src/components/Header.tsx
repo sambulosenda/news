@@ -11,32 +11,24 @@ interface HeaderProps {
 
 export default function Header({ categories = [] }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [sectionsOpen, setSectionsOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const today = new Date();
 
-  // Use categories from API, or fallback to defaults
-  const navigation = categories.length > 0 
-    ? categories.slice(0, 10).map(cat => ({
-        name: cat.name,
-        href: `/category/${cat.slug}`
-      }))
-    : [
-        { name: 'Politics', href: '/category/politics' },
-        { name: 'Business', href: '/category/business' },
-        { name: 'Technology', href: '/category/technology' },
-        { name: 'World', href: '/category/world' },
-        { name: 'Sports', href: '/category/sports' },
-        { name: 'Opinion', href: '/category/opinion' },
-        { name: 'Arts', href: '/category/arts' },
-      ];
+  // Get only top-level categories (those without parents) for main navigation
+  const topLevelCategories = categories.filter(cat => !cat.parentId);
+  
+  // Sort by count (most posts first) or alphabetically
+  const sortedCategories = topLevelCategories.sort((a, b) => {
+    // First by count (if available), then alphabetically
+    if (a.count && b.count) {
+      return b.count - a.count;
+    }
+    return a.name.localeCompare(b.name);
+  });
 
-  // Additional categories for dropdown
-  const moreCategories = categories.length > 10 
-    ? categories.slice(10).map(cat => ({
-        name: cat.name,
-        href: `/category/${cat.slug}`
-      }))
-    : [];
+  // Take first 10 for main nav, rest go in "More" dropdown
+  const mainNavCategories = sortedCategories.slice(0, 8);
+  const moreCategories = sortedCategories.slice(8);
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
@@ -113,82 +105,187 @@ export default function Header({ categories = [] }: HeaderProps) {
           </div>
         </div>
 
-        {/* Navigation */}
+        {/* Navigation with hierarchical dropdowns */}
         <nav className="hidden lg:block py-2 border-t border-gray-900">
-          <ul className="flex items-center justify-center space-x-8">
-            {navigation.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={item.href}
-                  className="text-sm font-medium uppercase tracking-wide hover:underline"
+          <ul className="flex items-center justify-center space-x-6">
+            {mainNavCategories.map((category) => {
+              const hasChildren = category.children && category.children.nodes.length > 0;
+              
+              return (
+                <li 
+                  key={category.id} 
+                  className="relative"
+                  onMouseEnter={() => hasChildren && setOpenDropdown(category.id)}
+                  onMouseLeave={() => setOpenDropdown(null)}
                 >
-                  {item.name}
-                </Link>
-              </li>
-            ))}
+                  {hasChildren ? (
+                    <>
+                      <button
+                        className="text-sm font-medium uppercase tracking-wide hover:underline py-2 flex items-center gap-1"
+                      >
+                        {category.name}
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      
+                      {/* Dropdown for children */}
+                      {openDropdown === category.id && (
+                        <div className="absolute top-full left-0 mt-0 bg-white border border-gray-200 shadow-lg z-50 min-w-[200px]">
+                          <div className="py-2">
+                            {/* Parent category link */}
+                            <Link
+                              href={`/category/${category.slug}`}
+                              className="block px-4 py-2 text-sm hover:bg-gray-50 font-medium border-b border-gray-200"
+                              onClick={() => setOpenDropdown(null)}
+                            >
+                              All {category.name}
+                            </Link>
+                            {/* Child categories */}
+                            {category.children?.nodes?.map((child) => (
+                              <Link
+                                key={child.id}
+                                href={`/category/${child.slug}`}
+                                className="block px-4 py-2 text-sm hover:bg-gray-50"
+                                onClick={() => setOpenDropdown(null)}
+                              >
+                                {child.name}
+                                {child.count && child.count > 0 && (
+                                  <span className="text-gray-500 text-xs ml-1">
+                                    ({child.count})
+                                  </span>
+                                )}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <Link
+                      href={`/category/${category.slug}`}
+                      className="text-sm font-medium uppercase tracking-wide hover:underline py-2 block"
+                    >
+                      {category.name}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
+            
+            {/* More dropdown for additional categories */}
             {moreCategories.length > 0 && (
-              <li className="relative">
+              <li 
+                className="relative"
+                onMouseEnter={() => setOpenDropdown('more')}
+                onMouseLeave={() => setOpenDropdown(null)}
+              >
                 <button
-                  onClick={() => setSectionsOpen(!sectionsOpen)}
-                  className="text-sm font-medium uppercase tracking-wide hover:underline flex items-center gap-1"
+                  className="text-sm font-medium uppercase tracking-wide hover:underline py-2 flex items-center gap-1"
                 >
                   More
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={sectionsOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                {sectionsOpen && (
-                  <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg z-50">
+                
+                {openDropdown === 'more' && (
+                  <div className="absolute top-full right-0 mt-0 bg-white border border-gray-200 shadow-lg z-50 min-w-[200px] max-h-96 overflow-y-auto">
                     <div className="py-2">
-                      {moreCategories.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className="block px-4 py-2 text-sm hover:bg-gray-50"
-                          onClick={() => setSectionsOpen(false)}
-                        >
-                          {item.name}
-                        </Link>
+                      {moreCategories.map((category) => (
+                        <div key={category.id}>
+                          <Link
+                            href={`/category/${category.slug}`}
+                            className="block px-4 py-2 text-sm hover:bg-gray-50 font-medium"
+                            onClick={() => setOpenDropdown(null)}
+                          >
+                            {category.name}
+                          </Link>
+                          {/* Show children inline */}
+                          {category.children && category.children.nodes.length > 0 && (
+                            <div className="pl-4">
+                              {category.children?.nodes?.map((child) => (
+                                <Link
+                                  key={child.id}
+                                  href={`/category/${child.slug}`}
+                                  className="block px-4 py-1 text-xs text-gray-600 hover:bg-gray-50"
+                                  onClick={() => setOpenDropdown(null)}
+                                >
+                                  → {child.name}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       ))}
                     </div>
                   </div>
                 )}
               </li>
             )}
+            
+            {/* Today's Paper link */}
+            <li>
+              <Link
+                href="/today"
+                className="text-sm font-medium uppercase tracking-wide hover:underline py-2 block"
+              >
+                Today&apos;s Paper
+              </Link>
+            </li>
           </ul>
         </nav>
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-gray-200">
-            <nav className="space-y-4">
-              {navigation.map((item) => (
+          <div className="lg:hidden py-4 border-t border-gray-200 max-h-[70vh] overflow-y-auto">
+            <nav className="space-y-2">
+              {sortedCategories.map((category) => {
+                const hasChildren = category.children && category.children.nodes.length > 0;
+                
+                return (
+                  <div key={category.id}>
+                    <Link
+                      href={`/category/${category.slug}`}
+                      className={`block text-base font-medium hover:underline py-2 ${hasChildren ? 'font-bold' : ''}`}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {category.name}
+                    </Link>
+                    {hasChildren && (
+                      <div className="pl-4 space-y-1">
+                        {category.children?.nodes?.map((child) => (
+                          <Link
+                            key={child.id}
+                            href={`/category/${child.slug}`}
+                            className="block text-sm text-gray-600 hover:underline py-1"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {child.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+              
+              <div className="pt-4 border-t border-gray-200">
                 <Link
-                  key={item.name}
-                  href={item.href}
-                  className="block text-base font-medium hover:underline"
+                  href="/today"
+                  className="block text-base font-medium hover:underline py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {item.name}
+                  Today&apos;s Paper
                 </Link>
-              ))}
-              {moreCategories.length > 0 && (
-                <>
-                  <div className="pt-2 mt-2 border-t border-gray-200">
-                    <p className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">More Sections</p>
-                    {moreCategories.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="block text-base font-medium hover:underline py-1"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                </>
-              )}
+                <Link
+                  href="/search"
+                  className="block text-base font-medium hover:underline py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Search
+                </Link>
+              </div>
             </nav>
           </div>
         )}

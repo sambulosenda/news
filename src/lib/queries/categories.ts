@@ -32,12 +32,32 @@ export const GET_CATEGORY_BY_SLUG = gql`
 
 export const GET_MENU_CATEGORIES = gql`
   query GetMenuCategories {
-    categories(first: 10, where: { orderby: COUNT, order: DESC, hideEmpty: true }) {
+    categories(first: 100, where: { hideEmpty: false }) {
       nodes {
         id
+        databaseId
         name
         slug
         count
+        description
+        parentId
+        parent {
+          node {
+            id
+            databaseId
+            name
+            slug
+          }
+        }
+        children {
+          nodes {
+            id
+            databaseId
+            name
+            slug
+            count
+          }
+        }
       }
     }
   }
