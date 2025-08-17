@@ -12,8 +12,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     fetchGraphQL(GET_CATEGORIES, { first: 50 }),
   ]);
 
-  const posts = postsData?.posts?.edges?.map((edge: any) => edge.node) || [];
-  const categories = categoriesData?.categories?.edges?.map((edge: any) => edge.node) || [];
+  type Post = {
+    slug: string;
+    date: string;
+    modified?: string;
+  };
+  
+  type Category = {
+    slug: string;
+  };
+  
+  interface PostEdge {
+    node: Post;
+  }
+  
+  interface CategoryEdge {
+    node: Category;
+  }
+  
+  const posts: Post[] = postsData?.posts?.edges?.map((edge: PostEdge) => edge.node) || [];
+  const categories: Category[] = categoriesData?.categories?.edges?.map((edge: CategoryEdge) => edge.node) || [];
 
   // Static pages
   const staticPages = [
@@ -32,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Dynamic post pages
-  const postPages = posts.map((post: any) => ({
+  const postPages = posts.map((post) => ({
     url: `${baseUrl}/post/${post.slug}`,
     lastModified: new Date(post.modified || post.date),
     changeFrequency: 'weekly' as const,
@@ -40,7 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Category pages
-  const categoryPages = categories.map((category: any) => ({
+  const categoryPages = categories.map((category) => ({
     url: `${baseUrl}/category/${category.slug}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,

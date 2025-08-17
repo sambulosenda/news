@@ -3,20 +3,40 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { format } from 'date-fns';
+import { WPCategory } from '@/types/wordpress';
 
-const navigation = [
-  { name: 'Politics', href: '/category/politics' },
-  { name: 'Business', href: '/category/business' },
-  { name: 'Technology', href: '/category/technology' },
-  { name: 'World', href: '/category/world' },
-  { name: 'Sports', href: '/category/sports' },
-  { name: 'Opinion', href: '/category/opinion' },
-  { name: 'Arts', href: '/category/arts' },
-];
+interface HeaderProps {
+  categories?: WPCategory[];
+}
 
-export default function Header() {
+export default function Header({ categories = [] }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [sectionsOpen, setSectionsOpen] = useState(false);
   const today = new Date();
+
+  // Use categories from API, or fallback to defaults
+  const navigation = categories.length > 0 
+    ? categories.slice(0, 10).map(cat => ({
+        name: cat.name,
+        href: `/category/${cat.slug}`
+      }))
+    : [
+        { name: 'Politics', href: '/category/politics' },
+        { name: 'Business', href: '/category/business' },
+        { name: 'Technology', href: '/category/technology' },
+        { name: 'World', href: '/category/world' },
+        { name: 'Sports', href: '/category/sports' },
+        { name: 'Opinion', href: '/category/opinion' },
+        { name: 'Arts', href: '/category/arts' },
+      ];
+
+  // Additional categories for dropdown
+  const moreCategories = categories.length > 10 
+    ? categories.slice(10).map(cat => ({
+        name: cat.name,
+        href: `/category/${cat.slug}`
+      }))
+    : [];
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
@@ -106,6 +126,35 @@ export default function Header() {
                 </Link>
               </li>
             ))}
+            {moreCategories.length > 0 && (
+              <li className="relative">
+                <button
+                  onClick={() => setSectionsOpen(!sectionsOpen)}
+                  className="text-sm font-medium uppercase tracking-wide hover:underline flex items-center gap-1"
+                >
+                  More
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={sectionsOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+                  </svg>
+                </button>
+                {sectionsOpen && (
+                  <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg z-50">
+                    <div className="py-2">
+                      {moreCategories.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="block px-4 py-2 text-sm hover:bg-gray-50"
+                          onClick={() => setSectionsOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </li>
+            )}
           </ul>
         </nav>
 
@@ -123,6 +172,23 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
+              {moreCategories.length > 0 && (
+                <>
+                  <div className="pt-2 mt-2 border-t border-gray-200">
+                    <p className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">More Sections</p>
+                    {moreCategories.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block text-base font-medium hover:underline py-1"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
             </nav>
           </div>
         )}

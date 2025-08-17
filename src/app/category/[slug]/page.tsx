@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { fetchGraphQL } from '@/lib/fetch-graphql';
 import { GET_POSTS_BY_CATEGORY } from '@/lib/queries/posts';
 import { GET_CATEGORY_BY_SLUG } from '@/lib/queries/categories';
-import Header from '@/components/Header';
+import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
 import ArticleCard from '@/components/ArticleCard';
 import { WPPost, WPCategory } from '@/types/wordpress';
@@ -68,7 +68,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <>
-      <Header />
+      <HeaderWrapper />
       
       <main className="container-wide py-8">
         {/* Category Header */}

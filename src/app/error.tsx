@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -33,12 +34,12 @@ export default function Error({
             >
               Try again
             </button>
-            <a
+            <Link
               href="/"
               className="px-6 py-3 border border-gray-300 font-medium rounded hover:bg-gray-50 transition-colors"
             >
               Go to homepage
-            </a>
+            </Link>
           </div>
           {error.digest && (
             <p className="mt-8 text-sm text-gray-500">

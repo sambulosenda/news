@@ -7,7 +7,7 @@ import parse from 'html-react-parser';
 import readingTime from 'reading-time';
 import { fetchGraphQL } from '@/lib/fetch-graphql';
 import { GET_POST_BY_SLUG, GET_RECENT_POSTS } from '@/lib/queries/posts';
-import Header from '@/components/Header';
+import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
 import ArticleCard from '@/components/ArticleCard';
 import ShareButtons from '@/components/ShareButtons';
@@ -94,7 +94,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         imageUrl={post.featuredImage?.node?.sourceUrl}
         url={`https://www.reportfocusnews.com/post/${post.slug}`}
       />
-      <Header />
+      <HeaderWrapper />
       
       <main>
         <article className="container-content py-8">

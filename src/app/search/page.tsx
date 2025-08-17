@@ -1,6 +1,6 @@
 import { fetchGraphQL } from '@/lib/fetch-graphql';
 import { SEARCH_POSTS } from '@/lib/queries/posts';
-import Header from '@/components/Header';
+import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
 import ArticleCard from '@/components/ArticleCard';
 import SearchBar from '@/components/SearchBar';
@@ -32,7 +32,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <>
-      <Header />
+      <HeaderWrapper />
       
       <main className="container-wide py-8 min-h-screen">
         {/* Search Header */}

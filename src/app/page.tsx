@@ -6,7 +6,7 @@ import {
   GET_POSTS_BY_CATEGORY 
 } from '@/lib/queries/posts';
 import { GET_CATEGORIES } from '@/lib/queries/categories';
-import Header from '@/components/Header';
+import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
 import BreakingNewsBanner from '@/components/BreakingNewsBanner';
 import HeroSection from '@/components/HeroSection';
@@ -81,7 +81,7 @@ export default async function HomePage() {
   return (
     <>
       <BreakingNewsBanner news={breakingNews} />
-      <Header />
+      <HeaderWrapper />
       
       <main>
         {/* Hero Section */}
