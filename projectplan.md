@@ -47,19 +47,19 @@ We'll build this incrementally, starting with the foundation (GraphQL client) an
 - [x] Implement category sections
 - [x] Add "Today's Paper" section
 
-### Phase 6: Article Pages
-- [ ] Create dynamic article route ([slug])
-- [ ] Implement article layout with typography
-- [ ] Add author byline and metadata
-- [ ] Create ShareButtons component
-- [ ] Add related articles section
-- [ ] Add newsletter signup component
+### Phase 6: Article Pages ✅
+- [x] Create dynamic article route ([slug])
+- [x] Implement article layout with typography
+- [x] Add author byline and metadata
+- [x] Create ShareButtons component
+- [x] Add related articles section
+- [x] Add newsletter signup component
 
-### Phase 7: Category & Search Pages
-- [ ] Create category pages with pagination
-- [ ] Implement search functionality
-- [ ] Add search results page
-- [ ] Create loading states for all pages
+### Phase 7: Category & Search Pages ✅
+- [x] Create category pages with pagination
+- [x] Implement search functionality
+- [x] Add search results page
+- [x] Create loading states for all pages
 
 ### Phase 8: Performance & SEO
 - [ ] Configure ISR with 60-second revalidation
