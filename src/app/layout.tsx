@@ -24,6 +24,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.reportfocusnews.com'),
   title: "Report Focus News - Breaking News, Analysis, and Journalism",
   description: "Stay informed with Report Focus News - Your trusted source for breaking news, in-depth analysis, and comprehensive journalism coverage.",
   keywords: "news, breaking news, politics, business, technology, world news, Report Focus",
