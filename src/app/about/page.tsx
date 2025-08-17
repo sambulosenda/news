@@ -180,11 +180,19 @@ export default function AboutPage() {
           </section>
 
           <section className="mb-12">
-            <h2 className="font-serif text-3xl font-bold mb-4">Editorial Policies</h2>
+            <h2 className="font-serif text-3xl font-bold mb-4">Transparency & Policies</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Our commitment to ethical journalism is outlined in our comprehensive policies:
+              Our commitment to transparency and ethical journalism:
             </p>
             <div className="space-y-2 not-prose">
+              <Link href="/about/team" className="block p-3 bg-gray-50 hover:bg-gray-100 rounded transition-colors">
+                <span className="font-semibold">Editorial Team →</span>
+                <span className="block text-sm text-gray-600">Meet our journalists and editors</span>
+              </Link>
+              <Link href="/about/ownership" className="block p-3 bg-gray-50 hover:bg-gray-100 rounded transition-colors">
+                <span className="font-semibold">Ownership & Funding →</span>
+                <span className="block text-sm text-gray-600">Complete transparency about our structure</span>
+              </Link>
               <Link href="/about/standards" className="block p-3 bg-gray-50 hover:bg-gray-100 rounded transition-colors">
                 <span className="font-semibold">Editorial Standards →</span>
                 <span className="block text-sm text-gray-600">Our journalistic principles and practices</span>

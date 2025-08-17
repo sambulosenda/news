@@ -49,9 +49,9 @@ const footerSections = {
     title: 'About Report Focus',
     links: [
       { name: 'About Us', href: '/about' },
+      { name: 'Editorial Team', href: '/about/team' },
+      { name: 'Ownership & Funding', href: '/about/ownership' },
       { name: 'Editorial Standards', href: '/about/standards' },
-      { name: 'Cookie Policy', href: '/cookies' },
-      { name: 'Accessibility', href: '/accessibility' },
       { name: 'Corrections', href: '/corrections' },
       { name: 'Contact Us', href: '/contact' },
     ],

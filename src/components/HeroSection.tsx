@@ -8,7 +8,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSectionProps) {
   return (
-    <section className="container-wide section-spacing">
+    <section className="container-wide pt-8 pb-12 lg:pt-12 lg:pb-16">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Main Hero Article */}
         <div className="lg:col-span-2">

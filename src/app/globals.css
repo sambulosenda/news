@@ -35,6 +35,14 @@
     @apply py-8 lg:py-12;
   }
   
+  .section-spacing-top {
+    @apply pt-8 lg:pt-12;
+  }
+  
+  .section-spacing-top-small {
+    @apply pt-4 lg:pt-6;
+  }
+  
   .headline-hero {
     @apply text-3xl md:text-5xl lg:text-6xl leading-tight;
   }

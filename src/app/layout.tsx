@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Merriweather, Playfair_Display } from "next/font/google";
 import { ApolloWrapper } from "@/lib/apollo-wrapper";
+import SearchActionSchema from "@/components/SearchActionSchema";
 import "./globals.css";
 
 const inter = Inter({
@@ -113,6 +114,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${merriweather.variable} ${playfair.variable} font-sans antialiased bg-white text-gray-900`}
       >
+        <SearchActionSchema />
         <ApolloWrapper>{children}</ApolloWrapper>
       </body>
     </html>
