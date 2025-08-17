@@ -12,6 +12,7 @@ import Footer from '@/components/Footer';
 import ArticleCard from '@/components/ArticleCard';
 import ShareButtons from '@/components/ShareButtons';
 import NewsletterSignup from '@/components/NewsletterSignup';
+import { ArticleStructuredData } from '@/components/StructuredData';
 import { WPPost } from '@/types/wordpress';
 
 interface ArticlePageProps {
@@ -84,6 +85,15 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <>
+      <ArticleStructuredData
+        title={post.title}
+        description={post.excerpt ? parse(post.excerpt).toString() : ''}
+        datePublished={post.date}
+        dateModified={post.modified}
+        authorName={post.author?.node?.name}
+        imageUrl={post.featuredImage?.node?.sourceUrl}
+        url={`https://www.reportfocusnews.com/post/${post.slug}`}
+      />
       <Header />
       
       <main>
