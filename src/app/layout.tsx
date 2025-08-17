@@ -27,7 +27,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.reportfocusnews.com'),
+  metadataBase: new URL('https://reportfocusnews.com'),
   title: "Report Focus News - South Africa & Zimbabwe Breaking News",
   description: "Your trusted source for breaking news from South Africa and Zimbabwe. In-depth coverage of politics, business, and current affairs across Southern Africa.",
   keywords: "South Africa news, Zimbabwe news, Southern Africa, breaking news, politics, business, Johannesburg, Cape Town, Harare, Bulawayo, current affairs",

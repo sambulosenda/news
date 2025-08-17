@@ -12,6 +12,7 @@ import BreakingNewsBanner from '@/components/BreakingNewsBanner';
 import HeroSection from '@/components/HeroSection';
 import CategorySection from '@/components/CategorySection';
 import ArticleCard from '@/components/ArticleCard';
+import OrganizationSchema from '@/components/OrganizationSchema';
 import { WPPost, WPCategory } from '@/types/wordpress';
 
 interface CategoryEdge {
@@ -80,6 +81,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <OrganizationSchema />
       <BreakingNewsBanner news={breakingNews} />
       <HeaderWrapper />
       

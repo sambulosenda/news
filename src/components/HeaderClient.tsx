@@ -7,7 +7,7 @@ import HeaderOptimized from './HeaderOptimized';
 
 export default function HeaderClient() {
   // Use a minimal set of default categories for error/loading pages
-  const defaultCategories = [];
+  const defaultCategories: any[] = [];
   
   const breakingNews = {
     show: false,

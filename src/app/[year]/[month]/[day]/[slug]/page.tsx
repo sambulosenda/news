@@ -96,7 +96,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     ? `${plainTextExcerpt} Breaking news from ${location.country}.`
     : plainTextExcerpt;
 
-  const canonicalUrl = `https://www.reportfocusnews.com/${format(new Date(post.date), 'yyyy')}/${format(new Date(post.date), 'MM')}/${format(new Date(post.date), 'dd')}/${slug}/`;
+  const canonicalUrl = `https://reportfocusnews.com/${format(new Date(post.date), 'yyyy')}/${format(new Date(post.date), 'MM')}/${format(new Date(post.date), 'dd')}/${slug}/`;
 
   return {
     title: enhancedTitle,

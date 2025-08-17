@@ -50,6 +50,6 @@ export default function robots(): MetadataRoute.Robots {
       'https://www.reportfocusnews.com/sitemap.xml',
       'https://www.reportfocusnews.com/news-sitemap.xml',
     ],
-    host: 'https://www.reportfocusnews.com',
+    host: 'https://reportfocusnews.com',
   };
 }

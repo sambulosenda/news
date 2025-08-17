@@ -5,7 +5,7 @@ import { GET_CATEGORIES } from '@/lib/queries/categories';
 import { detectLocationFromContent } from '@/lib/location-detector';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://www.reportfocusnews.com';
+  const baseUrl = 'https://reportfocusnews.com';
 
   // Fetch all posts and categories
   const [postsData, categoriesData] = await Promise.all([
