@@ -12,6 +12,7 @@ import Footer from '@/components/Footer';
 import ArticleCard from '@/components/ArticleCard';
 import ShareButtons from '@/components/ShareButtons';
 import { WPPost } from '@/types/wordpress';
+import NewsArticleSchema from '@/components/NewsArticleSchema';
 
 interface PostPageProps {
   params: Promise<{
@@ -56,13 +57,19 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     ? post.excerpt.replace(/<[^>]*>/g, '').substring(0, 160)
     : '';
 
+  const canonicalUrl = `https://www.reportfocusnews.com/${format(new Date(post.date), 'yyyy')}/${format(new Date(post.date), 'MM')}/${format(new Date(post.date), 'dd')}/${slug}/`;
+
   return {
     title: post.title,
     description: plainTextExcerpt,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: post.title,
       description: plainTextExcerpt,
       type: 'article',
+      url: canonicalUrl,
       publishedTime: post.date,
       modifiedTime: post.modified,
       authors: post.author?.node ? [post.author.node.name] : undefined,
@@ -80,6 +87,14 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       title: post.title,
       description: plainTextExcerpt,
       images: post.featuredImage?.node ? [post.featuredImage.node.sourceUrl] : undefined,
+    },
+    other: {
+      'article:published_time': post.date,
+      'article:modified_time': post.modified || post.date,
+      ...(post.categories?.edges?.[0]?.node?.name && {
+        'article:section': post.categories.edges[0].node.name,
+        'news_keywords': post.categories.edges[0].node.name,
+      }),
     },
   };
 }
@@ -113,8 +128,28 @@ export default async function PostPage({ params }: PostPageProps) {
 
   const stats = post.content ? readingTime(post.content) : { text: '1 min read' };
 
+  const plainTextExcerpt = post.excerpt 
+    ? post.excerpt.replace(/<[^>]*>/g, '').substring(0, 160)
+    : '';
+
+  const canonicalUrl = `https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`;
+  
+  const keywords = category 
+    ? [category.name, ...post.tags?.edges?.map((edge: { node: { name: string } }) => edge.node.name) || []]
+    : [];
+
   return (
     <>
+      <NewsArticleSchema
+        title={post.title}
+        description={plainTextExcerpt}
+        url={canonicalUrl}
+        imageUrl={post.featuredImage?.node?.sourceUrl}
+        datePublished={post.date}
+        dateModified={post.modified}
+        authorName={post.author?.node?.name}
+        keywords={keywords}
+      />
       <HeaderWrapper />
       <main className="container-content py-8">
         <article className="max-w-4xl mx-auto">

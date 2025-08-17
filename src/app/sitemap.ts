@@ -49,17 +49,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Dynamic post pages
-  const postPages = posts.map((post) => ({
-    url: `${baseUrl}/post/${post.slug}`,
-    lastModified: new Date(post.modified || post.date),
-    changeFrequency: 'weekly' as const,
-    priority: 0.9,
-  }));
+  // Dynamic post pages with date-based URLs
+  const postPages = posts.map((post) => {
+    const postDate = new Date(post.date);
+    const year = postDate.getFullYear();
+    const month = String(postDate.getMonth() + 1).padStart(2, '0');
+    const day = String(postDate.getDate()).padStart(2, '0');
+    
+    return {
+      url: `${baseUrl}/${year}/${month}/${day}/${post.slug}/`,
+      lastModified: new Date(post.modified || post.date),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    };
+  });
 
-  // Category pages
+  // Category pages with /news/ prefix
   const categoryPages = categories.map((category) => ({
-    url: `${baseUrl}/category/${category.slug}`,
+    url: `${baseUrl}/news/${category.slug}/`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: 0.7,

@@ -6,6 +6,8 @@ interface ArticleStructuredDataProps {
   authorName?: string;
   imageUrl?: string;
   url: string;
+  categoryName?: string;
+  wordCount?: number;
 }
 
 export function ArticleStructuredData({
@@ -16,6 +18,8 @@ export function ArticleStructuredData({
   authorName,
   imageUrl,
   url,
+  categoryName,
+  wordCount,
 }: ArticleStructuredDataProps) {
   const structuredData = {
     '@context': 'https://schema.org',
@@ -29,17 +33,26 @@ export function ArticleStructuredData({
       name: authorName,
     } : undefined,
     publisher: {
-      '@type': 'Organization',
+      '@type': 'NewsMediaOrganization',
       name: 'Report Focus News',
       logo: {
         '@type': 'ImageObject',
         url: 'https://www.reportfocusnews.com/logo.png',
+        width: 600,
+        height: 60,
       },
     },
     image: imageUrl ? [imageUrl] : undefined,
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': url,
+    },
+    ...(categoryName && { articleSection: categoryName }),
+    ...(wordCount && { wordCount: wordCount }),
+    ...(imageUrl && { thumbnailUrl: imageUrl }),
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '.prose p'],
     },
   };
 
