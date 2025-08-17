@@ -90,8 +90,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Preconnect to optimize external resources */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://backend.reportfocusnews.com" />
+        <link rel="dns-prefetch" href="https://backend.reportfocusnews.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         
         {/* Favicon and app icons */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
