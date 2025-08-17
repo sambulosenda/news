@@ -8,8 +8,8 @@ interface HeroSectionProps {
 
 export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSectionProps) {
   return (
-    <section className="container-wide py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <section className="container-wide section-spacing">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Main Hero Article */}
         <div className="lg:col-span-2">
           <ArticleCard
@@ -24,7 +24,7 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
 
         {/* Side Articles */}
         {sideArticles.length > 0 && (
-          <div className="space-y-6">
+          <div className="space-y-8">
             {sideArticles.slice(0, 2).map((article) => (
               <ArticleCard
                 key={article.id}
@@ -42,8 +42,8 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
 
       {/* Additional featured stories below hero */}
       {sideArticles.length > 2 && (
-        <div className="mt-8 pt-8 border-t-2 border-gray-900">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-12 pt-12 border-t-2 border-gray-900">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {sideArticles.slice(2, 5).map((article) => (
               <ArticleCard
                 key={article.id}

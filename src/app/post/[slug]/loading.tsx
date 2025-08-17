@@ -1,10 +1,10 @@
-import Header from '@/components/Header';
+import HeaderClient from '@/components/HeaderClient';
 import Footer from '@/components/Footer';
 
 export default function ArticleLoading() {
   return (
     <>
-      <Header />
+      <HeaderClient />
       <main className="container-content py-8">
         {/* Article Header Skeleton */}
         <header className="mb-8">

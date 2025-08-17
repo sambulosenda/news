@@ -1,10 +1,10 @@
-import Header from '@/components/Header';
+import HeaderClient from '@/components/HeaderClient';
 import Footer from '@/components/Footer';
 
 export default function Loading() {
   return (
     <>
-      <Header />
+      <HeaderClient />
       <main className="container-wide py-8">
         {/* Hero Section Skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">

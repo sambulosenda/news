@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import Header from '@/components/Header';
+import HeaderClient from '@/components/HeaderClient';
 import Footer from '@/components/Footer';
 
 export default function Error({
@@ -18,7 +18,7 @@ export default function Error({
 
   return (
     <>
-      <Header />
+      <HeaderClient />
       <main className="container-wide py-16 min-h-screen">
         <div className="max-w-2xl mx-auto text-center">
           <h1 className="font-serif text-4xl font-bold mb-4">

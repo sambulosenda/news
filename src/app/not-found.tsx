@@ -1,11 +1,11 @@
-import Header from '@/components/Header';
+import HeaderClient from '@/components/HeaderClient';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 
 export default function NotFound() {
   return (
     <>
-      <Header />
+      <HeaderClient />
       <main className="container-wide py-16 min-h-screen">
         <div className="max-w-2xl mx-auto text-center">
           <h1 className="font-serif text-6xl font-bold mb-4">404</h1>

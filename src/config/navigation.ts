@@ -11,16 +11,11 @@ export interface NavSection {
 
 export const navigationConfig: NavSection[] = [
   // Primary News Categories (High Priority)
-  {
-    name: 'Breaking News',
-    slug: 'breaking-news',
-    priority: 1,
-    featured: true,
-  },
+  // Note: Breaking News is now handled by dynamic banner at top
   {
     name: 'World',
     slug: 'world',
-    priority: 2,
+    priority: 1,
     featured: true,
     children: [
       { name: 'Africa', slug: 'africa', priority: 1 },
@@ -34,7 +29,7 @@ export const navigationConfig: NavSection[] = [
   {
     name: 'Africa',
     slug: 'africa',
-    priority: 3,
+    priority: 2,
     featured: true,
     children: [
       { name: 'South Africa', slug: 'south-africa', priority: 1 },
@@ -52,7 +47,7 @@ export const navigationConfig: NavSection[] = [
   {
     name: 'Politics',
     slug: 'politics',
-    priority: 4,
+    priority: 3,
     featured: true,
     children: [
       { name: 'US Politics', slug: 'us-politics', priority: 1 },
@@ -63,7 +58,7 @@ export const navigationConfig: NavSection[] = [
   {
     name: 'Business',
     slug: 'business',
-    priority: 5,
+    priority: 4,
     featured: true,
     children: [
       { name: 'Money & Finance', slug: 'money-finance', priority: 1 },
@@ -73,13 +68,13 @@ export const navigationConfig: NavSection[] = [
   {
     name: 'Sports',
     slug: 'sports',
-    priority: 6,
+    priority: 5,
     featured: true,
   },
   {
     name: 'Entertainment',
     slug: 'entertainment',
-    priority: 7,
+    priority: 6,
     featured: true,
     children: [
       { name: 'Arts & Lifestyle', slug: 'arts-lifestyle', priority: 1 },
@@ -89,10 +84,17 @@ export const navigationConfig: NavSection[] = [
   {
     name: 'Opinion',
     slug: 'opinion',
-    priority: 8,
+    priority: 7,
     featured: true,
   },
   // Secondary Categories (In "More" dropdown)
+  // Note: Breaking News category available here for direct access
+  {
+    name: 'Breaking News',
+    slug: 'breaking-news',
+    priority: 8,
+    featured: false,
+  },
   {
     name: 'Crime',
     slug: 'crime',
