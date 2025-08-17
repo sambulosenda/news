@@ -24,19 +24,19 @@ We'll build this incrementally, starting with the foundation (GraphQL client) an
 - [x] Implement searchPosts query
 - [x] Create TypeScript types for all queries
 
-### Phase 3: Design System & Typography
-- [ ] Configure Tailwind with custom typography scale
-- [ ] Set up custom fonts (serif for headlines, sans-serif for body)
-- [ ] Create color palette configuration
-- [ ] Define spacing and layout constants
+### Phase 3: Design System & Typography ✅
+- [x] Configure Tailwind with custom typography scale
+- [x] Set up custom fonts (serif for headlines, sans-serif for body)
+- [x] Create color palette configuration
+- [x] Define spacing and layout constants
 
-### Phase 4: Core Components
-- [ ] Create Header component with navigation
-- [ ] Create BreakingNewsBanner component
-- [ ] Create ArticleCard component (multiple variants)
-- [ ] Create HeroSection component
-- [ ] Create CategorySection component
-- [ ] Create Footer component
+### Phase 4: Core Components ✅
+- [x] Create Header component with navigation
+- [x] Create BreakingNewsBanner component
+- [x] Create ArticleCard component (multiple variants)
+- [x] Create HeroSection component
+- [x] Create CategorySection component
+- [x] Create Footer component
 
 ### Phase 5: Homepage Implementation
 - [ ] Update homepage to fetch real data
