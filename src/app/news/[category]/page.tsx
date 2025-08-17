@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import ArticleCard from '@/components/ArticleCard';
 import { WPPost, WPCategory } from '@/types/wordpress';
 import { localKeywords } from '@/lib/location-detector';
+import { getCategoryMetadata } from '@/lib/category-metadata';
 
 interface CategoryPageProps {
   params: Promise<{
@@ -46,29 +47,39 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
   const { category } = data;
 
-  // Generate location-specific keywords for category
+  // Get optimized metadata for this category
+  const optimizedMeta = getCategoryMetadata(categorySlug);
+  
+  // Use optimized metadata if available, otherwise fall back to dynamic generation
+  const enhancedTitle = optimizedMeta.title.includes('Report Focus') 
+    ? optimizedMeta.title 
+    : `${optimizedMeta.title} | Report Focus News`;
+    
+  const enhancedDescription = optimizedMeta.description || (category.description 
+    ? `${category.description} Latest ${category.name} news from South Africa and Zimbabwe.`
+    : `Breaking ${category.name} news and analysis from South Africa and Zimbabwe. Stay updated with Report Focus News.`);
+
+  // Combine optimized keywords with location-specific ones
   const categoryKeywords = [
-    ...localKeywords.southAfrica.primary.map(keyword => `${keyword} ${category.name.toLowerCase()}`),
-    ...localKeywords.zimbabwe.primary.map(keyword => `${keyword} ${category.name.toLowerCase()}`),
-    `${category.name} South Africa`,
-    `${category.name} Zimbabwe`,
-    `Southern Africa ${category.name}`,
-    `Report Focus ${category.name}`,
+    ...optimizedMeta.keywords,
+    ...localKeywords.southAfrica.primary.map(keyword => `${keyword} ${category.name.toLowerCase()}`).slice(0, 3),
+    ...localKeywords.zimbabwe.primary.map(keyword => `${keyword} ${category.name.toLowerCase()}`).slice(0, 3),
   ];
 
-  const enhancedTitle = `${category.name} News - South Africa & Zimbabwe | Report Focus News`;
-  const enhancedDescription = category.description 
-    ? `${category.description} Latest ${category.name} news from South Africa and Zimbabwe.`
-    : `Breaking ${category.name} news and analysis from South Africa and Zimbabwe. Stay updated with Report Focus News.`;
+  const canonicalUrl = `https://reportfocusnews.com/news/${categorySlug}/`;
 
   return {
     title: enhancedTitle,
     description: enhancedDescription,
     keywords: categoryKeywords.join(', '),
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: enhancedTitle,
       description: enhancedDescription,
       type: 'website',
+      url: canonicalUrl,
       locale: 'en_ZA',
     },
     twitter: {

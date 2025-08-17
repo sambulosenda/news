@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { fetchGraphQL } from '@/lib/fetch-graphql';
 import { 
   GET_RECENT_POSTS, 
@@ -14,6 +15,63 @@ import CategorySection from '@/components/CategorySection';
 import ArticleCard from '@/components/ArticleCard';
 import OrganizationSchema from '@/components/OrganizationSchema';
 import { WPPost, WPCategory } from '@/types/wordpress';
+
+export const metadata: Metadata = {
+  title: 'Report Focus News - South Africa & Zimbabwe Breaking News | Politics, Business, Sports',
+  description: 'Breaking news from South Africa and Zimbabwe. Latest updates on politics, business, economy, sports, and entertainment. Your trusted source for Southern African news coverage.',
+  keywords: 'South Africa news, Zimbabwe news, breaking news, SA politics, Zimbabwe politics, JSE news, business news Africa, Johannesburg news, Harare news, Southern Africa, SADC news, ANC, ZANU-PF, Springboks, Proteas, Report Focus News',
+  alternates: {
+    canonical: 'https://reportfocusnews.com',
+  },
+  openGraph: {
+    title: 'Report Focus News - Breaking News from South Africa & Zimbabwe',
+    description: 'Your trusted source for South African and Zimbabwe news. Politics, business, sports, entertainment, and more.',
+    type: 'website',
+    url: 'https://reportfocusnews.com',
+    siteName: 'Report Focus News',
+    locale: 'en_ZA',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Report Focus News - South Africa & Zimbabwe News',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@reportfocusnews',
+    title: 'Report Focus News - SA & Zimbabwe Breaking News',
+    description: 'Latest news from South Africa and Zimbabwe. Politics, business, sports, and more.',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code',
+  },
+  other: {
+    'geo.region': 'ZA-GP;ZW-HA',
+    'geo.country': 'ZA;ZW',
+    'geo.placename': 'Johannesburg;Harare',
+    'content:type': 'news',
+    'content:region': 'Southern Africa',
+    'language': 'en-ZA',
+    'audience': 'general',
+    'distribution': 'global',
+    'news_keywords': 'South Africa, Zimbabwe, breaking news, politics, business, economy',
+  },
+};
 
 interface CategoryEdge {
   node: WPCategory;
