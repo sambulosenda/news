@@ -7,20 +7,23 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  preload: true,
 });
 
 const merriweather = Merriweather({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["400", "700"], // Reduced weights for performance
   variable: "--font-merriweather",
   display: "swap",
+  preload: true,
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "700"], // Reduced weights for performance
   variable: "--font-playfair",
   display: "swap",
+  preload: false, // Only preload critical fonts
 });
 
 export const metadata: Metadata = {

@@ -95,10 +95,10 @@ export default function CategorySection({
           <ArticleCard
             key={article.id}
             article={article}
-            variant={index === 0 ? 'featured' : 'default'}
+            variant="default"
             showImage={index < 3}
-            showExcerpt={index === 0}
-            showAuthor={index === 0}
+            showExcerpt={false}
+            showAuthor={false}
             showCategory={false}
           />
         ))}

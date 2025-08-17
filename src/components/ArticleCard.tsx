@@ -147,7 +147,7 @@ export default function ArticleCard({
               {category.name}
             </Link>
           )}
-          <h3 className="font-serif text-2xl lg:text-3xl font-bold mb-3 leading-tight">
+          <h3 className="font-serif text-2xl lg:text-3xl font-bold mb-3 leading-tight line-clamp-2">
             <Link href={postUrl} className="hover:underline">
               {article.title}
             </Link>
@@ -193,7 +193,7 @@ export default function ArticleCard({
             {category.name}
           </Link>
         )}
-        <h3 className="font-serif text-xl font-bold mb-2">
+        <h3 className="font-serif text-xl font-bold mb-2 line-clamp-2">
           <Link href={postUrl} className="hover:underline">
             {article.title}
           </Link>
