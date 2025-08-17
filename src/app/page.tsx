@@ -1,103 +1,236 @@
-import Image from "next/image";
+import { fetchGraphQL } from '@/lib/fetch-graphql';
+import { 
+  GET_RECENT_POSTS, 
+  GET_FEATURED_POSTS,
+  GET_POPULAR_POSTS,
+  GET_POSTS_BY_CATEGORY 
+} from '@/lib/queries/posts';
+import { GET_CATEGORIES } from '@/lib/queries/categories';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import BreakingNewsBanner from '@/components/BreakingNewsBanner';
+import HeroSection from '@/components/HeroSection';
+import CategorySection from '@/components/CategorySection';
+import ArticleCard from '@/components/ArticleCard';
+import { WPPost, WPCategory } from '@/types/wordpress';
 
-export default function Home() {
+interface CategoryEdge {
+  node: WPCategory;
+}
+
+interface PostEdge {
+  node: WPPost;
+}
+
+async function getHomePageData() {
+  const [recentData, featuredData, popularData, categoriesData] = await Promise.all([
+    fetchGraphQL(GET_RECENT_POSTS, { first: 20 }),
+    fetchGraphQL(GET_FEATURED_POSTS, { first: 5 }),
+    fetchGraphQL(GET_POPULAR_POSTS, { first: 5 }),
+    fetchGraphQL(GET_CATEGORIES, { first: 10 }),
+  ]);
+
+  // Fetch posts for main categories
+  const categoryPromises = categoriesData?.categories?.edges
+    ?.slice(0, 3)
+    .map(async (edge: CategoryEdge) => {
+      const categoryData = await fetchGraphQL(GET_POSTS_BY_CATEGORY, {
+        categorySlug: edge.node.slug,
+        first: 6,
+      });
+      return {
+        category: edge.node,
+        posts: categoryData?.posts?.edges?.map((e: PostEdge) => e.node) || [],
+      };
+    }) || [];
+
+  const categorySections = await Promise.all(categoryPromises);
+
+  return {
+    recentPosts: recentData?.posts?.nodes || [],
+    featuredPosts: featuredData?.posts?.nodes || [],
+    popularPosts: popularData?.posts?.nodes || [],
+    categories: categoriesData?.categories?.edges?.map((e: CategoryEdge) => e.node) || [],
+    categorySections,
+  };
+}
+
+export default async function HomePage() {
+  const { 
+    recentPosts, 
+    featuredPosts, 
+    popularPosts,
+    categorySections 
+  } = await getHomePageData();
+
+  // Use featured posts for hero, or fall back to recent posts
+  const heroPosts = featuredPosts.length > 0 ? featuredPosts : recentPosts;
+  const mainHeroPost = heroPosts[0];
+  const sideHeroPosts = heroPosts.slice(1, 6);
+
+  // Get remaining recent posts for main feed
+  const mainFeedPosts = recentPosts.slice(6, 15);
+
+  // Mock breaking news (in production, this would come from a specific query)
+  const breakingNews = recentPosts.slice(0, 3).map((post: WPPost) => ({
+    id: post.id,
+    title: post.title,
+    slug: post.slug,
+  }));
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      <BreakingNewsBanner news={breakingNews} />
+      <Header />
+      
+      <main>
+        {/* Hero Section */}
+        {mainHeroPost && (
+          <HeroSection 
+            mainArticle={mainHeroPost} 
+            sideArticles={sideHeroPosts}
+          />
+        )}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        {/* Main Content Area */}
+        <div className="container-wide py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Main Column - 2/3 width */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Latest News Section */}
+              <section>
+                <h2 className="font-serif text-3xl font-bold mb-6">Latest News</h2>
+                <div className="space-y-6">
+                  {mainFeedPosts.map((post: WPPost) => (
+                    <div key={post.id} className="pb-6 border-b border-gray-200 last:border-b-0">
+                      <ArticleCard
+                        article={post}
+                        variant="horizontal"
+                        showImage={true}
+                        showExcerpt={true}
+                        showAuthor={true}
+                        showCategory={true}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Category Sections */}
+              {categorySections.map(({ category, posts }) => (
+                posts.length > 0 && (
+                  <div key={category.id} className="border-t-2 border-gray-900 pt-8">
+                    <CategorySection
+                      title={category.name}
+                      slug={category.slug}
+                      articles={posts}
+                      variant="default"
+                    />
+                  </div>
+                )
+              ))}
+            </div>
+
+            {/* Sidebar - 1/3 width */}
+            <aside className="space-y-8">
+              {/* Most Popular Section */}
+              {popularPosts.length > 0 && (
+                <section className="p-6 bg-gray-50">
+                  <h2 className="font-serif text-2xl font-bold mb-4">Most Popular</h2>
+                  <div className="space-y-4">
+                    {popularPosts.slice(0, 5).map((post: WPPost, index: number) => (
+                      <div key={post.id} className="flex items-start gap-3">
+                        <span className="font-serif text-2xl font-bold text-gray-400 mt-1">
+                          {index + 1}
+                        </span>
+                        <div className="flex-1">
+                          <h3 className="font-serif text-base font-bold">
+                            <a href={`/post/${post.slug}`} className="hover:underline">
+                              {post.title}
+                            </a>
+                          </h3>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* Opinion Section */}
+              <section className="p-6 border-2 border-gray-900">
+                <h2 className="font-serif text-2xl font-bold mb-4">Opinion</h2>
+                <div className="space-y-4">
+                  {recentPosts.slice(15, 19).map((post: WPPost) => (
+                    <article key={post.id} className="pb-4 border-b border-gray-200 last:border-b-0">
+                      <h3 className="font-serif text-base font-bold mb-1">
+                        <a href={`/post/${post.slug}`} className="hover:underline">
+                          {post.title}
+                        </a>
+                      </h3>
+                      {post.author?.node && (
+                        <p className="text-sm text-gray-600">
+                          By {post.author.node.name}
+                        </p>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              </section>
+
+              {/* Newsletter Signup */}
+              <section className="p-6 bg-gray-900 text-white">
+                <h3 className="font-serif text-xl font-bold mb-2">
+                  Morning Briefing
+                </h3>
+                <p className="text-sm mb-4">
+                  Get what you need to know to start your day.
+                </p>
+                <form className="space-y-2">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full px-3 py-2 text-gray-900 rounded"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="w-full px-3 py-2 bg-white text-gray-900 font-medium rounded hover:bg-gray-100 transition-colors"
+                  >
+                    Sign Up
+                  </button>
+                </form>
+              </section>
+            </aside>
+          </div>
         </div>
+
+        {/* Today's Paper Section */}
+        <section className="container-wide py-12 border-t-2 border-gray-900">
+          <div className="mb-8">
+            <h2 className="font-serif text-4xl font-bold mb-2">Today&apos;s Paper</h2>
+            <p className="text-gray-600">The front page of today&apos;s Report Focus News</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {recentPosts.slice(0, 8).map((post: WPPost) => (
+              <ArticleCard
+                key={post.id}
+                article={post}
+                variant="default"
+                showImage={true}
+                showExcerpt={false}
+                showAuthor={false}
+                showCategory={true}
+              />
+            ))}
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+      <Footer />
+    </>
   );
 }
+
+// Revalidate the page every 60 seconds
+export const revalidate = 60;

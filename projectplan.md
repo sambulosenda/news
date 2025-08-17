@@ -38,14 +38,14 @@ We'll build this incrementally, starting with the foundation (GraphQL client) an
 - [x] Create CategorySection component
 - [x] Create Footer component
 
-### Phase 5: Homepage Implementation
-- [ ] Update homepage to fetch real data
-- [ ] Implement hero section with featured post
-- [ ] Create 3-column layout structure
-- [ ] Add "Most Popular" sidebar section
-- [ ] Add "Opinion" sidebar section
-- [ ] Implement category sections
-- [ ] Add "Today's Paper" section
+### Phase 5: Homepage Implementation ✅
+- [x] Update homepage to fetch real data
+- [x] Implement hero section with featured post
+- [x] Create 3-column layout structure
+- [x] Add "Most Popular" sidebar section
+- [x] Add "Opinion" sidebar section
+- [x] Implement category sections
+- [x] Add "Today's Paper" section
 
 ### Phase 6: Article Pages
 - [ ] Create dynamic article route ([slug])
