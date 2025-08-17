@@ -13,17 +13,43 @@ export default function robots(): MetadataRoute.Robots {
           '/search?*',
           '/*?utm_*',
           '/*?ref=*',
-          '/tag/*', // Uncomment if you don't want tag pages indexed
+          '/tag/*',
+          '/*?preview=*',
+          '/*?draft=*',
         ],
       },
       {
         userAgent: 'Googlebot-News',
-        allow: ['/', '/news/', '/20*'], // Allow news bot to access dated articles
+        allow: [
+          '/', 
+          '/news/', 
+          '/20*',  // Year-based URLs (2024, 2025, etc.)
+          '/news/politics/',
+          '/news/business/',
+          '/news/breaking/',
+          '/news/south-africa/',
+          '/news/zimbabwe/',
+        ],
+        disallow: [
+          '/search*',
+          '/tag/*',
+          '/*?preview=*',
+          '/*?draft=*',
+        ],
+      },
+      {
+        userAgent: 'facebookexternalhit',
+        allow: '/',
+      },
+      {
+        userAgent: 'Twitterbot',
+        allow: '/',
       },
     ],
     sitemap: [
       'https://www.reportfocusnews.com/sitemap.xml',
       'https://www.reportfocusnews.com/news-sitemap.xml',
     ],
+    host: 'https://www.reportfocusnews.com',
   };
 }

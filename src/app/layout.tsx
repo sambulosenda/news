@@ -28,9 +28,9 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.reportfocusnews.com'),
-  title: "Report Focus News - Breaking News, Analysis, and Journalism",
-  description: "Stay informed with Report Focus News - Your trusted source for breaking news, in-depth analysis, and comprehensive journalism coverage.",
-  keywords: "news, breaking news, politics, business, technology, world news, Report Focus",
+  title: "Report Focus News - South Africa & Zimbabwe Breaking News",
+  description: "Your trusted source for breaking news from South Africa and Zimbabwe. In-depth coverage of politics, business, and current affairs across Southern Africa.",
+  keywords: "South Africa news, Zimbabwe news, Southern Africa, breaking news, politics, business, Johannesburg, Cape Town, Harare, Bulawayo, current affairs",
   openGraph: {
     title: "Report Focus News",
     description: "Your trusted source for breaking news and in-depth journalism",
@@ -62,6 +62,19 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
+  },
+  other: {
+    'geo.region': 'ZA-GP;ZW-HA',
+    'geo.placename': 'Johannesburg;Harare',
+    'geo.country': 'ZA;ZW',
+    'geo.position': '-26.2041;28.0473;-17.8292;31.0522',
+    'ICBM': '-26.2041, 28.0473',
+    'distribution': 'global',
+    'audience': 'general',
+    'coverage': 'worldwide',
+    'target': 'South Africa, Zimbabwe',
+    'language': 'en-ZA',
+    'dc.language': 'en-ZA',
   },
 };
 

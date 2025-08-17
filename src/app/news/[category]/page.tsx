@@ -7,6 +7,7 @@ import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
 import ArticleCard from '@/components/ArticleCard';
 import { WPPost, WPCategory } from '@/types/wordpress';
+import { localKeywords } from '@/lib/location-detector';
 
 interface CategoryPageProps {
   params: Promise<{
@@ -45,13 +46,45 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
   const { category } = data;
 
+  // Generate location-specific keywords for category
+  const categoryKeywords = [
+    ...localKeywords.southAfrica.primary.map(keyword => `${keyword} ${category.name.toLowerCase()}`),
+    ...localKeywords.zimbabwe.primary.map(keyword => `${keyword} ${category.name.toLowerCase()}`),
+    `${category.name} South Africa`,
+    `${category.name} Zimbabwe`,
+    `Southern Africa ${category.name}`,
+    `Report Focus ${category.name}`,
+  ];
+
+  const enhancedTitle = `${category.name} News - South Africa & Zimbabwe | Report Focus News`;
+  const enhancedDescription = category.description 
+    ? `${category.description} Latest ${category.name} news from South Africa and Zimbabwe.`
+    : `Breaking ${category.name} news and analysis from South Africa and Zimbabwe. Stay updated with Report Focus News.`;
+
   return {
-    title: `${category.name} News - Report Focus News`,
-    description: category.description || `Latest ${category.name} news and updates from Report Focus News`,
+    title: enhancedTitle,
+    description: enhancedDescription,
+    keywords: categoryKeywords.join(', '),
     openGraph: {
-      title: `${category.name} - Report Focus News`,
-      description: category.description || `Latest ${category.name} news and updates`,
+      title: enhancedTitle,
+      description: enhancedDescription,
       type: 'website',
+      locale: 'en_ZA',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: enhancedTitle,
+      description: enhancedDescription,
+    },
+    other: {
+      'geo.region': 'ZA-GP;ZW-HA',
+      'geo.country': 'ZA;ZW',
+      'geo.placename': 'Johannesburg;Harare',
+      'content:category': category.name,
+      'content:region': 'Southern Africa',
+      'language': 'en-ZA',
+      'audience': 'general',
+      'distribution': 'global',
     },
   };
 }

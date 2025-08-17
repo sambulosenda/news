@@ -1,6 +1,7 @@
 import { fetchGraphQL } from '@/lib/fetch-graphql';
 import { GET_ALL_POSTS } from '@/lib/queries/posts';
 import { format } from 'date-fns';
+import { detectLocationFromContent } from '@/lib/location-detector';
 
 export async function GET() {
   const postsData = await fetchGraphQL(GET_ALL_POSTS, { first: 1000 });
@@ -10,7 +11,16 @@ export async function GET() {
     date: string;
     modified?: string;
     title: string;
+    content?: string;
+    excerpt?: string;
     categories?: {
+      edges: Array<{
+        node: {
+          name: string;
+        };
+      }>;
+    };
+    tags?: {
       edges: Array<{
         node: {
           name: string;
@@ -43,6 +53,26 @@ export async function GET() {
     const month = String(postDate.getMonth() + 1).padStart(2, '0');
     const day = String(postDate.getDate()).padStart(2, '0');
     const category = post.categories?.edges?.[0]?.node?.name || 'News';
+    const tags = post.tags?.edges?.map(edge => edge.node.name) || [];
+    
+    // Detect location for geo-targeting
+    const location = detectLocationFromContent(
+      post.title || '',
+      post.content || post.excerpt || '',
+      category,
+      tags
+    );
+    
+    // Enhanced keywords for regional news
+    const keywords = [
+      category,
+      ...tags.slice(0, 3),
+      ...(location ? [
+        location.country,
+        ...(location.city ? [location.city] : []),
+        'Southern Africa'
+      ] : ['South Africa', 'Zimbabwe'])
+    ].filter(Boolean).slice(0, 10);
     
     return `
   <url>
@@ -54,8 +84,12 @@ export async function GET() {
       </news:publication>
       <news:publication_date>${format(postDate, "yyyy-MM-dd'T'HH:mm:ssxxx")}</news:publication_date>
       <news:title>${escapeXml(post.title)}</news:title>
-      <news:keywords>${escapeXml(category)}</news:keywords>
+      <news:keywords>${escapeXml(keywords.join(', '))}</news:keywords>
+      ${location ? `<news:geo_locations>${escapeXml(location.country)}${location.city ? `, ${location.city}` : ''}</news:geo_locations>` : ''}
     </news:news>
+    <lastmod>${format(new Date(post.modified || post.date), "yyyy-MM-dd'T'HH:mm:ssxxx")}</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
   </url>`;
   }).join('')}
 </urlset>`;

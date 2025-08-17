@@ -35,6 +35,9 @@ module.exports = {
         '8xl': '88rem',
         '9xl': '96rem',
       },
+      borderWidth: {
+        '3': '3px',
+      },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',

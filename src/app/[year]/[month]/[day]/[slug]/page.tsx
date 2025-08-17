@@ -6,13 +6,17 @@ import { format } from 'date-fns';
 import parse from 'html-react-parser';
 import readingTime from 'reading-time';
 import { fetchGraphQL } from '@/lib/fetch-graphql';
-import { GET_POST_BY_SLUG, GET_RELATED_POSTS } from '@/lib/queries/posts';
+import { GET_POST_BY_SLUG, GET_RELATED_POSTS, GET_AUTHOR_POSTS } from '@/lib/queries/posts';
 import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
 import ArticleCard from '@/components/ArticleCard';
 import ShareButtons from '@/components/ShareButtons';
 import { WPPost } from '@/types/wordpress';
-import NewsArticleSchema from '@/components/NewsArticleSchema';
+import LocalNewsSchema from '@/components/LocalNewsSchema';
+import ReadingProgress from '@/components/ReadingProgress';
+import BackToTop from '@/components/BackToTop';
+import MobileShareBar from '@/components/MobileShareBar';
+import { detectLocationFromContent, generateLocationKeywords } from '@/lib/location-detector';
 
 interface PostPageProps {
   params: Promise<{
@@ -43,6 +47,16 @@ async function getRelatedPosts(categoryId: number, currentPostId: string) {
   return data?.posts?.edges?.map((edge: any) => edge.node) || [];
 }
 
+async function getAuthorPosts(authorId: number, currentPostId: string) {
+  const data = await fetchGraphQL(GET_AUTHOR_POSTS, {
+    authorId: authorId,
+    exclude: [currentPostId],
+    first: 3,
+  });
+
+  return data?.posts?.edges?.map((edge: any) => edge.node) || [];
+}
+
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostData(slug);
@@ -53,21 +67,47 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     };
   }
 
+  // Detect location from content
+  const category = post.categories?.edges?.[0]?.node?.name || '';
+  const tags = post.tags?.edges?.map((edge: { node: { name: string } }) => edge.node.name) || [];
+  const location = detectLocationFromContent(
+    post.title || '',
+    post.content || '',
+    category,
+    tags
+  );
+
+  // Generate location-specific keywords
+  const locationKeywords = generateLocationKeywords(location, category);
+  
   const plainTextExcerpt = post.excerpt 
     ? post.excerpt.replace(/<[^>]*>/g, '').substring(0, 160)
     : '';
 
+  // Enhanced title with location context
+  const enhancedTitle = location 
+    ? `${post.title} - ${location.country} News`
+    : post.title;
+
+  // Enhanced description with location context
+  const enhancedDescription = location && location.city
+    ? `${plainTextExcerpt} Latest news from ${location.city}, ${location.country}.`
+    : location
+    ? `${plainTextExcerpt} Breaking news from ${location.country}.`
+    : plainTextExcerpt;
+
   const canonicalUrl = `https://www.reportfocusnews.com/${format(new Date(post.date), 'yyyy')}/${format(new Date(post.date), 'MM')}/${format(new Date(post.date), 'dd')}/${slug}/`;
 
   return {
-    title: post.title,
-    description: plainTextExcerpt,
+    title: enhancedTitle,
+    description: enhancedDescription,
+    keywords: locationKeywords.join(', '),
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: post.title,
-      description: plainTextExcerpt,
+      title: enhancedTitle,
+      description: enhancedDescription,
       type: 'article',
       url: canonicalUrl,
       publishedTime: post.date,
@@ -81,20 +121,36 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
           alt: post.featuredImage.node.altText || post.title,
         },
       ] : undefined,
+      locale: 'en_ZA',
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: plainTextExcerpt,
+      title: enhancedTitle,
+      description: enhancedDescription,
       images: post.featuredImage?.node ? [post.featuredImage.node.sourceUrl] : undefined,
     },
     other: {
       'article:published_time': post.date,
       'article:modified_time': post.modified || post.date,
-      ...(post.categories?.edges?.[0]?.node?.name && {
-        'article:section': post.categories.edges[0].node.name,
-        'news_keywords': post.categories.edges[0].node.name,
+      ...(post.author?.node?.name && { 'article:author': post.author.node.name }),
+      'article:section': category,
+      'news_keywords': locationKeywords.slice(0, 10).join(', '),
+      // Geographic targeting
+      ...(location && {
+        'geo.region': location.country === 'South Africa' ? 'ZA' : 'ZW',
+        'geo.country': location.country === 'South Africa' ? 'ZA' : 'ZW',
+        'geo.placename': location.city || (location.country === 'South Africa' ? 'Johannesburg' : 'Harare'),
+        'content:location': `${location.city || ''}, ${location.country}`.trim().replace(/^,\s*/, ''),
       }),
+      // Content classification
+      'content:tier': 'free',
+      'distribution': 'global',
+      'audience': 'general',
+      'language': 'en-ZA',
+      // News-specific meta tags
+      'article:tag': tags.slice(0, 5).join(', '),
+      'article:opinion': 'false',
+      'article:content_tier': 'free',
     },
   };
 }
@@ -126,6 +182,10 @@ export default async function PostPage({ params }: PostPageProps) {
     ? await getRelatedPosts(category.databaseId, post.databaseId.toString())
     : [];
 
+  const authorPosts = post.author?.node 
+    ? await getAuthorPosts(post.author.node.databaseId, post.databaseId.toString())
+    : [];
+
   const stats = post.content ? readingTime(post.content) : { text: '1 min read' };
 
   const plainTextExcerpt = post.excerpt 
@@ -134,13 +194,23 @@ export default async function PostPage({ params }: PostPageProps) {
 
   const canonicalUrl = `https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`;
   
+  // Detect location for schema markup
+  const tags = post.tags?.edges?.map((edge: { node: { name: string } }) => edge.node.name) || [];
+  const location = detectLocationFromContent(
+    post.title || '',
+    post.content || '',
+    category?.name || '',
+    tags
+  );
+  
   const keywords = category 
-    ? [category.name, ...post.tags?.edges?.map((edge: { node: { name: string } }) => edge.node.name) || []]
+    ? [category.name, ...tags]
     : [];
 
   return (
     <>
-      <NewsArticleSchema
+      <ReadingProgress />
+      <LocalNewsSchema
         title={post.title}
         description={plainTextExcerpt}
         url={canonicalUrl}
@@ -149,6 +219,9 @@ export default async function PostPage({ params }: PostPageProps) {
         dateModified={post.modified}
         authorName={post.author?.node?.name}
         keywords={keywords}
+        category={category?.name}
+        location={location || undefined}
+        contentTier="free"
       />
       <HeaderWrapper />
       <main className="container-content py-8">
@@ -169,14 +242,6 @@ export default async function PostPage({ params }: PostPageProps) {
             <h1 className="font-serif text-4xl lg:text-5xl font-bold mb-4 leading-tight">
               {post.title}
             </h1>
-
-            {/* Excerpt */}
-            {post.excerpt && (
-              <div 
-                className="text-xl text-gray-700 mb-6 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: post.excerpt }}
-              />
-            )}
 
             {/* Author and Meta Info */}
             <div className="flex items-center gap-6 pb-6 border-b border-gray-200">
@@ -227,7 +292,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
           {/* Article Content */}
           {post.content && (
-            <div className="prose prose-lg max-w-none mb-12">
+            <div className="prose prose-lg max-w-3xl mx-auto mb-12 [&>p]:mb-6 [&>p]:leading-[1.7] [&>h2]:mt-12 [&>h2]:mb-6 [&>h3]:mt-8 [&>h3]:mb-4 first:[&>p]:first-letter:text-5xl first:[&>p]:first-letter:font-bold first:[&>p]:first-letter:mr-1 first:[&>p]:first-letter:float-left first:[&>p]:first-letter:font-serif">
               {parse(post.content)}
             </div>
           )}
@@ -269,6 +334,28 @@ export default async function PostPage({ params }: PostPageProps) {
           )}
         </article>
 
+        {/* More from Author */}
+        {authorPosts.length > 0 && (
+          <section className="mt-12 pt-8 border-t border-gray-200">
+            <h2 className="font-serif text-2xl font-bold mb-6">
+              More from {post.author?.node?.name}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {authorPosts.map((authorPost: WPPost) => (
+                <ArticleCard
+                  key={authorPost.id}
+                  article={authorPost}
+                  variant="default"
+                  showImage={true}
+                  showExcerpt={false}
+                  showAuthor={false}
+                  showCategory={true}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Related Articles */}
         {relatedPosts.length > 0 && (
           <section className="mt-16 pt-8 border-t-2 border-gray-900">
@@ -292,6 +379,8 @@ export default async function PostPage({ params }: PostPageProps) {
         )}
       </main>
       <Footer />
+      <BackToTop />
+      <MobileShareBar url={canonicalUrl} title={post.title} />
     </>
   );
 }

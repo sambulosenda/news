@@ -20,6 +20,7 @@ export interface WPPost {
   };
   author?: {
     node: {
+      databaseId: number;
       name: string;
       firstName?: string;
       lastName?: string;

@@ -22,12 +22,14 @@ export const POST_FIELDS = gql`
     }
     author {
       node {
+        databaseId
         name
         firstName
         lastName
         avatar {
           url
         }
+        description
       }
     }
     categories {
@@ -206,6 +208,25 @@ export const SEARCH_POSTS = gql`
         hasPreviousPage
         startCursor
         endCursor
+      }
+    }
+  }
+`;
+
+export const GET_AUTHOR_POSTS = gql`
+  ${POST_FIELDS}
+  query GetAuthorPosts($authorId: Int!, $exclude: [ID!], $first: Int!) {
+    posts(
+      where: { 
+        authorId: $authorId, 
+        notIn: $exclude 
+      }
+      first: $first
+    ) {
+      edges {
+        node {
+          ...PostFields
+        }
       }
     }
   }
