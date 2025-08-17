@@ -17,54 +17,52 @@ const footerSections = {
   opinion: {
     title: 'Opinion & Analysis',
     links: [
-      { name: 'Editorials', href: '/category/editorials' },
-      { name: 'Op-Ed', href: '/category/op-ed' },
-      { name: 'Letters to Editor', href: '/category/letters' },
-      { name: 'Guest Essays', href: '/category/guest-essays' },
-      { name: 'Columns', href: '/category/columns' },
+      { name: 'Latest Articles', href: '/news/world/' },
+      { name: 'Business Analysis', href: '/news/business/' },
+      { name: 'Political Commentary', href: '/news/politics/' },
+      { name: 'Tech Insights', href: '/news/technology/' },
     ],
   },
-  lifestyle: {
-    title: 'Lifestyle & Culture',
+  regions: {
+    title: 'FAQ Hub',
     links: [
-      { name: 'Arts & Culture', href: '/category/arts' },
-      { name: 'Books', href: '/category/books' },
-      { name: 'Movies & TV', href: '/category/entertainment' },
-      { name: 'Food & Travel', href: '/category/lifestyle' },
-      { name: 'Fashion', href: '/category/fashion' },
+      { name: 'Load Shedding', href: '/faq/load-shedding' },
+      { name: 'Elections Guide', href: '/faq/elections' },
+      { name: 'Economy & Finance', href: '/faq/economy' },
+      { name: 'Immigration & Visas', href: '/faq/immigration' },
+      { name: 'Government Services', href: '/faq/government' },
+      { name: 'Crime & Safety', href: '/faq/safety' },
     ],
   },
-  services: {
-    title: 'Reader Services',
+  resources: {
+    title: 'Resources',
     links: [
-      { name: 'Digital Subscriptions', href: '/subscribe/digital' },
-      { name: 'Print Subscriptions', href: '/subscribe/print' },
-      { name: 'Gift Subscriptions', href: '/subscribe/gift' },
-      { name: 'Student Discounts', href: '/subscribe/student' },
-      { name: 'Corporate Plans', href: '/subscribe/corporate' },
-      { name: 'Newsletter Archives', href: '/newsletters/archive' },
-      { name: 'RSS Feeds', href: '/rss' },
+      { name: 'RSS Feed', href: '/rss.xml' },
+      { name: 'News Sitemap', href: '/news-sitemap.xml' },
+      { name: 'Main Sitemap', href: '/sitemap.xml' },
+      { name: 'Privacy Policy', href: '/privacy' },
+      { name: 'Terms of Service', href: '/terms' },
+      { name: 'Ethics Policy', href: '/ethics' },
     ],
   },
   company: {
     title: 'About Report Focus',
     links: [
       { name: 'About Us', href: '/about' },
-      { name: 'Our Team', href: '/about/team' },
       { name: 'Editorial Standards', href: '/about/standards' },
-      { name: 'Careers', href: '/careers' },
-      { name: 'Press Center', href: '/press' },
+      { name: 'Cookie Policy', href: '/cookies' },
+      { name: 'Accessibility', href: '/accessibility' },
+      { name: 'Corrections', href: '/corrections' },
       { name: 'Contact Us', href: '/contact' },
-      { name: 'Advertise With Us', href: '/advertise' },
     ],
   },
 };
 
 const newsletters = [
-  { name: 'Morning Briefing', description: 'Daily news digest delivered at 6 AM', href: '/newsletters/morning' },
-  { name: 'Evening Wrap', description: 'Top stories summary each evening', href: '/newsletters/evening' },
-  { name: 'Weekend Edition', description: 'Deep dives and analysis every Saturday', href: '/newsletters/weekend' },
-  { name: 'Breaking News Alerts', description: 'Instant notifications for major stories', href: '/newsletters/breaking' },
+  { name: 'Morning Briefing', description: 'Daily news digest delivered at 6 AM', href: '#' },
+  { name: 'Evening Wrap', description: 'Top stories summary each evening', href: '#' },
+  { name: 'Weekend Edition', description: 'Deep dives and analysis every Saturday', href: '#' },
+  { name: 'Breaking News Alerts', description: 'Instant notifications for major stories', href: '#' },
 ];
 
 const socialLinks = [
@@ -73,7 +71,7 @@ const socialLinks = [
   { name: 'Instagram', href: '#', icon: 'instagram' },
   { name: 'LinkedIn', href: '#', icon: 'linkedin' },
   { name: 'YouTube', href: '#', icon: 'youtube' },
-  { name: 'RSS', href: '/rss', icon: 'rss' },
+  { name: 'RSS', href: '/rss.xml', icon: 'rss' },
 ];
 
 const appLinks = [

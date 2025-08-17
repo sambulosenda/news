@@ -1,129 +1,222 @@
 import { Metadata } from 'next';
 import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'About Us - Report Focus News',
-  description: 'Learn about Report Focus News, your trusted source for South African and Zimbabwe news coverage.',
+  title: 'About Report Focus News - Independent Journalism for Southern Africa',
+  description: 'Report Focus News delivers independent, trustworthy journalism covering South Africa and Zimbabwe. Learn about our mission, values, and commitment to truth.',
+  keywords: 'Report Focus News, South African news, Zimbabwe news, independent journalism, about us, news organization, media company',
+  alternates: {
+    canonical: 'https://reportfocusnews.com/about',
+  },
+  openGraph: {
+    title: 'About Report Focus News',
+    description: 'Independent journalism serving South Africa and Zimbabwe since 2024',
+    type: 'website',
+  },
 };
 
-export default function About() {
+export default function AboutPage() {
   return (
     <>
       <HeaderWrapper />
       <main className="container-content py-12">
         <article className="max-w-4xl mx-auto prose prose-lg">
-          <h1 className="font-serif text-4xl font-bold mb-8">About Report Focus News</h1>
-          
-          <section className="mb-8">
-            <h2 className="font-serif text-2xl font-bold mb-4">Who We Are</h2>
-            <p className="lead text-xl">
-              Report Focus News is a leading digital news platform dedicated to providing comprehensive, 
-              accurate, and timely coverage of events in South Africa, Zimbabwe, and the broader Southern African region.
+          <h1 className="font-serif text-4xl font-bold mb-8">
+            About Report Focus News
+          </h1>
+
+          <div className="bg-gray-50 p-6 rounded-lg mb-8 not-prose">
+            <p className="text-xl font-serif leading-relaxed">
+              Report Focus News is Southern Africa's trusted source for independent journalism, 
+              delivering comprehensive coverage of South Africa and Zimbabwe with unwavering 
+              commitment to truth, accuracy, and public service.
             </p>
-            <p>
-              Founded with a mission to inform, educate, and empower our readers, we strive to be the most 
-              trusted source for regional news, analysis, and commentary. Our team of experienced journalists 
-              and contributors work tirelessly to bring you the stories that matter most.
+          </div>
+
+          <section className="mb-12">
+            <h2 className="font-serif text-3xl font-bold mb-4">Our Mission</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              We exist to inform, educate, and empower the citizens of South Africa and Zimbabwe 
+              through factual, unbiased reporting. Our mission is to strengthen democracy by 
+              providing the information people need to make informed decisions about their 
+              communities, their countries, and their future.
             </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="font-serif text-2xl font-bold mb-4">Our Mission</h2>
-            <p>
-              To deliver independent, factual, and impactful journalism that serves the public interest 
-              and strengthens democracy in Southern Africa. We believe in the power of informed citizens 
-              to shape their communities and nations.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="font-serif text-2xl font-bold mb-4">Our Coverage</h2>
-            <p>We provide comprehensive coverage across multiple sectors:</p>
-            <ul>
-              <li><strong>Politics:</strong> Government, elections, policy, and governance</li>
-              <li><strong>Business:</strong> Markets, economy, entrepreneurship, and innovation</li>
-              <li><strong>Society:</strong> Education, health, culture, and community issues</li>
-              <li><strong>Sports:</strong> Local and international sporting events</li>
-              <li><strong>Entertainment:</strong> Arts, culture, and lifestyle</li>
-              <li><strong>Technology:</strong> Digital transformation and innovation</li>
-              <li><strong>Opinion:</strong> Thought leadership and diverse perspectives</li>
-            </ul>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="font-serif text-2xl font-bold mb-4">Our Values</h2>
-            
-            <h3 className="text-xl font-semibold mb-2">Independence</h3>
-            <p>We maintain editorial independence from political and commercial interests.</p>
-            
-            <h3 className="text-xl font-semibold mb-2">Accuracy</h3>
-            <p>We are committed to factual reporting and rigorous fact-checking.</p>
-            
-            <h3 className="text-xl font-semibold mb-2">Fairness</h3>
-            <p>We present balanced perspectives and give voice to all communities.</p>
-            
-            <h3 className="text-xl font-semibold mb-2">Accountability</h3>
-            <p>We take responsibility for our work and correct errors transparently.</p>
-            
-            <h3 className="text-xl font-semibold mb-2">Innovation</h3>
-            <p>We embrace digital innovation to better serve our audiences.</p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="font-serif text-2xl font-bold mb-4">Our Team</h2>
-            <p>
-              Report Focus News brings together experienced journalists, editors, and digital media 
-              professionals from across Southern Africa. Our diverse team includes:
-            </p>
-            <ul>
-              <li>Investigative journalists uncovering stories that matter</li>
-              <li>Political correspondents providing insight into governance</li>
-              <li>Business reporters tracking economic developments</li>
-              <li>Community journalists telling local stories</li>
-              <li>Digital specialists ensuring accessible content delivery</li>
-            </ul>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="font-serif text-2xl font-bold mb-4">Our Reach</h2>
-            <p>
-              With readers across South Africa, Zimbabwe, and the diaspora, Report Focus News serves 
-              millions of readers monthly. We publish in English to reach the widest possible audience 
-              while respecting the linguistic diversity of our region.
+            <p className="text-gray-700 leading-relaxed">
+              In an era of information overload and misinformation, Report Focus News stands as 
+              a beacon of journalistic integrity, committed to separating fact from fiction and 
+              delivering news that matters to Southern Africa.
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="font-serif text-2xl font-bold mb-4">Awards and Recognition</h2>
-            <p>
-              Our commitment to excellence in journalism has been recognized through various awards 
-              and partnerships with leading media organizations across Africa.
+          <section className="mb-12">
+            <h2 className="font-serif text-3xl font-bold mb-4">What We Cover</h2>
+            <div className="grid md:grid-cols-2 gap-6 not-prose">
+              <div className="bg-white p-6 border-l-4 border-red-600">
+                <h3 className="font-bold text-xl mb-3">South Africa</h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li>• Political developments and governance</li>
+                  <li>• Economic news and market analysis</li>
+                  <li>• Load shedding and energy crisis</li>
+                  <li>• Crime and safety updates</li>
+                  <li>• Social issues and community stories</li>
+                </ul>
+              </div>
+              <div className="bg-white p-6 border-l-4 border-green-600">
+                <h3 className="font-bold text-xl mb-3">Zimbabwe</h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li>• Political landscape and reforms</li>
+                  <li>• Economic recovery and development</li>
+                  <li>• Currency and inflation updates</li>
+                  <li>• Agricultural and mining sectors</li>
+                  <li>• Diaspora news and immigration</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <h2 className="font-serif text-3xl font-bold mb-4">Our Values</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-bold text-xl mb-2">Independence</h3>
+                <p className="text-gray-700">
+                  We maintain editorial independence from political parties, governments, and 
+                  commercial interests. Our loyalty is to the truth and to our readers.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-bold text-xl mb-2">Accuracy</h3>
+                <p className="text-gray-700">
+                  Every story undergoes rigorous fact-checking. When errors occur, we correct 
+                  them promptly and transparently.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-bold text-xl mb-2">Diversity</h3>
+                <p className="text-gray-700">
+                  We amplify voices from all communities, ensuring our coverage reflects the 
+                  rich diversity of Southern Africa.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-bold text-xl mb-2">Accountability</h3>
+                <p className="text-gray-700">
+                  We hold power to account while being accountable to our readers through 
+                  transparent journalism practices.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <h2 className="font-serif text-3xl font-bold mb-4">Our History</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Founded in 2024, Report Focus News emerged from a recognition that Southern Africa 
+              needed a dedicated news platform that could bridge the information gap between 
+              South Africa and Zimbabwe while maintaining the highest standards of journalism.
+            </p>
+            <p className="text-gray-700 leading-relaxed">
+              Our team of experienced journalists, editors, and digital media professionals 
+              brings decades of combined experience covering Southern African affairs, ensuring 
+              deep understanding of the complex issues facing our region.
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="font-serif text-2xl font-bold mb-4">Partner With Us</h2>
-            <p>
-              We welcome partnerships with organizations that share our commitment to quality journalism 
-              and public service. For partnership inquiries, please contact us at: 
-              <a href="mailto:partnerships@reportfocusnews.com" className="text-red-700 hover:underline">partnerships@reportfocusnews.com</a>
-            </p>
+          <section className="mb-12">
+            <h2 className="font-serif text-3xl font-bold mb-4">Why Trust Us</h2>
+            <div className="bg-blue-50 p-6 rounded-lg not-prose">
+              <ul className="space-y-3">
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">✓</span>
+                  <span>Adherence to international journalism standards</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">✓</span>
+                  <span>Transparent correction and clarification policies</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">✓</span>
+                  <span>Clear separation between news and opinion</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">✓</span>
+                  <span>Protection of sources and whistleblowers</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">✓</span>
+                  <span>Regular independent audits of our practices</span>
+                </li>
+              </ul>
+            </div>
           </section>
 
-          <section className="mb-8">
-            <h2 className="font-serif text-2xl font-bold mb-4">Contact Us</h2>
-            <p>
-              <strong>General Inquiries:</strong> <a href="mailto:info@reportfocusnews.com" className="text-red-700 hover:underline">info@reportfocusnews.com</a><br />
-              <strong>Newsroom:</strong> <a href="mailto:news@reportfocusnews.com" className="text-red-700 hover:underline">news@reportfocusnews.com</a><br />
-              <strong>Advertising:</strong> <a href="mailto:advertising@reportfocusnews.com" className="text-red-700 hover:underline">advertising@reportfocusnews.com</a>
+          <section className="mb-12">
+            <h2 className="font-serif text-3xl font-bold mb-4">Get Involved</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Quality journalism requires community support. Here's how you can help:
             </p>
+            <div className="grid md:grid-cols-3 gap-4 not-prose">
+              <div className="bg-gray-50 p-4 rounded text-center">
+                <h3 className="font-bold mb-2">Share Our Stories</h3>
+                <p className="text-sm text-gray-600">
+                  Help spread factual news by sharing our articles
+                </p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded text-center">
+                <h3 className="font-bold mb-2">Send News Tips</h3>
+                <p className="text-sm text-gray-600">
+                  Report news and help us investigate stories
+                </p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded text-center">
+                <h3 className="font-bold mb-2">Provide Feedback</h3>
+                <p className="text-sm text-gray-600">
+                  Tell us how we can serve you better
+                </p>
+              </div>
+            </div>
           </section>
 
-          <section>
-            <p className="text-sm text-gray-600 mt-8">
-              Report Focus News - Bringing Africa's Stories to the World
+          <section className="mb-12">
+            <h2 className="font-serif text-3xl font-bold mb-4">Editorial Policies</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Our commitment to ethical journalism is outlined in our comprehensive policies:
             </p>
+            <div className="space-y-2 not-prose">
+              <Link href="/about/standards" className="block p-3 bg-gray-50 hover:bg-gray-100 rounded transition-colors">
+                <span className="font-semibold">Editorial Standards →</span>
+                <span className="block text-sm text-gray-600">Our journalistic principles and practices</span>
+              </Link>
+              <Link href="/ethics" className="block p-3 bg-gray-50 hover:bg-gray-100 rounded transition-colors">
+                <span className="font-semibold">Ethics Policy →</span>
+                <span className="block text-sm text-gray-600">Ethical guidelines for our newsroom</span>
+              </Link>
+              <Link href="/corrections" className="block p-3 bg-gray-50 hover:bg-gray-100 rounded transition-colors">
+                <span className="font-semibold">Corrections Policy →</span>
+                <span className="block text-sm text-gray-600">How we handle errors and clarifications</span>
+              </Link>
+            </div>
+          </section>
+
+          <section className="border-t pt-8">
+            <div className="bg-gray-900 text-white p-8 rounded-lg not-prose">
+              <h2 className="font-serif text-2xl font-bold mb-4">Contact Our Newsroom</h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-semibold mb-2">General Inquiries</h3>
+                  <p className="text-gray-300">newsroom@reportfocusnews.com</p>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2">News Tips</h3>
+                  <p className="text-gray-300">tips@reportfocusnews.com</p>
+                </div>
+              </div>
+              <Link href="/contact" className="inline-block mt-6 px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded transition-colors">
+                Full Contact Information →
+              </Link>
+            </div>
           </section>
         </article>
       </main>

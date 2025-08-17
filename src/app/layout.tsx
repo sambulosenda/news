@@ -28,29 +28,32 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://reportfocusnews.com'),
-  title: "Report Focus News - South Africa & Zimbabwe Breaking News",
-  description: "Your trusted source for breaking news from South Africa and Zimbabwe. In-depth coverage of politics, business, and current affairs across Southern Africa.",
-  keywords: "South Africa news, Zimbabwe news, Southern Africa, breaking news, politics, business, Johannesburg, Cape Town, Harare, Bulawayo, current affairs",
+  title: "Report Focus News | SA & Zimbabwe Breaking News | Politics, Business, Load Shedding Updates",
+  description: "Your trusted source for breaking news from South Africa and Zimbabwe. Live updates on load shedding, politics, business, crime and current affairs across Southern Africa.",
+  keywords: "South Africa news, Zimbabwe news, load shedding today, Eskom, SASSA grants, petrol price, breaking news SA, Johannesburg news, Harare news, ZAR USD exchange rate",
   openGraph: {
-    title: "Report Focus News",
-    description: "Your trusted source for breaking news and in-depth journalism",
-    url: "https://www.reportfocusnews.com",
+    title: "Report Focus News - SA & Zimbabwe Breaking News",
+    description: "Live breaking news, load shedding updates, politics and business from South Africa and Zimbabwe",
+    url: "https://reportfocusnews.com",
     siteName: "Report Focus News",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
+        alt: "Report Focus News - Southern Africa's Trusted News Source",
       },
     ],
-    locale: "en_US",
+    locale: "en_ZA",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Report Focus News",
-    description: "Your trusted source for breaking news and in-depth journalism",
+    title: "Report Focus News - SA & Zimbabwe Breaking News",
+    description: "Live breaking news, load shedding updates, politics and business from South Africa and Zimbabwe",
     images: ["/og-image.jpg"],
+    site: "@ReportFocus",
+    creator: "@ReportFocus",
   },
   robots: {
     index: true,
@@ -86,9 +89,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Preconnect to optimize external resources */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        
+        {/* Favicon and app icons */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#000000" />
-        <link rel="apple-touch-icon" href="/icon-192.png" />
+        
+        {/* Theme and mobile optimization */}
+        <meta name="theme-color" content="#DC2626" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        
+        {/* Additional SEO */}
+        <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" />
+        <link rel="alternate" type="application/rss+xml" title="Report Focus News RSS Feed" href="/rss.xml" />
       </head>
       <body
         className={`${inter.variable} ${merriweather.variable} ${playfair.variable} font-sans antialiased bg-white text-gray-900`}
