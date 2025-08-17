@@ -9,9 +9,9 @@ import ArticleCard from '@/components/ArticleCard';
 import { WPPost, WPCategory } from '@/types/wordpress';
 
 interface CategoryPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 async function getCategoryData(slug: string) {
@@ -34,7 +34,8 @@ async function getCategoryData(slug: string) {
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
-  const data = await getCategoryData(params.slug);
+  const { slug } = await params;
+  const data = await getCategoryData(slug);
   
   if (!data) {
     return {
@@ -56,7 +57,8 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const data = await getCategoryData(params.slug);
+  const { slug } = await params;
+  const data = await getCategoryData(slug);
 
   if (!data) {
     notFound();
@@ -84,7 +86,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         {/* Articles Grid */}
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post, index) => (
+            {posts.map((post: WPPost, index: number) => (
               <ArticleCard
                 key={post.id}
                 article={post}

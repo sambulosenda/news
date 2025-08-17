@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { fetchGraphQL } from '@/lib/fetch-graphql';
 import { SEARCH_POSTS } from '@/lib/queries/posts';
 import Header from '@/components/Header';
@@ -8,9 +7,9 @@ import SearchBar from '@/components/SearchBar';
 import { WPPost } from '@/types/wordpress';
 
 interface SearchPageProps {
-  searchParams: {
+  searchParams: Promise<{
     q?: string;
-  };
+  }>;
 }
 
 async function searchPosts(query: string) {
@@ -27,7 +26,8 @@ async function searchPosts(query: string) {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const query = searchParams.q || '';
+  const params = await searchParams;
+  const query = params.q || '';
   const posts = await searchPosts(query);
 
   return (
@@ -58,7 +58,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         {/* Results Grid */}
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 border-t border-gray-200 pt-6">
-            {posts.map((post) => (
+            {posts.map((post: WPPost) => (
               <div key={post.id} className="pb-6 border-b border-gray-200">
                 <ArticleCard
                   article={post}
