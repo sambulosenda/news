@@ -145,7 +145,7 @@ export default async function HomePage() {
                         </span>
                         <div className="flex-1">
                           <h3 className="font-serif text-lg font-bold leading-tight">
-                            <a href={`/post/${post.slug}`} className="hover:underline">
+                            <a href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`} className="hover:underline">
                               {post.title}
                             </a>
                           </h3>
@@ -163,7 +163,7 @@ export default async function HomePage() {
                   {recentPosts.slice(15, 19).map((post: WPPost) => (
                     <article key={post.id} className="pb-6 border-b border-gray-200 last:border-b-0">
                       <h3 className="font-serif text-lg font-bold mb-2 leading-tight">
-                        <a href={`/post/${post.slug}`} className="hover:underline">
+                        <a href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`} className="hover:underline">
                           {post.title}
                         </a>
                       </h3>

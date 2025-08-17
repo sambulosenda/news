@@ -142,7 +142,7 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
                     className="relative group"
                   >
                     <Link
-                      href={`/category/${section.slug}`}
+                      href={`/news/${section.slug}/`}
                       className="flex items-center gap-1 px-4 py-3 text-sm font-semibold text-gray-700 hover:text-red-700 hover:bg-gray-50 border-b-2 border-transparent hover:border-red-700 transition-all"
                     >
                       {section.name.toUpperCase()}
@@ -159,7 +159,7 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
                         <div className="bg-white border border-gray-200 shadow-lg min-w-[250px] max-w-md">
                           <div className="py-2">
                             <Link
-                              href={`/category/${section.slug}`}
+                              href={`/news/${section.slug}/`}
                               className="block px-4 py-2 text-sm font-semibold text-gray-900 hover:text-red-700 hover:bg-gray-50 border-b border-gray-200 transition-colors"
                             >
                               All {section.name}
@@ -168,7 +168,7 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
                               {section.children?.map((child) => (
                                 <Link
                                   key={child.slug}
-                                  href={`/category/${child.slug}`}
+                                  href={`/news/${child.slug}/`}
                                   className="block px-2 py-1.5 text-sm text-gray-700 hover:text-red-700 hover:bg-gray-50 rounded transition-colors"
                                 >
                                   {child.name}
@@ -201,7 +201,7 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
                         {moreNav.map((section) => (
                           <Link
                             key={section.slug}
-                            href={`/category/${section.slug}`}
+                            href={`/news/${section.slug}/`}
                             className="block px-4 py-2 text-sm text-gray-700 hover:text-red-700 hover:bg-gray-50 transition-colors"
                           >
                             {section.name}
@@ -255,7 +255,7 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
                     return (
                       <div key={section.slug}>
                         <Link
-                          href={`/category/${section.slug}`}
+                          href={`/news/${section.slug}/`}
                           className={`block px-4 py-3 text-base font-semibold text-gray-900 hover:bg-gray-50 rounded-lg ${section.featured && section.slug !== 'breaking-news' ? '' : 'text-gray-600'}`}
                           onClick={() => setMobileMenuOpen(false)}
                         >
@@ -266,7 +266,7 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
                             {section.children?.map((child) => (
                               <Link
                                 key={child.slug}
-                                href={`/category/${child.slug}`}
+                                href={`/news/${child.slug}/`}
                                 className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg"
                                 onClick={() => setMobileMenuOpen(false)}
                               >

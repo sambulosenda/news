@@ -21,12 +21,17 @@ export default function ArticleCard({
   showCategory = true,
 }: ArticleCardProps) {
   const category = article.categories?.edges?.[0]?.node;
+  
+  // Generate date-based URL for posts
+  const postDate = new Date(article.date);
+  const postUrl = `/${format(postDate, 'yyyy')}/${format(postDate, 'MM')}/${format(postDate, 'dd')}/${article.slug}/`;
+  const categoryUrl = category ? `/news/${category.slug}/` : '#';
 
   if (variant === 'hero') {
     return (
       <article className="relative">
         {showImage && article.featuredImage?.node && (
-          <Link href={`/post/${article.slug}`}>
+          <Link href={postUrl}>
             <div className="relative aspect-[16/9] mb-4">
               <Image
                 src={article.featuredImage.node.sourceUrl}
@@ -42,14 +47,14 @@ export default function ArticleCard({
         <div>
           {showCategory && category && (
             <Link
-              href={`/category/${category.slug}`}
+              href={categoryUrl}
               className="category-badge mb-2"
             >
               {category.name}
             </Link>
           )}
           <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold mb-4 lg:mb-6 leading-tight">
-            <Link href={`/post/${article.slug}`} className="hover:underline">
+            <Link href={postUrl} className="hover:underline">
               {article.title}
             </Link>
           </h2>
@@ -73,7 +78,7 @@ export default function ArticleCard({
     return (
       <article className="flex gap-6">
         {showImage && article.featuredImage?.node && (
-          <Link href={`/post/${article.slug}`} className="flex-shrink-0">
+          <Link href={postUrl} className="flex-shrink-0">
             <div className="relative w-32 h-32 lg:w-40 lg:h-40">
               <Image
                 src={article.featuredImage.node.sourceUrl}
@@ -87,7 +92,7 @@ export default function ArticleCard({
         )}
         <div className="flex-1 min-w-0">
           <h3 className="font-serif text-xl lg:text-2xl font-bold mb-2 line-clamp-2 leading-tight">
-            <Link href={`/post/${article.slug}`} className="hover:underline">
+            <Link href={postUrl} className="hover:underline">
               {article.title}
             </Link>
           </h3>
@@ -106,7 +111,7 @@ export default function ArticleCard({
     return (
       <article className="py-4 border-b border-gray-200 last:border-b-0">
         <h3 className="font-serif text-lg font-bold mb-2 leading-tight">
-          <Link href={`/post/${article.slug}`} className="hover:underline">
+          <Link href={postUrl} className="hover:underline">
             {article.title}
           </Link>
         </h3>
@@ -121,7 +126,7 @@ export default function ArticleCard({
     return (
       <article>
         {showImage && article.featuredImage?.node && (
-          <Link href={`/post/${article.slug}`}>
+          <Link href={postUrl}>
             <div className="relative aspect-[3/2] mb-3">
               <Image
                 src={article.featuredImage.node.sourceUrl}
@@ -136,14 +141,14 @@ export default function ArticleCard({
         <div>
           {showCategory && category && (
             <Link
-              href={`/category/${category.slug}`}
+              href={categoryUrl}
               className="category-badge mb-2"
             >
               {category.name}
             </Link>
           )}
           <h3 className="font-serif text-2xl lg:text-3xl font-bold mb-3 leading-tight">
-            <Link href={`/post/${article.slug}`} className="hover:underline">
+            <Link href={postUrl} className="hover:underline">
               {article.title}
             </Link>
           </h3>
@@ -167,7 +172,7 @@ export default function ArticleCard({
   return (
     <article>
       {showImage && article.featuredImage?.node && (
-        <Link href={`/post/${article.slug}`}>
+        <Link href={postUrl}>
           <div className="relative aspect-[16/10] mb-3">
             <Image
               src={article.featuredImage.node.sourceUrl}
@@ -182,14 +187,14 @@ export default function ArticleCard({
       <div>
         {showCategory && category && (
           <Link
-            href={`/category/${category.slug}`}
+            href={categoryUrl}
             className="category-badge mb-2"
           >
             {category.name}
           </Link>
         )}
         <h3 className="font-serif text-xl font-bold mb-2">
-          <Link href={`/post/${article.slug}`} className="hover:underline">
+          <Link href={postUrl} className="hover:underline">
             {article.title}
           </Link>
         </h3>

@@ -38,7 +38,7 @@ export default function NotFound() {
             {['Politics', 'Business', 'Technology', 'World', 'Sports', 'Opinion', 'Arts', 'Science'].map((category) => (
               <Link
                 key={category}
-                href={`/category/${category.toLowerCase()}`}
+                href={`/news/${category.toLowerCase()}/`}
                 className="p-4 text-center border border-gray-200 rounded hover:bg-gray-50 transition-colors"
               >
                 {category}

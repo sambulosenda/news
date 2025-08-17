@@ -4,14 +4,14 @@ const footerSections = {
   news: {
     title: 'News',
     links: [
-      { name: 'Breaking News', href: '/breaking' },
-      { name: 'Politics', href: '/category/politics' },
-      { name: 'Business', href: '/category/business' },
-      { name: 'Technology', href: '/category/technology' },
-      { name: 'World', href: '/category/world' },
-      { name: 'Sports', href: '/category/sports' },
-      { name: 'Health', href: '/category/health' },
-      { name: 'Science', href: '/category/science' },
+      { name: 'Breaking News', href: '/news/breaking-news/' },
+      { name: 'Politics', href: '/news/politics/' },
+      { name: 'Business', href: '/news/business/' },
+      { name: 'Technology', href: '/news/technology/' },
+      { name: 'World', href: '/news/world/' },
+      { name: 'Sports', href: '/news/sports/' },
+      { name: 'Health', href: '/news/health/' },
+      { name: 'Science', href: '/news/science/' },
     ],
   },
   opinion: {

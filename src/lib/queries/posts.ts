@@ -65,10 +65,21 @@ export const GET_ALL_POSTS = gql`
 
 export const GET_POST_BY_SLUG = gql`
   ${POST_FIELDS}
-  query GetPostBySlug($slug: ID!) {
-    post(id: $slug, idType: SLUG) {
+  query GetPostBySlug($slug: String!) {
+    postBy(slug: $slug) {
       ...PostFields
       content
+      author {
+        node {
+          name
+          firstName
+          lastName
+          description
+          avatar {
+            url
+          }
+        }
+      }
       tags {
         edges {
           node {
@@ -76,6 +87,26 @@ export const GET_POST_BY_SLUG = gql`
             name
             slug
           }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_RELATED_POSTS = gql`
+  ${POST_FIELDS}
+  query GetRelatedPosts($categoryId: Int!, $exclude: [ID], $first: Int = 4) {
+    posts(
+      first: $first
+      where: { 
+        categoryId: $categoryId,
+        notIn: $exclude,
+        orderby: { field: DATE, order: DESC }
+      }
+    ) {
+      edges {
+        node {
+          ...PostFields
         }
       }
     }
