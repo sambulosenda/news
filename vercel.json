@@ -4,7 +4,7 @@
   "framework": "nextjs",
   "env": {
     "NEXT_PUBLIC_WORDPRESS_API_URL": "https://backend.reportfocusnews.com/graphql",
-    "REVALIDATION_SECRET": "@revalidation-secret"
+    "REVALIDATION_SECRET": "@revalidation_secret"
   },
   "headers": [
     {
