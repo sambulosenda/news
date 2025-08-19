@@ -1,12 +1,6 @@
 import { Metadata } from 'next';
-import { fetchGraphQL } from '@/lib/fetch-graphql';
-import { 
-  GET_RECENT_POSTS, 
-  GET_FEATURED_POSTS,
-  GET_POPULAR_POSTS,
-  GET_POSTS_BY_CATEGORY 
-} from '@/lib/queries/posts';
-import { GET_CATEGORIES } from '@/lib/queries/categories';
+import { fetchGraphQLDirect } from '@/lib/fetch-direct';
+import { GET_HOMEPAGE_DATA_SIMPLE } from '@/lib/queries/homepage-simple';
 import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
 import BreakingNewsBanner from '@/components/BreakingNewsBanner';
@@ -82,56 +76,74 @@ interface PostEdge {
 }
 
 async function getHomePageData() {
-  const [recentData, featuredData, popularData, categoriesData] = await Promise.all([
-    fetchGraphQL(GET_RECENT_POSTS, { first: 20 }),
-    fetchGraphQL(GET_FEATURED_POSTS, { first: 5 }),
-    fetchGraphQL(GET_POPULAR_POSTS, { first: 5 }),
-    fetchGraphQL(GET_CATEGORIES, { first: 10 }),
-  ]);
+  // Use direct fetch to bypass Apollo issues
+  const homepageData = await fetchGraphQLDirect(GET_HOMEPAGE_DATA_SIMPLE);
+  
+  // Debug log (commented out for production)
+  // console.log('Homepage data fetched:', {
+  //   hasData: !!homepageData,
+  //   heroPost: !!homepageData?.heroPost?.edges?.[0],
+  //   featuredCount: homepageData?.featuredPosts?.edges?.length || 0,
+  //   recentCount: homepageData?.recentPosts?.edges?.length || 0,
+  // });
 
-  // Fetch posts for main categories
-  const categoryPromises = categoriesData?.categories?.edges
-    ?.slice(0, 3)
-    .map(async (edge: CategoryEdge) => {
-      const categoryData = await fetchGraphQL(GET_POSTS_BY_CATEGORY, {
-        categorySlug: edge.node.slug,
-        first: 6,
-      });
-      return {
-        category: edge.node,
-        posts: categoryData?.posts?.edges?.map((e: PostEdge) => e.node) || [],
-      };
-    }) || [];
-
-  const categorySections = await Promise.all(categoryPromises);
+  // Extract data from the optimized query
+  const heroPost = homepageData?.heroPost?.edges?.[0]?.node;
+  const featuredPosts = homepageData?.featuredPosts?.edges?.map((e: PostEdge) => e.node) || [];
+  const recentPosts = homepageData?.recentPosts?.edges?.map((e: PostEdge) => e.node) || [];
+  const breakingNews = homepageData?.breakingNews?.edges?.map((e: PostEdge) => e.node) || [];
+  const categories = homepageData?.categories?.edges?.map((e: CategoryEdge) => e.node) || [];
+  const popularPosts = homepageData?.popularPosts?.edges?.map((e: PostEdge) => e.node) || [];
+  
+  // Category sections
+  const categorySections = [
+    {
+      category: { name: 'Politics', slug: 'politics', id: 'politics' },
+      posts: homepageData?.politicsPosts?.edges?.map((e: PostEdge) => e.node) || [],
+    },
+    {
+      category: { name: 'Business', slug: 'business', id: 'business' },
+      posts: homepageData?.businessPosts?.edges?.map((e: PostEdge) => e.node) || [],
+    },
+    {
+      category: { name: 'Sports', slug: 'sports', id: 'sports' },
+      posts: homepageData?.sportsPosts?.edges?.map((e: PostEdge) => e.node) || [],
+    },
+  ];
 
   return {
-    recentPosts: recentData?.posts?.nodes || [],
-    featuredPosts: featuredData?.posts?.nodes || [],
-    popularPosts: popularData?.posts?.nodes || [],
-    categories: categoriesData?.categories?.edges?.map((e: CategoryEdge) => e.node) || [],
+    heroPost,
+    featuredPosts,
+    recentPosts,
+    breakingNews,
+    categories,
     categorySections,
+    popularPosts,
   };
 }
 
+// Enable ISR - regenerate frequently for news freshness
+export const revalidate = 60; // 1 minute for breaking news
+
 export default async function HomePage() {
   const { 
-    recentPosts, 
-    featuredPosts, 
-    popularPosts,
-    categorySections 
+    heroPost,
+    featuredPosts,
+    recentPosts,
+    breakingNews,
+    categorySections,
+    popularPosts 
   } = await getHomePageData();
 
-  // Use featured posts for hero, or fall back to recent posts
-  const heroPosts = featuredPosts.length > 0 ? featuredPosts : recentPosts;
-  const mainHeroPost = heroPosts[0];
-  const sideHeroPosts = heroPosts.slice(1, 6);
+  // Use hero post or fall back to first recent post
+  const mainHeroPost = heroPost || recentPosts[0];
+  const sideHeroPosts = featuredPosts.length > 0 ? featuredPosts : recentPosts.slice(1, 5);
 
   // Get remaining recent posts for main feed
-  const mainFeedPosts = recentPosts.slice(6, 15);
+  const mainFeedPosts = recentPosts.slice(5, 15);
 
-  // Mock breaking news (in production, this would come from a specific query)
-  const breakingNews = recentPosts.slice(0, 3).map((post: WPPost) => ({
+  // Format breaking news
+  const formattedBreakingNews = breakingNews.map((post: WPPost) => ({
     id: post.id,
     title: post.title,
     slug: post.slug,
@@ -140,7 +152,7 @@ export default async function HomePage() {
   return (
     <>
       <OrganizationSchema />
-      <BreakingNewsBanner news={breakingNews} />
+      <BreakingNewsBanner news={formattedBreakingNews} />
       <HeaderWrapper />
       
       <main>
@@ -153,7 +165,7 @@ export default async function HomePage() {
         )}
 
         {/* Main Content Area */}
-        <div className="container-wide pt-0 pb-12 lg:pb-16">
+        <div className="container-wide py-12 lg:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Main Column - 2/3 width */}
             <div className="lg:col-span-2 space-y-12">
@@ -179,7 +191,7 @@ export default async function HomePage() {
               {/* Category Sections */}
               {categorySections.map(({ category, posts }) => (
                 posts.length > 0 && (
-                  <div key={category.id} className="border-t-2 border-gray-900 pt-12">
+                  <div key={category.id} className="pt-12 border-t-2 border-gray-900">
                     <CategorySection
                       title={category.name}
                       slug={category.slug}
@@ -217,44 +229,46 @@ export default async function HomePage() {
               )}
 
               {/* Opinion Section */}
-              <section className="p-8 border-2 border-gray-900">
-                <h2 className="font-serif text-2xl lg:text-3xl font-bold mb-6">Opinion</h2>
-                <div className="space-y-6">
-                  {recentPosts.slice(15, 19).map((post: WPPost) => (
-                    <article key={post.id} className="pb-6 border-b border-gray-200 last:border-b-0">
-                      <h3 className="font-serif text-lg font-bold mb-2 leading-tight">
-                        <a href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`} className="hover:underline">
-                          {post.title}
-                        </a>
-                      </h3>
-                      {post.author?.node && (
-                        <p className="text-sm text-gray-600">
-                          By {post.author.node.name}
-                        </p>
-                      )}
-                    </article>
-                  ))}
-                </div>
-              </section>
+              {recentPosts.length > 0 && (
+                <section className="p-8 border-2 border-gray-900">
+                  <h2 className="font-serif text-2xl lg:text-3xl font-bold mb-6">Opinion</h2>
+                  <div className="space-y-4">
+                    {recentPosts.slice(0, 4).map((post: WPPost) => (
+                      <article key={post.id} className="pb-5 border-b border-gray-200 last:border-b-0">
+                        <h3 className="font-serif text-lg font-bold mb-2 leading-tight">
+                          <a href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`} className="hover:underline">
+                            {post.title}
+                          </a>
+                        </h3>
+                        {post.author?.node && (
+                          <p className="text-sm text-gray-600">
+                            By {post.author.node.name}
+                          </p>
+                        )}
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               {/* Newsletter Signup */}
               <section className="p-8 bg-gray-900 text-white rounded-lg">
-                <h3 className="font-serif text-2xl font-bold mb-3">
+                <h3 className="font-serif text-2xl font-bold mb-4">
                   Morning Briefing
                 </h3>
-                <p className="text-base mb-6">
+                <p className="text-base mb-6 leading-relaxed">
                   Get what you need to know to start your day.
                 </p>
-                <form className="space-y-2">
+                <form className="space-y-3">
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="w-full px-3 py-2 text-gray-900 rounded"
+                    className="w-full px-4 py-3 text-gray-900 rounded"
                     required
                   />
                   <button
                     type="submit"
-                    className="w-full px-3 py-2 bg-white text-gray-900 font-medium rounded hover:bg-gray-100 transition-colors"
+                    className="w-full px-4 py-3 bg-white text-gray-900 font-medium rounded hover:bg-gray-100 transition-colors"
                   >
                     Sign Up
                   </button>
@@ -293,4 +307,3 @@ export default async function HomePage() {
 }
 
 // Revalidate the page every 60 seconds
-export const revalidate = 60;

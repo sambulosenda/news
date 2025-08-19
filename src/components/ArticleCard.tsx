@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { WPPost } from '@/types/wordpress';
+import { generateBlurPlaceholder } from '@/lib/image-utils';
 
 interface ArticleCardProps {
   article: WPPost;
@@ -38,8 +39,11 @@ export default function ArticleCard({
                 alt={article.featuredImage.node.altText || article.title}
                 fill
                 className="object-cover"
-                priority
+                priority={variant === 'hero'}
+                loading={variant === 'hero' ? 'eager' : 'lazy'}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                placeholder="blur"
+                blurDataURL={generateBlurPlaceholder()}
               />
             </div>
           </Link>
@@ -53,14 +57,14 @@ export default function ArticleCard({
               {category.name}
             </Link>
           )}
-          <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl font-bold mb-3 lg:mb-4 leading-tight">
+          <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 leading-tight">
             <Link href={postUrl} className="hover:underline">
               {article.title}
             </Link>
           </h2>
           {showExcerpt && article.excerpt && (
             <div
-              className="text-base text-gray-700 mb-3 lg:mb-4 line-clamp-3 leading-relaxed"
+              className="text-base text-gray-700 mb-4 lg:mb-6 line-clamp-3 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: article.excerpt }}
             />
           )}
@@ -76,7 +80,7 @@ export default function ArticleCard({
 
   if (variant === 'horizontal') {
     return (
-      <article className="flex gap-6">
+      <article className="flex gap-6 md:gap-8">
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl} className="flex-shrink-0">
             <div className="relative w-32 h-32 lg:w-40 lg:h-40">
@@ -86,12 +90,14 @@ export default function ArticleCard({
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 96px, 128px"
+                placeholder="blur"
+                blurDataURL={generateBlurPlaceholder()}
               />
             </div>
           </Link>
         )}
         <div className="flex-1 min-w-0">
-          <h3 className="font-serif text-lg lg:text-xl font-bold mb-2 line-clamp-2 leading-tight">
+          <h3 className="font-serif text-lg lg:text-xl font-bold mb-3 line-clamp-2 leading-tight">
             <Link href={postUrl} className="hover:underline">
               {article.title}
             </Link>
@@ -109,8 +115,8 @@ export default function ArticleCard({
 
   if (variant === 'compact') {
     return (
-      <article className="py-4 border-b border-gray-200 last:border-b-0">
-        <h3 className="font-serif text-lg font-bold mb-2 leading-tight">
+      <article className="py-5 border-b border-gray-200 last:border-b-0">
+        <h3 className="font-serif text-lg font-bold mb-3 leading-tight">
           <Link href={postUrl} className="hover:underline">
             {article.title}
           </Link>
@@ -134,6 +140,8 @@ export default function ArticleCard({
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                placeholder="blur"
+                blurDataURL={generateBlurPlaceholder()}
               />
             </div>
           </Link>
@@ -147,14 +155,14 @@ export default function ArticleCard({
               {category.name}
             </Link>
           )}
-          <h3 className="font-serif text-xl lg:text-2xl font-bold mb-3 leading-tight line-clamp-2">
+          <h3 className="font-serif text-xl lg:text-2xl font-bold mb-4 leading-tight line-clamp-2">
             <Link href={postUrl} className="hover:underline">
               {article.title}
             </Link>
           </h3>
           {showExcerpt && article.excerpt && (
             <div
-              className="text-sm text-gray-700 mb-3 line-clamp-3 leading-relaxed"
+              className="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: article.excerpt }}
             />
           )}
@@ -193,14 +201,14 @@ export default function ArticleCard({
             {category.name}
           </Link>
         )}
-        <h3 className="font-serif text-lg lg:text-xl font-bold mb-2 line-clamp-2">
+        <h3 className="font-serif text-lg lg:text-xl font-bold mb-3 line-clamp-2">
           <Link href={postUrl} className="hover:underline">
             {article.title}
           </Link>
         </h3>
         {showExcerpt && article.excerpt && (
           <div
-            className="text-sm text-gray-700 mb-2 line-clamp-2"
+            className="text-sm text-gray-700 mb-3 line-clamp-2"
             dangerouslySetInnerHTML={{ __html: article.excerpt }}
           />
         )}

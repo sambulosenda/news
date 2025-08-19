@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+export { generateStaticParams } from './generateStaticParams';
 import { fetchGraphQL } from '@/lib/fetch-graphql';
 import { GET_POSTS_BY_CATEGORY } from '@/lib/queries/posts';
 import { GET_CATEGORY_BY_SLUG } from '@/lib/queries/categories';
@@ -154,5 +155,5 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   );
 }
 
-// Revalidate every 60 seconds
-export const revalidate = 60;
+// Revalidate every 2 minutes for category pages (news needs freshness)
+export const revalidate = 120;

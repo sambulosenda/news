@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
-import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Ethics Policy - Report Focus News Journalism Standards',

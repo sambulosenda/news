@@ -1,0 +1,178 @@
+// Simplified homepage query without fragments for debugging
+export const GET_HOMEPAGE_DATA_SIMPLE = `
+  query GetHomepageData {
+    heroPost: posts(first: 1, where: { orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+          categories {
+            edges {
+              node {
+                id
+                name
+                slug
+              }
+            }
+          }
+          author {
+            node {
+              name
+              slug
+            }
+          }
+        }
+      }
+    }
+    
+    featuredPosts: posts(first: 4, where: { orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+          categories {
+            edges {
+              node {
+                id
+                name
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    recentPosts: posts(first: 12, where: { orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+          categories {
+            edges {
+              node {
+                id
+                name
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    breakingNews: posts(first: 3, where: { orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          title
+          slug
+          date
+        }
+      }
+    }
+    
+    categories(first: 20, where: { orderby: COUNT, order: DESC, hideEmpty: true }) {
+      edges {
+        node {
+          id
+          slug
+          name
+          count
+        }
+      }
+    }
+    
+    politicsPosts: posts(first: 6, where: { orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+        }
+      }
+    }
+    
+    businessPosts: posts(first: 6, where: { orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+        }
+      }
+    }
+    
+    sportsPosts: posts(first: 6, where: { orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+        }
+      }
+    }
+    
+    popularPosts: posts(first: 5, where: { orderby: { field: COMMENT_COUNT, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+        }
+      }
+    }
+  }
+`;

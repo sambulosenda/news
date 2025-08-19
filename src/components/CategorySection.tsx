@@ -21,9 +21,9 @@ export default function CategorySection({
 
   if (variant === 'opinion') {
     return (
-      <section className="py-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-serif text-2xl font-bold">{title}</h2>
+      <section className="py-8 lg:py-12">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-serif text-2xl lg:text-3xl font-bold">{title}</h2>
           <Link
             href={`/category/${slug}`}
             className="text-sm font-medium hover:underline"
@@ -51,9 +51,9 @@ export default function CategorySection({
 
   if (variant === 'compact') {
     return (
-      <section className="py-6">
+      <section className="py-6 lg:py-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-serif text-2xl font-bold">{title}</h2>
+          <h2 className="font-serif text-xl lg:text-2xl font-bold">{title}</h2>
           <Link
             href={`/category/${slug}`}
             className="text-sm font-medium hover:underline"
@@ -80,9 +80,9 @@ export default function CategorySection({
 
   // Default variant
   return (
-    <section className="py-8">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="font-serif text-3xl font-bold">{title}</h2>
+    <section className="py-12 lg:py-16">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="font-serif text-3xl lg:text-4xl font-bold">{title}</h2>
         <Link
           href={`/category/${slug}`}
           className="text-sm font-medium uppercase tracking-wide hover:underline"
@@ -90,7 +90,7 @@ export default function CategorySection({
           More in {title} →
         </Link>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {articles.slice(0, 6).map((article, index) => (
           <ArticleCard
             key={article.id}

@@ -26,7 +26,7 @@ export default function robots(): MetadataRoute.Robots {
           '/20*',  // Year-based URLs (2024, 2025, etc.)
           '/news/politics/',
           '/news/business/',
-          '/news/breaking/',
+          '/news/breaking-news/',
           '/news/south-africa/',
           '/news/zimbabwe/',
         ],
@@ -46,10 +46,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
     ],
-    sitemap: [
-      'https://www.reportfocusnews.com/sitemap.xml',
-      'https://www.reportfocusnews.com/news-sitemap.xml',
-    ],
+    sitemap: 'https://reportfocusnews.com/sitemap-index.xml',
     host: 'https://reportfocusnews.com',
   };
 }

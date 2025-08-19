@@ -59,7 +59,7 @@ export async function getOptimizedHomepageData(): Promise<HomepageData> {
     
     // Optimize category section queries - only fetch for main categories
     const priorityCategories = categories.slice(0, 3);
-    const categoryPromises = priorityCategories.map(async (category) => {
+    const categoryPromises = priorityCategories.map(async (category: any) => {
       try {
         const categoryData = await fetchGraphQL(GET_POSTS_BY_CATEGORY, {
           categorySlug: category.slug,

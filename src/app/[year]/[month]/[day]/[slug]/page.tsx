@@ -27,6 +27,10 @@ interface PostPageProps {
   }>;
 }
 
+interface PostEdge {
+  node: WPPost;
+}
+
 async function getPostData(slug: string) {
   const data = await fetchGraphQL(GET_POST_BY_SLUG, { slug });
   
@@ -44,7 +48,7 @@ async function getRelatedPosts(categoryId: number, currentPostId: string) {
     first: 4,
   });
 
-  return data?.posts?.edges?.map((edge: any) => edge.node) || [];
+  return data?.posts?.edges?.map((edge: PostEdge) => edge.node) || [];
 }
 
 async function getAuthorPosts(authorId: number, currentPostId: string) {
@@ -54,7 +58,7 @@ async function getAuthorPosts(authorId: number, currentPostId: string) {
     first: 3,
   });
 
-  return data?.posts?.edges?.map((edge: any) => edge.node) || [];
+  return data?.posts?.edges?.map((edge: PostEdge) => edge.node) || [];
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
@@ -384,3 +388,6 @@ export default async function PostPage({ params }: PostPageProps) {
     </>
   );
 }
+
+// Enable ISR - articles cached for 5 minutes (allows quick corrections)
+export const revalidate = 300;

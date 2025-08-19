@@ -33,7 +33,7 @@ export const navigationConfig: NavSection[] = [
     featured: true,
     children: [
       { name: 'South Africa', slug: 'south-africa', priority: 1 },
-      { name: 'Zimbabwe', slug: 'zimbabwe-2023-elections', priority: 2 },
+      { name: 'Zimbabwe', slug: 'zimbabwe', priority: 2 },
       { name: 'Zambia', slug: 'zambia', priority: 3 },
       { name: 'Malawi', slug: 'malawi', priority: 4 },
       { name: 'Mozambique', slug: 'mozambique', priority: 5 },

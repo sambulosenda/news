@@ -42,10 +42,10 @@ export default function PerformanceMonitor() {
     };
 
     // Dynamic import of web-vitals to avoid bundle bloat
-    import('web-vitals').then(({ onCLS, onFCP, onFID, onLCP, onTTFB }) => {
+    import('web-vitals').then(({ onCLS, onFCP, onINP, onLCP, onTTFB }) => {
       onCLS(reportWebVitals);
       onFCP(reportWebVitals);
-      onFID(reportWebVitals);
+      onINP(reportWebVitals); // INP replaced FID in web-vitals v3+
       onLCP(reportWebVitals);
       onTTFB(reportWebVitals);
     });

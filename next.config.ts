@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: 'standalone', // For Docker deployment
+  eslint: {
+    // Run ESLint during builds to catch errors early
+    ignoreDuringBuilds: false,
+  },
   images: {
     remotePatterns: [
       {
@@ -26,15 +31,9 @@ const nextConfig: NextConfig = {
     // ppr: true,
     // Enable optimized CSS loading
     optimizeCss: true,
-    // Optimize font loading
-    optimizeFonts: true,
   },
-  // Optimize bundle
-  swcMinify: true,
   // Add compression
   compress: true,
-  // Optimize server components
-  serverComponentsExternalPackages: ['@apollo/client'],
   
   // Performance optimizations
   poweredByHeader: false,

@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Editorial Team & Masthead - Report Focus News',

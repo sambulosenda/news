@@ -1,3 +1,5 @@
+'use client';
+
 export default function OrganizationSchema() {
   const organizationSchema = {
     '@context': 'https://schema.org',

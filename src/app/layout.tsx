@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Merriweather, Playfair_Display } from "next/font/google";
 import { ApolloWrapper } from "@/lib/apollo-wrapper";
 import SearchActionSchema from "@/components/SearchActionSchema";
+import SiteNavigationSchema from "@/components/SiteNavigationSchema";
+import OrganizationSchema from "@/components/OrganizationSchema";
 import "./globals.css";
 
 const inter = Inter({
@@ -93,7 +95,8 @@ export default function RootLayout({
         {/* Preconnect to optimize external resources */}
         <link rel="preconnect" href="https://backend.reportfocusnews.com" />
         <link rel="dns-prefetch" href="https://backend.reportfocusnews.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         
         {/* Favicon and app icons */}
@@ -115,6 +118,8 @@ export default function RootLayout({
         className={`${inter.variable} ${merriweather.variable} ${playfair.variable} font-sans antialiased bg-white text-gray-900`}
       >
         <SearchActionSchema />
+        <SiteNavigationSchema />
+        <OrganizationSchema />
         <ApolloWrapper>{children}</ApolloWrapper>
       </body>
     </html>

@@ -1,55 +1,15 @@
 import { MetadataRoute } from 'next';
-import { fetchGraphQL } from '@/lib/fetch-graphql';
-import { GET_ALL_POSTS } from '@/lib/queries/posts';
-import { GET_CATEGORIES } from '@/lib/queries/categories';
+import { fetchAllPosts, fetchAllCategories } from '@/lib/sitemap-helpers';
 import { detectLocationFromContent } from '@/lib/location-detector';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://reportfocusnews.com';
 
-  // Fetch all posts and categories
-  const [postsData, categoriesData] = await Promise.all([
-    fetchGraphQL(GET_ALL_POSTS, { first: 100 }),
-    fetchGraphQL(GET_CATEGORIES, { first: 50 }),
+  // Fetch ALL posts and categories using pagination
+  const [posts, categories] = await Promise.all([
+    fetchAllPosts(100), // Fetches all posts in batches of 100
+    fetchAllCategories(100), // Fetches up to 100 categories
   ]);
-
-  type Post = {
-    slug: string;
-    date: string;
-    modified?: string;
-    title?: string;
-    content?: string;
-    excerpt?: string;
-    categories?: {
-      edges: Array<{
-        node: {
-          name: string;
-        };
-      }>;
-    };
-    tags?: {
-      edges: Array<{
-        node: {
-          name: string;
-        };
-      }>;
-    };
-  };
-  
-  type Category = {
-    slug: string;
-  };
-  
-  interface PostEdge {
-    node: Post;
-  }
-  
-  interface CategoryEdge {
-    node: Category;
-  }
-  
-  const posts: Post[] = postsData?.posts?.edges?.map((edge: PostEdge) => edge.node) || [];
-  const categories: Category[] = categoriesData?.categories?.edges?.map((edge: CategoryEdge) => edge.node) || [];
 
   // Static pages with regional focus
   const staticPages = [
@@ -91,7 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/news/breaking/`,
+      url: `${baseUrl}/news/breaking-news/`,
       lastModified: new Date(),
       changeFrequency: 'hourly' as const,
       priority: 0.9,
@@ -156,7 +116,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   // Category pages with /news/ prefix
-  const categoryPages = categories.map((category) => ({
+  const categoryPages = categories.map((category: any) => ({
     url: `${baseUrl}/news/${category.slug}/`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
