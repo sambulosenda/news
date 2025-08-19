@@ -83,7 +83,7 @@ interface SearchResultsProps {
 export default function SearchResults({ searchParams }: SearchResultsProps) {
   const query = searchParams.q || '';
   const categoryFilter = searchParams.category;
-  const currentPage = parseInt(searchParams.page || '1');
+  const _currentPage = parseInt(searchParams.page || '1');
   
   const [selectedCategory, setSelectedCategory] = useState(categoryFilter);
   const [sortBy, setSortBy] = useState<'relevance' | 'date'>('relevance');

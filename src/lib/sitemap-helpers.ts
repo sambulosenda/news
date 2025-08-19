@@ -1,7 +1,8 @@
 import { fetchGraphQL } from '@/lib/fetch-graphql';
+import { gql } from '@apollo/client';
 
 // Query to get total post count
-const GET_POST_COUNT = `
+const _GET_POST_COUNT = gql`
   query GetPostCount {
     posts {
       pageInfo {
@@ -12,7 +13,7 @@ const GET_POST_COUNT = `
 `;
 
 // Query to fetch posts with pagination
-const GET_POSTS_PAGINATED = `
+const GET_POSTS_PAGINATED = gql`
   query GetPostsPaginated($first: Int!, $after: String) {
     posts(first: $first, after: $after, where: { orderby: { field: DATE, order: DESC } }) {
       pageInfo {
@@ -130,7 +131,7 @@ export async function fetchAllPosts(batchSize = 100): Promise<Post[]> {
  * @returns Array of categories
  */
 export async function fetchAllCategories(limit = 100) {
-  const GET_ALL_CATEGORIES = `
+  const GET_ALL_CATEGORIES = gql`
     query GetAllCategories($first: Int!) {
       categories(first: $first) {
         edges {

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { WPCategory } from '@/types/wordpress';
-import { navigationConfig, mapCategoriesToNavigation } from '@/config/navigation';
+import { mapCategoriesToNavigation } from '@/config/navigation';
 
 interface HeaderProps {
   categories?: WPCategory[];

@@ -1,6 +1,5 @@
 import { fetchGraphQL } from '@/lib/fetch-graphql';
 import { GET_ALL_POSTS } from '@/lib/queries/posts';
-import { format } from 'date-fns';
 
 export async function GET() {
   const postsData = await fetchGraphQL(GET_ALL_POSTS, { first: 50 });

@@ -1,7 +1,6 @@
 import { MetadataRoute } from 'next';
 import { fetchGraphQL } from '@/lib/fetch-graphql';
 import { GET_RECENT_POSTS } from '@/lib/queries/posts';
-import { format } from 'date-fns';
 
 export default async function newsSitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.reportfocusnews.com';

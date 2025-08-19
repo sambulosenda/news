@@ -74,7 +74,7 @@ export default function OptimizedImage({
           style={fill ? {} : { aspectRatio }}
         />
       )}
-      <Image {...imageProps} />
+      <Image {...imageProps} alt={alt} />
     </div>
   );
 }

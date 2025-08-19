@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import React from "react";
 import { Inter, Merriweather, Playfair_Display } from "next/font/google";
 import { ApolloWrapper } from "@/lib/apollo-wrapper";
 import SearchActionSchema from "@/components/SearchActionSchema";

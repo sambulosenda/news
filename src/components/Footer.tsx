@@ -58,7 +58,7 @@ const footerSections = {
   },
 };
 
-const newsletters = [
+const _newsletters = [
   { name: 'Morning Briefing', description: 'Daily news digest delivered at 6 AM', href: '#' },
   { name: 'Evening Wrap', description: 'Top stories summary each evening', href: '#' },
   { name: 'Weekend Edition', description: 'Deep dives and analysis every Saturday', href: '#' },
