@@ -80,17 +80,17 @@ export default function CategorySection({
 
   // Default variant
   return (
-    <section className="py-12 lg:py-16">
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="font-serif text-3xl lg:text-4xl font-bold">{title}</h2>
+    <section>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="font-serif text-2xl lg:text-3xl font-bold">{title}</h2>
         <Link
-          href={`/category/${slug}`}
-          className="text-sm font-medium uppercase tracking-wide hover:underline"
+          href={`/news/${slug}/`}
+          className="text-sm font-medium text-red-600 hover:text-red-700 hover:underline"
         >
           More in {title} →
         </Link>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles.slice(0, 6).map((article, index) => (
           <ArticleCard
             key={article.id}

@@ -115,15 +115,20 @@ export default function ArticleCard({
 
   if (variant === 'compact') {
     return (
-      <article className="py-5 border-b border-gray-200 last:border-b-0">
-        <h3 className="font-serif text-lg font-bold mb-3 leading-tight">
+      <article className="py-3">
+        {showCategory && category && (
+          <Link
+            href={categoryUrl}
+            className="inline-block text-xs font-semibold text-red-600 hover:text-red-700 uppercase tracking-wider mb-1"
+          >
+            {category.name}
+          </Link>
+        )}
+        <h3 className="font-serif text-base font-bold leading-snug">
           <Link href={postUrl} className="hover:underline">
             {article.title}
           </Link>
         </h3>
-        <p className="text-sm text-gray-600">
-          {format(new Date(article.date), 'MMM d, yyyy')}
-        </p>
       </article>
     );
   }
