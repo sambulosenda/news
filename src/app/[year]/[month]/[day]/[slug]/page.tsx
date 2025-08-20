@@ -1,22 +1,24 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import parse from 'html-react-parser';
 import readingTime from 'reading-time';
-import { fetchGraphQL } from '@/lib/fetch-graphql';
-import { GET_POST_BY_SLUG, GET_RELATED_POSTS, GET_AUTHOR_POSTS } from '@/lib/queries/posts';
+import { fetchGraphQLCached } from '@/lib/graphql-cache';
+import { GET_POST_BY_SLUG } from '@/lib/queries/posts';
 import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
-import ArticleCard from '@/components/ArticleCard';
 import ShareButtons from '@/components/ShareButtons';
 import { WPPost } from '@/types/wordpress';
-import LocalNewsSchema from '@/components/LocalNewsSchema';
 import ReadingProgress from '@/components/ReadingProgress';
 import BackToTop from '@/components/BackToTop';
 import MobileShareBar from '@/components/MobileShareBar';
-import { detectLocationFromContent, generateLocationKeywords } from '@/lib/location-detector';
+
+// Enable static generation with aggressive ISR for news articles
+export const revalidate = 60; // Revalidate every minute for news freshness
+export const dynamicParams = true; // Allow any article slug
 
 interface PostPageProps {
   params: Promise<{
@@ -27,227 +29,194 @@ interface PostPageProps {
   }>;
 }
 
-interface PostEdge {
-  node: WPPost;
-}
-
-async function getPostData(slug: string) {
-  const data = await fetchGraphQL(GET_POST_BY_SLUG, { slug });
-  
-  if (!data?.postBy) {
+// OPTIMIZED: Single query for article data with caching
+async function getArticleData(slug: string): Promise<WPPost | null> {
+  try {
+    // Use aggressive caching for articles
+    const data = await fetchGraphQLCached(
+      GET_POST_BY_SLUG, 
+      { slug }, 
+      { ttl: 60, forceRefresh: false }
+    );
+    
+    return data?.postBy || null;
+  } catch (error) {
+    console.error('Error fetching article:', error);
     return null;
   }
-
-  return data.postBy as WPPost;
 }
 
-async function getRelatedPosts(categoryId: number, currentPostId: string) {
-  const data = await fetchGraphQL(GET_RELATED_POSTS, {
-    categoryId: categoryId,
-    exclude: [currentPostId],
-    first: 4,
-  });
-
-  return data?.posts?.edges?.map((edge: PostEdge) => edge.node) || [];
-}
-
-async function getAuthorPosts(authorId: number, currentPostId: string) {
-  const data = await fetchGraphQL(GET_AUTHOR_POSTS, {
-    authorId: authorId,
-    exclude: [currentPostId],
-    first: 3,
-  });
-
-  return data?.posts?.edges?.map((edge: PostEdge) => edge.node) || [];
-}
+// Lazy load related content to not block main article
+const RelatedArticles = async ({ categoryId, postId }: { categoryId: number; postId: string }) => {
+  // This component loads after the main article
+  const { gql } = await import('@/lib/fetch-graphql');
+  const { fetchGraphQLCached } = await import('@/lib/graphql-cache');
+  
+  const SIMPLE_RELATED_QUERY = gql`
+    query GetRelated($categoryId: Int!, $exclude: [ID!]) {
+      posts(
+        where: { categoryId: $categoryId, notIn: $exclude }
+        first: 3
+      ) {
+        edges {
+          node {
+            id
+            title
+            slug
+            date
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  
+  const data = await fetchGraphQLCached(
+    SIMPLE_RELATED_QUERY,
+    { categoryId, exclude: [postId] },
+    { ttl: 300 } // Cache for 5 minutes
+  );
+  
+  const posts = data?.posts?.edges?.map((e: any) => e.node) || [];
+  
+  if (posts.length === 0) return null;
+  
+  return (
+    <section className="mt-12 pt-8 border-t">
+      <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
+      <div className="grid md:grid-cols-3 gap-6">
+        {posts.map((post: any) => (
+          <article key={post.id} className="group">
+            <Link href={`/post/${post.slug}`} className="block">
+              {post.featuredImage?.node?.sourceUrl && (
+                <div className="relative aspect-video mb-3 overflow-hidden rounded">
+                  <Image
+                    src={post.featuredImage.node.sourceUrl}
+                    alt={post.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </div>
+              )}
+              <h3 className="font-semibold group-hover:text-blue-600 transition-colors">
+                {post.title}
+              </h3>
+            </Link>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+};
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const post = await getPostData(slug);
-
+  const { slug, year, month, day } = await params;
+  
+  // Quick fetch for metadata only
+  const post = await getArticleData(slug);
+  
   if (!post) {
-    return {
-      title: 'Post Not Found',
-    };
+    return { title: 'Article Not Found' };
   }
 
-  // Detect location from content
-  const category = post.categories?.edges?.[0]?.node?.name || '';
-  const tags = post.tags?.edges?.map((edge: { node: { name: string } }) => edge.node.name) || [];
-  const location = detectLocationFromContent(
-    post.title || '',
-    post.content || '',
-    category,
-    tags
-  );
-
-  // Generate location-specific keywords
-  const locationKeywords = generateLocationKeywords(location, category);
-  
-  const plainTextExcerpt = post.excerpt 
-    ? post.excerpt.replace(/<[^>]*>/g, '').substring(0, 160)
-    : '';
-
-  // Enhanced title with location context
-  const enhancedTitle = location 
-    ? `${post.title} - ${location.country} News`
-    : post.title;
-
-  // Enhanced description with location context
-  const enhancedDescription = location && location.city
-    ? `${plainTextExcerpt} Latest news from ${location.city}, ${location.country}.`
-    : location
-    ? `${plainTextExcerpt} Breaking news from ${location.country}.`
-    : plainTextExcerpt;
-
-  const canonicalUrl = `https://reportfocusnews.com/${format(new Date(post.date), 'yyyy')}/${format(new Date(post.date), 'MM')}/${format(new Date(post.date), 'dd')}/${slug}/`;
+  const description = post.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
+  const canonicalUrl = `https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`;
 
   return {
-    title: enhancedTitle,
-    description: enhancedDescription,
-    keywords: locationKeywords.join(', '),
+    title: `${post.title} | Report Focus News`,
+    description,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: enhancedTitle,
-      description: enhancedDescription,
+      title: post.title,
+      description,
       type: 'article',
-      url: canonicalUrl,
       publishedTime: post.date,
       modifiedTime: post.modified,
-      authors: post.author?.node ? [post.author.node.name] : undefined,
-      images: post.featuredImage?.node ? [
+      authors: post.author?.node?.name ? [post.author.node.name] : [],
+      images: post.featuredImage?.node?.sourceUrl ? [
         {
           url: post.featuredImage.node.sourceUrl,
-          width: post.featuredImage.node.mediaDetails?.width,
-          height: post.featuredImage.node.mediaDetails?.height,
-          alt: post.featuredImage.node.altText || post.title,
-        },
-      ] : undefined,
-      locale: 'en_ZA',
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        }
+      ] : [],
     },
     twitter: {
       card: 'summary_large_image',
-      title: enhancedTitle,
-      description: enhancedDescription,
-      images: post.featuredImage?.node ? [post.featuredImage.node.sourceUrl] : undefined,
-    },
-    other: {
-      'article:published_time': post.date,
-      'article:modified_time': post.modified || post.date,
-      ...(post.author?.node?.name && { 'article:author': post.author.node.name }),
-      'article:section': category,
-      'news_keywords': locationKeywords.slice(0, 10).join(', '),
-      // Geographic targeting
-      ...(location && {
-        'geo.region': location.country === 'South Africa' ? 'ZA' : 'ZW',
-        'geo.country': location.country === 'South Africa' ? 'ZA' : 'ZW',
-        'geo.placename': location.city || (location.country === 'South Africa' ? 'Johannesburg' : 'Harare'),
-        'content:location': `${location.city || ''}, ${location.country}`.trim().replace(/^,\s*/, ''),
-      }),
-      // Content classification
-      'content:tier': 'free',
-      'distribution': 'global',
-      'audience': 'general',
-      'language': 'en-ZA',
-      // News-specific meta tags
-      'article:tag': tags.slice(0, 5).join(', '),
-      'article:opinion': 'false',
-      'article:content_tier': 'free',
+      title: post.title,
+      description,
     },
   };
 }
 
-export default async function PostPage({ params }: PostPageProps) {
+export default async function OptimizedPostPage({ params }: PostPageProps) {
   const { year, month, day, slug } = await params;
   
-  // Start fetching post data first
-  const postPromise = getPostData(slug);
-  const post = await postPromise;
+  // Single optimized query for article
+  const post = await getArticleData(slug);
 
   if (!post) {
     notFound();
   }
 
-  // For now, we'll accept any date in the URL as long as the slug matches
-  // This prevents 404s when dates don't match exactly
-  // You can re-enable strict validation later if needed
-
-  const category = post.categories?.edges?.[0]?.node;
-  
-  // Fetch related posts and author posts in parallel
-  const [relatedPosts, authorPosts] = await Promise.all([
-    category 
-      ? getRelatedPosts(category.databaseId, post.databaseId.toString())
-      : Promise.resolve([]),
-    post.author?.node 
-      ? getAuthorPosts(post.author.node.databaseId, post.databaseId.toString())
-      : Promise.resolve([])
-  ]);
-
   const stats = post.content ? readingTime(post.content) : { text: '1 min read' };
-
-  const plainTextExcerpt = post.excerpt 
-    ? post.excerpt.replace(/<[^>]*>/g, '').substring(0, 160)
-    : '';
-
   const canonicalUrl = `https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`;
-  
-  // Detect location for schema markup
-  const tags = post.tags?.edges?.map((edge: { node: { name: string } }) => edge.node.name) || [];
-  const location = detectLocationFromContent(
-    post.title || '',
-    post.content || '',
-    category?.name || '',
-    tags
-  );
-  
-  const keywords = category 
-    ? [category.name, ...tags]
-    : [];
+  const categoryId = post.categories?.edges?.[0]?.node?.databaseId;
 
   return (
     <>
       <ReadingProgress />
-      <LocalNewsSchema
-        title={post.title}
-        description={plainTextExcerpt}
-        url={canonicalUrl}
-        imageUrl={post.featuredImage?.node?.sourceUrl}
-        datePublished={post.date}
-        dateModified={post.modified}
-        authorName={post.author?.node?.name}
-        keywords={keywords}
-        category={category?.name}
-        location={location || undefined}
-        contentTier="free"
-      />
       <HeaderWrapper />
-      <main className="container-content py-8">
-        <article className="max-w-4xl mx-auto">
-          {/* Article Header */}
-          <header className="mb-8">
-            {/* Category Badge */}
-            {category && (
-              <Link
-                href={`/news/${category.slug}/`}
-                className="inline-block mb-4 text-sm font-medium text-red-700 hover:text-red-800 uppercase tracking-wider"
-              >
-                {category.name}
-              </Link>
+      
+      <main className="min-h-screen bg-white">
+        {/* Article Header - Load immediately */}
+        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+          {/* Category & Date */}
+          <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+            {post.categories?.edges?.[0]?.node && (
+              <>
+                <Link 
+                  href={`/category/${post.categories.edges[0].node.slug}`}
+                  className="text-red-600 font-medium hover:underline"
+                >
+                  {post.categories.edges[0].node.name}
+                </Link>
+                <span>•</span>
+              </>
             )}
+            <time dateTime={post.date}>
+              {format(new Date(post.date), 'MMMM d, yyyy')}
+            </time>
+            <span>•</span>
+            <span>{stats.text}</span>
+          </div>
 
-            {/* Title */}
-            <h1 className="font-serif text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-              {post.title}
-            </h1>
+          {/* Title */}
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            {post.title}
+          </h1>
 
-            {/* Author and Meta Info */}
-            <div className="flex items-center gap-6 pb-6 border-b border-gray-200">
+          {/* Excerpt */}
+          {post.excerpt && (
+            <div className="text-xl text-gray-600 mb-6 leading-relaxed">
+              {parse(post.excerpt)}
+            </div>
+          )}
+
+          {/* Author & Share */}
+          <div className="flex items-center justify-between mb-8 pb-8 border-b">
+            <div className="flex items-center gap-3">
               {post.author?.node && (
-                <div className="flex items-center gap-3">
-                  {post.author.node.avatar && (
+                <>
+                  {post.author.node.avatar?.url && (
                     <Image
                       src={post.author.node.avatar.url}
                       alt={post.author.node.name}
@@ -257,134 +226,86 @@ export default async function PostPage({ params }: PostPageProps) {
                     />
                   )}
                   <div>
-                    <p className="font-medium text-gray-900">
-                      By {post.author.node.name}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {format(new Date(post.date), 'MMMM d, yyyy')} • {stats.text}
-                    </p>
+                    <div className="font-medium">{post.author.node.name}</div>
+                    <div className="text-sm text-gray-500">
+                      {format(new Date(post.date), 'h:mm a')}
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
-          </header>
+            <ShareButtons url={canonicalUrl} title={post.title} />
+          </div>
 
           {/* Featured Image */}
-          {post.featuredImage?.node && (
-            <div className="mb-8">
-              <div className="relative aspect-[16/9]">
+          {post.featuredImage?.node?.sourceUrl && (
+            <figure className="mb-8">
+              <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
                 <Image
                   src={post.featuredImage.node.sourceUrl}
                   alt={post.featuredImage.node.altText || post.title}
                   fill
-                  className="object-cover"
                   priority
+                  className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                 />
               </div>
               {post.featuredImage.node.caption && (
-                <p className="mt-2 text-sm text-gray-600">
-                  {post.featuredImage.node.caption}
-                </p>
+                <figcaption className="mt-2 text-sm text-gray-600 text-center">
+                  {parse(post.featuredImage.node.caption)}
+                </figcaption>
               )}
-            </div>
+            </figure>
           )}
 
-          {/* Article Content */}
-          {post.content && (
-            <div className="prose prose-lg max-w-3xl mx-auto mb-12 [&>p]:mb-6 [&>p]:leading-[1.7] [&>h2]:mt-12 [&>h2]:mb-6 [&>h3]:mt-8 [&>h3]:mb-4 first:[&>p]:first-letter:text-5xl first:[&>p]:first-letter:font-bold first:[&>p]:first-letter:mr-1 first:[&>p]:first-letter:float-left first:[&>p]:first-letter:font-serif">
-              {parse(post.content)}
-            </div>
-          )}
-
-          {/* Share Buttons */}
-          <div className="py-6 border-t border-gray-200">
-            <ShareButtons 
-              url={`https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`}
-              title={post.title}
-            />
+          {/* Article Content - Priority */}
+          <div className="prose prose-lg max-w-none">
+            {parse(post.content || '')}
           </div>
 
-          {/* Author Bio */}
-          {post.author?.node?.description && (
-            <div className="py-8 border-t border-gray-200">
-              <h3 className="font-serif text-xl font-bold mb-3">
-                About the Author
-              </h3>
-              <div className="flex gap-4">
-                {post.author.node.avatar && (
-                  <Image
-                    src={post.author.node.avatar.url}
-                    alt={post.author.node.name}
-                    width={80}
-                    height={80}
-                    className="rounded-full flex-shrink-0"
-                  />
-                )}
-                <div>
-                  <h4 className="font-medium text-lg mb-2">
-                    {post.author.node.name}
-                  </h4>
-                  <p className="text-gray-700">
-                    {post.author.node.description}
-                  </p>
-                </div>
+          {/* Tags */}
+          {post.tags?.edges && post.tags.edges.length > 0 && (
+            <div className="mt-8 pt-8 border-t">
+              <div className="flex flex-wrap gap-2">
+                {post.tags.edges.map((tag) => (
+                  <Link
+                    key={tag.node.id}
+                    href={`/tag/${tag.node.slug}`}
+                    className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm transition-colors"
+                  >
+                    {tag.node.name}
+                  </Link>
+                ))}
               </div>
             </div>
           )}
+
+          {/* Lazy load related articles */}
+          {categoryId && (
+            <Suspense fallback={
+              <div className="mt-12 pt-8 border-t">
+                <div className="animate-pulse">
+                  <div className="h-8 w-48 bg-gray-200 rounded mb-6"></div>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {[1, 2, 3].map(i => (
+                      <div key={i}>
+                        <div className="aspect-video bg-gray-200 rounded mb-3"></div>
+                        <div className="h-4 bg-gray-200 rounded"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            }>
+              <RelatedArticles categoryId={categoryId} postId={post.databaseId.toString()} />
+            </Suspense>
+          )}
         </article>
-
-        {/* More from Author */}
-        {authorPosts.length > 0 && (
-          <section className="mt-12 pt-8 border-t border-gray-200">
-            <h2 className="font-serif text-2xl font-bold mb-6">
-              More from {post.author?.node?.name}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {authorPosts.map((authorPost: WPPost) => (
-                <ArticleCard
-                  key={authorPost.id}
-                  article={authorPost}
-                  variant="default"
-                  showImage={true}
-                  showExcerpt={false}
-                  showAuthor={false}
-                  showCategory={true}
-                />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Related Articles */}
-        {relatedPosts.length > 0 && (
-          <section className="mt-16 pt-8 border-t-2 border-gray-900">
-            <h2 className="font-serif text-3xl font-bold mb-6">
-              Related Articles
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedPosts.map((relatedPost: WPPost) => (
-                <ArticleCard
-                  key={relatedPost.id}
-                  article={relatedPost}
-                  variant="default"
-                  showImage={true}
-                  showExcerpt={false}
-                  showAuthor={false}
-                  showCategory={true}
-                />
-              ))}
-            </div>
-          </section>
-        )}
       </main>
+      
       <Footer />
       <BackToTop />
       <MobileShareBar url={canonicalUrl} title={post.title} />
     </>
   );
 }
-
-// Enable ISR - articles revalidate every 60 seconds for fresh news
-// News sites need frequent updates to stay current
-export const revalidate = 60;
