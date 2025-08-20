@@ -5,6 +5,7 @@ import { ApolloWrapper } from "@/lib/apollo-wrapper";
 import SearchActionSchema from "@/components/SearchActionSchema";
 import SiteNavigationSchema from "@/components/SiteNavigationSchema";
 import OrganizationSchema from "@/components/OrganizationSchema";
+import NewsPerformanceOptimizer from "@/components/NewsPerformanceOptimizer";
 import "./globals.css";
 
 const inter = Inter({
@@ -121,6 +122,7 @@ export default function RootLayout({
         <SearchActionSchema />
         <SiteNavigationSchema />
         <OrganizationSchema />
+        <NewsPerformanceOptimizer />
         <ApolloWrapper>{children}</ApolloWrapper>
       </body>
     </html>

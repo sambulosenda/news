@@ -10,6 +10,9 @@ import ArticleCard from '@/components/ArticleCard';
 import OrganizationSchema from '@/components/OrganizationSchema';
 import { WPPost, WPCategory } from '@/types/wordpress';
 
+// Aggressive revalidation for news homepage - 30 seconds
+export const revalidate = 30;
+
 export const metadata: Metadata = {
   title: 'Report Focus News - South Africa & Zimbabwe Breaking News | Politics, Business, Sports',
   description: 'Breaking news from South Africa and Zimbabwe. Latest updates on politics, business, economy, sports, and entertainment. Your trusted source for Southern African news coverage.',
@@ -122,8 +125,10 @@ async function getHomePageData() {
   };
 }
 
-// Enable ISR - regenerate frequently for news freshness
-export const revalidate = 60; // 1 minute for breaking news
+
+// Dynamic rendering for breaking news
+export const dynamic = 'force-static';
+export const fetchCache = 'default-cache';
 
 export default async function HomePage() {
   const { 

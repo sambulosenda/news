@@ -2,6 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'standalone', // For Docker deployment
+  
+  // Aggressive caching for news site performance
+  staticPageGenerationTimeout: 180, // 3 minutes for complex pages
+  
+  // Enable partial prerendering for breaking news
+  experimental: {
+    ppr: false, // Will enable when stable
+    optimizeCss: true,
+    webpackBuildWorker: true, // Faster builds
+  },
   eslint: {
     // Run ESLint during builds to catch errors early
     ignoreDuringBuilds: false,
@@ -25,12 +35,6 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-  },
-  experimental: {
-    // PPR only available in canary builds - uncomment when using next@canary
-    // ppr: true,
-    // Enable optimized CSS loading
-    optimizeCss: true,
   },
   // Add compression
   compress: true,
@@ -126,6 +130,38 @@ const nextConfig: NextConfig = {
         ],
       },
       // Security headers for all routes
+      // Aggressive CDN caching for news content
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=30, stale-while-revalidate=59',
+          },
+          {
+            key: 'CDN-Cache-Control',
+            value: 'public, s-maxage=30',
+          },
+        ],
+      },
+      {
+        source: '/news/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=60, stale-while-revalidate=119',
+          },
+        ],
+      },
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'private, no-cache, no-store, must-revalidate',
+          },
+        ],
+      },
       {
         source: '/:path*',
         headers: [

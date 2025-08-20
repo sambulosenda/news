@@ -231,3 +231,51 @@ export const GET_AUTHOR_POSTS = gql`
     }
   }
 `;
+
+export const GET_POST_WITH_RELATED = gql`
+  ${POST_FIELDS}
+  query GetPostWithRelated($slug: String!) {
+    postBy(slug: $slug) {
+      ...PostFields
+      content
+      author {
+        node {
+          databaseId
+          name
+          firstName
+          lastName
+          description
+          avatar {
+            url
+          }
+        }
+      }
+      tags {
+        edges {
+          node {
+            id
+            name
+            slug
+          }
+        }
+      }
+      categories {
+        edges {
+          node {
+            id
+            databaseId
+            name
+            slug
+            posts(first: 4, where: { orderby: { field: DATE, order: DESC } }) {
+              edges {
+                node {
+                  ...PostFields
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

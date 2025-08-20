@@ -161,7 +161,10 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
 
 export default async function PostPage({ params }: PostPageProps) {
   const { year, month, day, slug } = await params;
-  const post = await getPostData(slug);
+  
+  // Start fetching post data first
+  const postPromise = getPostData(slug);
+  const post = await postPromise;
 
   if (!post) {
     notFound();
@@ -170,25 +173,18 @@ export default async function PostPage({ params }: PostPageProps) {
   // For now, we'll accept any date in the URL as long as the slug matches
   // This prevents 404s when dates don't match exactly
   // You can re-enable strict validation later if needed
-  
-  // Optional: Log if dates don't match for debugging
-  const postDate = new Date(post.date);
-  const expectedYear = format(postDate, 'yyyy');
-  const expectedMonth = format(postDate, 'MM');
-  const expectedDay = format(postDate, 'dd');
-  
-  if (year !== expectedYear || month !== expectedMonth || day !== expectedDay) {
-    console.log(`Date mismatch for ${slug}: URL has ${year}/${month}/${day}, post date is ${expectedYear}/${expectedMonth}/${expectedDay}`);
-  }
 
   const category = post.categories?.edges?.[0]?.node;
-  const relatedPosts = category 
-    ? await getRelatedPosts(category.databaseId, post.databaseId.toString())
-    : [];
-
-  const authorPosts = post.author?.node 
-    ? await getAuthorPosts(post.author.node.databaseId, post.databaseId.toString())
-    : [];
+  
+  // Fetch related posts and author posts in parallel
+  const [relatedPosts, authorPosts] = await Promise.all([
+    category 
+      ? getRelatedPosts(category.databaseId, post.databaseId.toString())
+      : Promise.resolve([]),
+    post.author?.node 
+      ? getAuthorPosts(post.author.node.databaseId, post.databaseId.toString())
+      : Promise.resolve([])
+  ]);
 
   const stats = post.content ? readingTime(post.content) : { text: '1 min read' };
 
@@ -389,5 +385,6 @@ export default async function PostPage({ params }: PostPageProps) {
   );
 }
 
-// Enable ISR - articles cached for 5 minutes (allows quick corrections)
-export const revalidate = 300;
+// Enable ISR - articles revalidate every 60 seconds for fresh news
+// News sites need frequent updates to stay current
+export const revalidate = 60;
