@@ -149,8 +149,8 @@ export default async function HomePage() {
   
   // Use filtered featured posts for side heroes, or use filtered recent posts
   const sideHeroPosts = filteredFeaturedPosts.length > 0 
-    ? filteredFeaturedPosts.slice(0, 4) 
-    : filteredRecentPosts.slice(0, 4);
+    ? filteredFeaturedPosts.slice(0, 7) 
+    : filteredRecentPosts.slice(0, 7);
   
   // Get remaining posts for main feed, excluding hero and side posts
   const usedPostIds = new Set([

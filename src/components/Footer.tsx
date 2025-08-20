@@ -188,39 +188,45 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="bg-gray-900 text-white">
-        <div className="container-wide py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Copyright */}
-            <div className="flex flex-col sm:flex-row items-center gap-2 text-sm">
-              <span className="font-semibold">© 2025 Report Focus News</span>
-              <span className="hidden sm:inline text-gray-400">•</span>
-              <span className="text-gray-400">All rights reserved</span>
-              <span className="hidden sm:inline text-gray-400">•</span>
-              <span className="text-gray-400">Independent journalism since 2024</span>
-            </div>
-
-            {/* Legal Links */}
-            <nav className="flex flex-wrap justify-center gap-4 text-sm">
-              <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
+      <div className="bg-gray-900 text-gray-400">
+        <div className="container-wide py-8">
+          <div className="flex flex-col space-y-6">
+            {/* Legal Links - Centered */}
+            <nav className="flex flex-wrap justify-center text-sm">
+              <Link href="/privacy" className="px-3 py-1 hover:text-white transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
+              <span className="text-gray-600 select-none">•</span>
+              <Link href="/terms" className="px-3 py-1 hover:text-white transition-colors">
                 Terms of Service
               </Link>
-              <Link href="/cookies" className="text-gray-400 hover:text-white transition-colors">
+              <span className="text-gray-600 select-none">•</span>
+              <Link href="/cookies" className="px-3 py-1 hover:text-white transition-colors">
                 Cookie Policy
               </Link>
-              <Link href="/accessibility" className="text-gray-400 hover:text-white transition-colors">
+              <span className="text-gray-600 select-none">•</span>
+              <Link href="/accessibility" className="px-3 py-1 hover:text-white transition-colors">
                 Accessibility
               </Link>
-              <Link href="/ethics" className="text-gray-400 hover:text-white transition-colors">
+              <span className="text-gray-600 select-none">•</span>
+              <Link href="/ethics" className="px-3 py-1 hover:text-white transition-colors">
                 Ethics Policy
               </Link>
-              <Link href="/sitemap.xml" className="text-gray-400 hover:text-white transition-colors">
+              <span className="text-gray-600 select-none">•</span>
+              <Link href="/sitemap.xml" className="px-3 py-1 hover:text-white transition-colors">
                 Sitemap
               </Link>
             </nav>
+            
+            {/* Copyright - Centered */}
+            <div className="text-center">
+              <p className="text-sm">
+                © 2025 Report Focus News. All rights reserved.
+              </p>
+              <p className="text-xs mt-2 text-gray-500">
+                Independent journalism serving South Africa and Zimbabwe since 2024
+              </p>
+            </div>
           </div>
         </div>
       </div>

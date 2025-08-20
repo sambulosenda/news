@@ -78,7 +78,7 @@ export default function CategorySection({
     );
   }
 
-  // Default variant
+  // Default variant - Simple grid layout for homepage
   return (
     <section>
       <div className="flex items-center justify-between mb-6">

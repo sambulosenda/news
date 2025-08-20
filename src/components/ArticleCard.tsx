@@ -29,6 +29,8 @@ export default function ArticleCard({
   const categoryUrl = category ? `/news/${category.slug}/` : '#';
 
   if (variant === 'hero') {
+    // Note: The new HeroSection component handles the hero layout directly
+    // This variant is kept for backward compatibility but simplified
     return (
       <article className="relative">
         {showImage && article.featuredImage?.node && (
@@ -39,9 +41,9 @@ export default function ArticleCard({
                 alt={article.featuredImage.node.altText || article.title}
                 fill
                 className="object-cover"
-                priority={variant === 'hero'}
-                loading={variant === 'hero' ? 'eager' : 'lazy'}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority={true}
+                loading="eager"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 800px"
                 placeholder="blur"
                 blurDataURL={generateBlurPlaceholder()}
               />
@@ -52,19 +54,19 @@ export default function ArticleCard({
           {showCategory && category && (
             <Link
               href={categoryUrl}
-              className="category-badge mb-2"
+              className="inline-block text-xs font-bold text-red-600 hover:text-red-700 uppercase tracking-wider mb-3"
             >
               {category.name}
             </Link>
           )}
-          <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 leading-tight">
-            <Link href={postUrl} className="hover:underline">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+            <Link href={postUrl} className="hover:underline decoration-2 underline-offset-2">
               {article.title}
             </Link>
           </h2>
           {showExcerpt && article.excerpt && (
             <div
-              className="text-base text-gray-700 mb-4 lg:mb-6 line-clamp-3 leading-relaxed"
+              className="text-lg md:text-xl text-gray-700 mb-4 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: article.excerpt }}
             />
           )}

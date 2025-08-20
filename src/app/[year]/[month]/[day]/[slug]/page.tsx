@@ -11,6 +11,7 @@ import Footer from '@/components/Footer';
 import { WPPost } from '@/types/wordpress';
 import BackToTop from '@/components/BackToTop';
 import ArticleCard from '@/components/ArticleCard';
+import NewsArticleSchema from '@/components/NewsArticleSchema';
 
 // Static revalidation for news - aggressive caching
 export const revalidate = 60;
@@ -90,6 +91,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
 
   return (
     <>
+      <NewsArticleSchema article={post} url={canonicalUrl} />
       <ReadingProgress />
       
       <HeaderWrapper />
@@ -124,14 +126,6 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             {post.title}
           </h1>
 
-          {/* Excerpt */}
-          {post.excerpt && (
-            <div 
-              className="text-xl text-gray-600 leading-relaxed mb-6"
-              dangerouslySetInnerHTML={{ __html: post.excerpt }}
-            />
-          )}
-
           {/* Author section */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-gray-200">
             {post.author?.node && (
@@ -161,14 +155,15 @@ export default async function FastArticlePage({ params }: PostPageProps) {
           {/* Featured Image */}
           {post.featuredImage?.node?.sourceUrl && (
             <figure className="mb-8">
-              <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
+              <div className="relative aspect-[16/9] overflow-hidden rounded-lg bg-gray-100">
                 <Image
                   src={post.featuredImage.node.sourceUrl}
                   alt={post.featuredImage.node.altText || post.title}
                   fill
                   priority
-                  sizes="(max-width: 768px) 100vw, 896px"
+                  sizes="(max-width: 768px) 100vw, 1200px"
                   className="object-cover"
+                  quality={95}
                 />
               </div>
               {post.featuredImage.node.caption && (

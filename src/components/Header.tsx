@@ -27,7 +27,6 @@ const formatDate = (date: Date): string => {
 
 export default function HeaderOptimizedNew({ categories = [], breakingNews }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [formattedDate, setFormattedDate] = useState('');
   
   // Map WordPress categories to our navigation structure
@@ -38,23 +37,6 @@ export default function HeaderOptimizedNew({ categories = [], breakingNews }: He
   // Set date on client side
   useEffect(() => {
     setFormattedDate(formatDate(new Date()));
-  }, []);
-
-  // Optimized scroll handler with debouncing
-  useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 10);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Close mobile menu on escape key
@@ -94,7 +76,7 @@ export default function HeaderOptimizedNew({ categories = [], breakingNews }: He
         </div>
       )}
 
-      <header className={`sticky top-0 z-50 bg-white transition-shadow duration-200 ${isScrolled ? 'shadow-md' : ''}`}>
+      <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
         {/* Top bar */}
         <div className="border-b border-gray-200 bg-gray-50">
           <div className="container-wide">
@@ -116,9 +98,6 @@ export default function HeaderOptimizedNew({ categories = [], breakingNews }: He
                 </Link>
                 <Link href="/subscribe" className="bg-red-700 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-800 transition-colors">
                   Subscribe
-                </Link>
-                <Link href="/login" className="text-gray-600 hover:text-gray-900 transition-colors">
-                  Sign In
                 </Link>
               </div>
             </div>
@@ -149,8 +128,8 @@ export default function HeaderOptimizedNew({ categories = [], breakingNews }: He
 
               {/* Logo - No animation, consistent size */}
               <div className="flex-1 flex justify-center">
-                <Link href="/" className="group text-center">
-                  <h1 className="font-display text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 group-hover:text-red-700 transition-colors">
+                <Link href="/" className="text-center">
+                  <h1 className="font-display text-3xl lg:text-4xl font-bold tracking-tight text-gray-900">
                     Report Focus News
                   </h1>
                   <p className="text-xs lg:text-sm text-gray-600 uppercase tracking-widest mt-1">
@@ -222,7 +201,7 @@ export default function HeaderOptimizedNew({ categories = [], breakingNews }: He
                                 <Link
                                   key={child.slug}
                                   href={`/news/${child.slug}/`}
-                                  className="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors break-inside-avoid"
+                                  className="block px-3 py-2.5 text-base font-medium text-gray-700 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors break-inside-avoid"
                                 >
                                   {child.name}
                                 </Link>
@@ -251,13 +230,13 @@ export default function HeaderOptimizedNew({ categories = [], breakingNews }: He
                   </button>
                   
                   <div className="absolute top-full right-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 pt-1 z-50">
-                    <div className="bg-white border border-gray-200 shadow-xl rounded-md w-64 overflow-hidden">
+                    <div className="bg-white border border-gray-200 shadow-xl rounded-md w-72 overflow-hidden">
                       <div className="py-2 max-h-96 overflow-y-auto">
                         {moreNav.map((section) => (
                           <Link
                             key={section.slug}
                             href={`/news/${section.slug}/`}
-                            className="block px-5 py-3 text-base font-medium text-gray-700 hover:text-red-700 hover:bg-red-50 transition-colors"
+                            className="block px-5 py-3 text-base font-semibold text-gray-700 hover:text-red-700 hover:bg-red-50 transition-colors"
                           >
                             {section.name}
                           </Link>

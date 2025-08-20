@@ -85,7 +85,7 @@ export async function GET() {
       <news:publication_date>${format(postDate, "yyyy-MM-dd'T'HH:mm:ssxxx")}</news:publication_date>
       <news:title>${escapeXml(post.title)}</news:title>
       <news:keywords>${escapeXml(keywords.join(', '))}</news:keywords>
-      ${location ? `<news:geo_locations>${escapeXml(location.country)}${location.city ? `, ${location.city}` : ''}</news:geo_locations>` : ''}
+      ${location ? `<news:geo_locations>${escapeXml(location.country)}${location.city ? `, ${location.city}` : ''}</news:geo_locations>` : '<news:geo_locations>South Africa, Zimbabwe</news:geo_locations>'}
     </news:news>
     <lastmod>${format(new Date(post.modified || post.date), "yyyy-MM-dd'T'HH:mm:ssxxx")}</lastmod>
     <changefreq>hourly</changefreq>
