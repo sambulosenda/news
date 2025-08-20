@@ -11,24 +11,27 @@ import "./globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "swap",
+  display: "optional", // Don't block render for fonts
   preload: true,
+  adjustFontFallback: true, // Better fallback matching
 });
 
 const merriweather = Merriweather({
   subsets: ["latin"],
-  weight: ["400", "700"], // Reduced weights for performance
+  weight: ["400", "700"],
   variable: "--font-merriweather",
-  display: "swap",
-  preload: true,
+  display: "optional", // Don't block render
+  preload: false, // Only preload critical font
+  adjustFontFallback: true,
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "700"], // Reduced weights for performance
+  weight: ["400", "700"],
   variable: "--font-playfair",
-  display: "swap",
-  preload: false, // Only preload critical fonts
+  display: "optional",
+  preload: false,
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
