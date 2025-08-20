@@ -141,11 +141,26 @@ export default async function HomePage() {
   } = await getHomePageData();
 
   // Use hero post or fall back to first recent post
-  const mainHeroPost = heroPost || recentPosts[0];
-  const sideHeroPosts = featuredPosts.length > 0 ? featuredPosts : recentPosts.slice(1, 5);
-
-  // Get remaining recent posts for main feed
-  const mainFeedPosts = recentPosts.slice(5, 15);
+  const mainHeroPost = heroPost || featuredPosts[0] || recentPosts[0];
+  
+  // Filter out the main hero post from all lists to avoid duplicates
+  const filteredFeaturedPosts = featuredPosts.filter((post: WPPost) => post?.id !== mainHeroPost?.id);
+  const filteredRecentPosts = recentPosts.filter((post: WPPost) => post?.id !== mainHeroPost?.id);
+  
+  // Use filtered featured posts for side heroes, or use filtered recent posts
+  const sideHeroPosts = filteredFeaturedPosts.length > 0 
+    ? filteredFeaturedPosts.slice(0, 4) 
+    : filteredRecentPosts.slice(0, 4);
+  
+  // Get remaining posts for main feed, excluding hero and side posts
+  const usedPostIds = new Set([
+    mainHeroPost?.id,
+    ...sideHeroPosts.map((p: WPPost) => p?.id)
+  ].filter(Boolean));
+  
+  const mainFeedPosts = recentPosts
+    .filter((post: WPPost) => !usedPostIds.has(post?.id))
+    .slice(0, 10);
 
   // Format breaking news
   const formattedBreakingNews = breakingNews.map((post: WPPost) => ({

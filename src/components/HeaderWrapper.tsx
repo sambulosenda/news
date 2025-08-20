@@ -1,6 +1,6 @@
 import { fetchGraphQL } from '@/lib/fetch-graphql';
 import { GET_MENU_CATEGORIES } from '@/lib/queries/categories';
-import HeaderOptimized from './HeaderOptimized';
+import Header from './Header';
 import { WPCategory } from '@/types/wordpress';
 
 export default async function HeaderWrapper() {
@@ -15,5 +15,5 @@ export default async function HeaderWrapper() {
     link: "/breaking/story-slug"
   };
   
-  return <HeaderOptimized categories={categories} breakingNews={breakingNews} />;
+  return <Header categories={categories} breakingNews={breakingNews} />;
 }

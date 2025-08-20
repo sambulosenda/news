@@ -130,15 +130,15 @@ export default function ArticleCard({
 
   if (variant === 'featured') {
     return (
-      <article>
+      <article className="h-full">
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl}>
-            <div className="relative aspect-[3/2] mb-3">
+            <div className="relative aspect-[3/2] mb-4">
               <Image
                 src={article.featuredImage.node.sourceUrl}
                 alt={article.featuredImage.node.altText || article.title}
                 fill
-                className="object-cover"
+                className="object-cover transition-transform duration-300 hover:scale-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 placeholder="blur"
                 blurDataURL={generateBlurPlaceholder()}
@@ -146,31 +146,36 @@ export default function ArticleCard({
             </div>
           </Link>
         )}
-        <div>
+        <div className="p-6 h-full flex flex-col">
           {showCategory && category && (
             <Link
               href={categoryUrl}
-              className="category-badge mb-2"
+              className="category-badge mb-3 self-start"
             >
               {category.name}
             </Link>
           )}
-          <h3 className="font-serif text-xl lg:text-2xl font-bold mb-4 leading-tight line-clamp-2">
-            <Link href={postUrl} className="hover:underline">
+          <h3 className="font-serif text-lg lg:text-xl font-bold mb-3 leading-tight line-clamp-3 flex-grow">
+            <Link href={postUrl} className="hover:text-red-600 transition-colors duration-200">
               {article.title}
             </Link>
           </h3>
           {showExcerpt && article.excerpt && (
             <div
-              className="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed"
+              className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: article.excerpt }}
             />
           )}
           {showAuthor && article.author?.node && (
-            <p className="text-sm text-gray-600">
+            <p className="text-xs text-gray-500 uppercase tracking-wide">
               By {article.author.node.name}
             </p>
           )}
+          <div className="mt-auto pt-3">
+            <p className="text-xs text-gray-500">
+              {format(new Date(article.date), 'MMMM d, yyyy')}
+            </p>
+          </div>
         </div>
       </article>
     );

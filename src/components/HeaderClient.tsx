@@ -3,7 +3,7 @@
 // This is a client-only version of the header for error, loading, and not-found pages
 // It doesn't fetch categories from the API to avoid server-side dependencies
 
-import HeaderOptimized from './HeaderOptimized';
+import Header from './Header';
 
 export default function HeaderClient() {
   // Use a minimal set of default categories for error/loading pages
@@ -15,5 +15,5 @@ export default function HeaderClient() {
     link: ""
   };
   
-  return <HeaderOptimized categories={defaultCategories} breakingNews={breakingNews} />;
+  return <Header categories={defaultCategories} breakingNews={breakingNews} />;
 }

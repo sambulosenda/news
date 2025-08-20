@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { format } from 'date-fns';
+import { useState, useEffect, useCallback } from 'react';
 import { WPCategory } from '@/types/wordpress';
 import { mapCategoriesToNavigation } from '@/config/navigation';
 
@@ -15,33 +14,79 @@ interface HeaderProps {
   };
 }
 
-export default function HeaderOptimized({ categories = [], breakingNews }: HeaderProps) {
+// Memoized date formatter
+const formatDate = (date: Date): string => {
+  const options: Intl.DateTimeFormatOptions = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  };
+  return date.toLocaleDateString('en-US', options);
+};
+
+export default function HeaderOptimizedNew({ categories = [], breakingNews }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const today = new Date();
-
+  const [formattedDate, setFormattedDate] = useState('');
+  
   // Map WordPress categories to our navigation structure
   const navigation = mapCategoriesToNavigation(categories);
-  // Filter out Breaking News from featured nav since we have the banner
   const featuredNav = navigation.filter(item => item.featured && item.slug !== 'breaking-news');
   const moreNav = navigation.filter(item => !item.featured || item.slug === 'breaking-news');
 
-  // Handle scroll effect
+  // Set date on client side
   useEffect(() => {
+    setFormattedDate(formatDate(new Date()));
+  }, []);
+
+  // Optimized scroll handler with debouncing
+  useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 10);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    
+    if (mobileMenuOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen(prev => !prev);
   }, []);
 
   return (
     <>
-      {/* Dynamic Breaking News Banner - Only show when there's actual breaking news */}
+      {/* Breaking News Banner */}
       {breakingNews?.show && (
         <div className="bg-gradient-to-r from-red-700 to-red-600 text-white py-2.5 px-4">
           <div className="container-wide flex items-center justify-center">
-            <span className="inline-flex h-2 w-2 rounded-full bg-white animate-pulse mr-2"></span>
+            <span className="inline-flex h-2 w-2 rounded-full bg-white animate-pulse mr-2" aria-hidden="true"></span>
             <Link href={breakingNews.link} className="text-sm font-semibold hover:underline">
               BREAKING: {breakingNews.title}
             </Link>
@@ -55,10 +100,12 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
           <div className="container-wide">
             <div className="flex justify-between items-center py-2 text-sm">
               <div className="flex items-center space-x-4">
-                <time className="text-gray-600">
-                  {format(today, 'EEEE, MMMM d, yyyy')}
-                </time>
-                <span className="hidden sm:inline text-gray-400">|</span>
+                {formattedDate && (
+                  <time className="text-gray-600" dateTime={new Date().toISOString()}>
+                    {formattedDate}
+                  </time>
+                )}
+                <span className="hidden sm:inline text-gray-400" aria-hidden="true">|</span>
                 <Link href="/today" className="hidden sm:inline text-gray-600 hover:text-red-700 transition-colors">
                   Today's Paper
                 </Link>
@@ -78,30 +125,32 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
           </div>
         </div>
 
-        {/* Main header with centered logo */}
+        {/* Main header */}
         <div className="container-wide">
-          <div className={`transition-all duration-200 ${isScrolled ? 'py-3' : 'py-5'}`}>
+          <div className="py-4">
             <div className="flex items-center justify-between">
               {/* Mobile menu button */}
               <button
                 type="button"
                 className="lg:hidden p-2 -ml-2 hover:bg-gray-100 rounded-lg transition-colors"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onClick={toggleMobileMenu}
                 aria-label="Toggle menu"
+                aria-expanded={mobileMenuOpen}
               >
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  {mobileMenuOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  )}
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} 
+                  />
                 </svg>
               </button>
 
-              {/* Centered Logo */}
-              <div className="flex-1 flex justify-center lg:justify-center">
+              {/* Logo - No animation, consistent size */}
+              <div className="flex-1 flex justify-center">
                 <Link href="/" className="group text-center">
-                  <h1 className={`font-display font-bold tracking-tight text-gray-900 group-hover:text-red-700 transition-all duration-200 ${isScrolled ? 'text-3xl lg:text-4xl' : 'text-4xl lg:text-5xl'}`}>
+                  <h1 className="font-display text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 group-hover:text-red-700 transition-colors">
                     Report Focus News
                   </h1>
                   <p className="text-xs lg:text-sm text-gray-600 uppercase tracking-widest mt-1">
@@ -119,20 +168,20 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
             </div>
           </div>
 
-          {/* Navigation */}
-          <nav className="hidden lg:block border-t border-gray-900">
-            <ul className="flex items-center justify-center">
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:block border-t border-gray-900" aria-label="Main navigation">
+            <ul className="flex items-center justify-center" role="menubar">
               {/* Home */}
-              <li>
+              <li role="none">
                 <Link
                   href="/"
                   className="block px-5 py-4 text-base font-bold text-gray-800 hover:text-red-700 hover:bg-red-50 border-b-3 border-transparent hover:border-red-700 transition-all duration-200 tracking-wide"
+                  role="menuitem"
                 >
                   HOME
                 </Link>
               </li>
 
-              {/* Separator */}
               <li className="text-gray-300 select-none" aria-hidden="true">|</li>
 
               {/* Main navigation items */}
@@ -140,23 +189,21 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
                 const hasChildren = section.children && section.children.length > 0;
                 
                 return (
-                  <li 
-                    key={section.slug} 
-                    className="relative group"
-                  >
+                  <li key={section.slug} className="relative group" role="none">
                     <Link
                       href={`/news/${section.slug}/`}
                       className="flex items-center gap-1.5 px-5 py-4 text-base font-semibold text-gray-700 hover:text-red-700 hover:bg-red-50 border-b-3 border-transparent hover:border-red-700 transition-all duration-200 tracking-wide"
+                      role="menuitem"
+                      aria-haspopup={hasChildren ? "true" : undefined}
                     >
                       {section.name.toUpperCase()}
                       {hasChildren && (
-                        <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       )}
                     </Link>
                     
-                    {/* Separator */}
                     <span className="absolute -right-0 top-1/2 -translate-y-1/2 text-gray-300 select-none" aria-hidden="true">|</span>
                     
                     {/* Dropdown */}
@@ -191,12 +238,14 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
               
               {/* More dropdown */}
               {moreNav.length > 0 && (
-                <li className="relative group">
+                <li className="relative group" role="none">
                   <button
                     className="flex items-center gap-1.5 px-5 py-4 text-base font-semibold text-gray-700 hover:text-red-700 hover:bg-red-50 border-b-3 border-transparent hover:border-red-700 transition-all duration-200 tracking-wide"
+                    role="menuitem"
+                    aria-haspopup="true"
                   >
                     MORE
-                    <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
@@ -228,6 +277,7 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
             <div 
               className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
               onClick={() => setMobileMenuOpen(false)}
+              aria-hidden="true"
             />
             
             <div className="fixed left-0 top-0 bottom-0 w-80 bg-white z-50 lg:hidden overflow-y-auto">
@@ -237,6 +287,7 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
                   <button
                     onClick={() => setMobileMenuOpen(false)}
                     className="p-2 hover:bg-gray-100 rounded-lg"
+                    aria-label="Close menu"
                   >
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -245,7 +296,7 @@ export default function HeaderOptimized({ categories = [], breakingNews }: Heade
                 </div>
               </div>
               
-              <nav className="p-6">
+              <nav className="p-6" aria-label="Mobile navigation">
                 <div className="space-y-2">
                   <Link
                     href="/"

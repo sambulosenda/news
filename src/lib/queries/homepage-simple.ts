@@ -110,7 +110,7 @@ export const GET_HOMEPAGE_DATA_SIMPLE = `
       }
     }
     
-    politicsPosts: posts(first: 6, where: { orderby: { field: DATE, order: DESC } }) {
+    politicsPosts: posts(first: 6, where: { categoryName: "Politics", orderby: { field: DATE, order: DESC } }) {
       edges {
         node {
           id
@@ -124,11 +124,20 @@ export const GET_HOMEPAGE_DATA_SIMPLE = `
               altText
             }
           }
+          categories {
+            edges {
+              node {
+                id
+                name
+                slug
+              }
+            }
+          }
         }
       }
     }
     
-    businessPosts: posts(first: 6, where: { orderby: { field: DATE, order: DESC } }) {
+    businessPosts: posts(first: 6, where: { categoryName: "Business", orderby: { field: DATE, order: DESC } }) {
       edges {
         node {
           id
@@ -142,11 +151,20 @@ export const GET_HOMEPAGE_DATA_SIMPLE = `
               altText
             }
           }
+          categories {
+            edges {
+              node {
+                id
+                name
+                slug
+              }
+            }
+          }
         }
       }
     }
     
-    sportsPosts: posts(first: 6, where: { orderby: { field: DATE, order: DESC } }) {
+    sportsPosts: posts(first: 6, where: { categoryName: "Sports", orderby: { field: DATE, order: DESC } }) {
       edges {
         node {
           id
@@ -158,6 +176,15 @@ export const GET_HOMEPAGE_DATA_SIMPLE = `
             node {
               sourceUrl
               altText
+            }
+          }
+          categories {
+            edges {
+              node {
+                id
+                name
+                slug
+              }
             }
           }
         }
