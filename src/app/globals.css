@@ -14,8 +14,36 @@
   }
 }
 
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce-scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
 .animate-fade-in {
   animation: fade-in 0.5s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s ease-out;
+}
+
+.animate-bounce-scale {
+  animation: bounce-scale 0.2s ease-in-out;
 }
 
 @layer base {
@@ -109,6 +137,30 @@
 }
 
 @layer utilities {
+  /* Hide scrollbar for navigation */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Thin scrollbar for dropdowns */
+  .dropdown-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .dropdown-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .dropdown-scroll::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+  }
+  .dropdown-scroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-box-orient: vertical;

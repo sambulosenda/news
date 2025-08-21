@@ -141,6 +141,10 @@ export const navigationConfig: NavSection[] = [
 
 // Helper function to map WordPress categories to our navigation structure
 export function mapCategoriesToNavigation(wpCategories: any[]): NavSection[] {
+  if (!wpCategories || !Array.isArray(wpCategories)) {
+    return navigationConfig; // Return default config if no categories
+  }
+  
   const categoryMap = new Map<string, any>();
   
   // Create a map for quick lookup
