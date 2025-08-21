@@ -146,14 +146,6 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             {post.title}
           </h1>
 
-          {/* Excerpt */}
-          {post.excerpt && (
-            <div 
-              className="text-xl text-gray-600 leading-relaxed mb-6"
-              dangerouslySetInnerHTML={{ __html: post.excerpt }}
-            />
-          )}
-
           {/* Author section */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-gray-200">
             {post.author?.node && (

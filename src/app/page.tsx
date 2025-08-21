@@ -192,7 +192,7 @@ export default async function HomePage() {
               {/* Latest News Section */}
               <section>
                 <div className="border-b-2 border-gray-900 pb-2 mb-6">
-                  <h2 className="font-serif text-2xl lg:text-3xl font-bold">Latest News</h2>
+                  <h2 className="font-bold text-xl lg:text-2xl">Latest News</h2>
                 </div>
                 <div className="space-y-6">
                   {mainFeedPosts.map((post: WPPost) => (
@@ -230,15 +230,15 @@ export default async function HomePage() {
               {/* Most Popular Section */}
               {popularPosts.length > 0 && (
                 <section className="p-6 bg-gray-50 border border-gray-200">
-                  <h2 className="font-serif text-xl lg:text-2xl font-bold mb-4 pb-2 border-b-2 border-gray-900">Most Popular</h2>
+                  <h2 className="font-bold text-lg lg:text-xl mb-4 pb-2 border-b-2 border-gray-900">Most Popular</h2>
                   <div className="space-y-4 pt-4">
                     {popularPosts.slice(0, 5).map((post: WPPost, index: number) => (
                       <div key={post.id} className="flex items-start gap-3">
-                        <span className="font-serif text-2xl font-bold text-red-600 min-w-[1.5rem]">
+                        <span className="font-bold text-xl text-red-600 min-w-[1.5rem]">
                           {index + 1}
                         </span>
                         <div className="flex-1">
-                          <h3 className="font-serif text-base font-bold leading-snug">
+                          <h3 className="text-sm font-semibold leading-snug">
                             <a href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`} className="hover:underline">
                               {post.title}
                             </a>
@@ -253,17 +253,17 @@ export default async function HomePage() {
               {/* Opinion Section */}
               {recentPosts.length > 0 && (
                 <section className="p-6 border border-gray-300">
-                  <h2 className="font-serif text-xl lg:text-2xl font-bold mb-4 pb-2 border-b-2 border-gray-900">Opinion</h2>
+                  <h2 className="font-bold text-lg lg:text-xl mb-4 pb-2 border-b-2 border-gray-900">Opinion</h2>
                   <div className="space-y-4 pt-4">
                     {recentPosts.slice(0, 4).map((post: WPPost) => (
                       <article key={post.id} className="pb-4 border-b border-gray-200 last:border-b-0">
-                        <h3 className="font-serif text-base font-bold mb-2 leading-snug">
+                        <h3 className="text-sm font-semibold mb-2 leading-snug">
                           <a href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`} className="hover:underline">
                             {post.title}
                           </a>
                         </h3>
                         {post.author?.node && (
-                          <p className="text-sm text-gray-600">
+                          <p className="text-xs text-gray-600">
                             By {post.author.node.name}
                           </p>
                         )}
@@ -275,7 +275,7 @@ export default async function HomePage() {
 
               {/* Newsletter Signup */}
               <section className="p-6 bg-gray-900 text-white">
-                <h3 className="font-serif text-xl font-bold mb-3">
+                <h3 className="font-bold text-lg mb-3">
                   Morning Briefing
                 </h3>
                 <p className="text-sm mb-4 leading-relaxed">
@@ -304,8 +304,8 @@ export default async function HomePage() {
         <section className="bg-gray-50 border-t-2 border-gray-900">
           <div className="container-wide py-12 lg:py-16">
             <div className="mb-8">
-              <h2 className="font-serif text-3xl lg:text-4xl font-bold mb-2">Today&apos;s Paper</h2>
-              <p className="text-base text-gray-600">The front page of today&apos;s Report Focus News</p>
+              <h2 className="font-bold text-2xl lg:text-3xl mb-2">Today&apos;s Paper</h2>
+              <p className="text-sm text-gray-600">The front page of today&apos;s Report Focus News</p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

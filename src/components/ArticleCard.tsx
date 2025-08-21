@@ -59,19 +59,19 @@ export default function ArticleCard({
               {category.name}
             </Link>
           )}
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+          <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl mb-4 leading-tight">
             <Link href={postUrl} className="hover:underline decoration-2 underline-offset-2">
               {article.title}
             </Link>
           </h2>
           {showExcerpt && article.excerpt && (
             <div
-              className="text-lg md:text-xl text-gray-700 mb-4 leading-relaxed"
+              className="text-base md:text-lg text-gray-700 mb-4 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: article.excerpt }}
             />
           )}
           {showAuthor && article.author?.node && (
-            <p className="text-sm text-gray-600">
+            <p className="text-xs text-gray-600">
               By {article.author.node.name} • {format(new Date(article.date), 'MMM d, yyyy')}
             </p>
           )}
@@ -99,7 +99,7 @@ export default function ArticleCard({
           </Link>
         )}
         <div className="flex-1 min-w-0">
-          <h3 className="font-serif text-lg lg:text-xl font-bold mb-3 line-clamp-2 leading-tight">
+          <h3 className="font-semibold text-base lg:text-lg mb-3 line-clamp-2 leading-tight">
             <Link href={postUrl} className="hover:underline">
               {article.title}
             </Link>
@@ -126,7 +126,7 @@ export default function ArticleCard({
             {category.name}
           </Link>
         )}
-        <h3 className="font-serif text-base font-bold leading-snug">
+        <h3 className="font-semibold text-sm leading-snug">
           <Link href={postUrl} className="hover:underline">
             {article.title}
           </Link>
@@ -162,7 +162,7 @@ export default function ArticleCard({
               {category.name}
             </Link>
           )}
-          <h3 className="font-serif text-lg lg:text-xl font-bold mb-3 leading-tight line-clamp-3 flex-grow">
+          <h3 className="font-semibold text-base lg:text-lg mb-3 leading-tight line-clamp-3 flex-grow">
             <Link href={postUrl} className="hover:text-red-600 transition-colors duration-200">
               {article.title}
             </Link>
@@ -213,19 +213,19 @@ export default function ArticleCard({
             {category.name}
           </Link>
         )}
-        <h3 className="font-serif text-lg lg:text-xl font-bold mb-3 line-clamp-2">
+        <h3 className="font-semibold text-base lg:text-lg mb-3 line-clamp-2">
           <Link href={postUrl} className="hover:underline">
             {article.title}
           </Link>
         </h3>
         {showExcerpt && article.excerpt && (
           <div
-            className="text-sm text-gray-700 mb-3 line-clamp-2"
+            className="text-xs text-gray-700 mb-3 line-clamp-2"
             dangerouslySetInnerHTML={{ __html: article.excerpt }}
           />
         )}
         {showAuthor && (
-          <p className="text-sm text-gray-600">
+          <p className="text-xs text-gray-600">
             {article.author?.node && `By ${article.author.node.name} • `}
             {format(new Date(article.date), 'MMM d, yyyy')}
           </p>

@@ -150,8 +150,8 @@ export default function HeaderOptimizedNew({ categories = [], breakingNews }: He
               </svg>
             </button>
 
-            {/* Logo on the left - Compact Al Jazeera style */}
-            <Link href="/" className="flex items-center flex-shrink-0 mr-4">
+            {/* Mobile logo - shown only on mobile */}
+            <Link href="/" className="flex lg:hidden items-center flex-shrink-0 mx-auto">
               <div className="flex items-center">
                 <div className="bg-red-700 text-white px-2 py-1 mr-2 rounded-sm">
                   <span className="font-display text-sm font-bold">RF</span>
@@ -166,12 +166,9 @@ export default function HeaderOptimizedNew({ categories = [], breakingNews }: He
                 </div>
               </div>
             </Link>
-            
-            {/* Vertical divider */}
-            <div className="hidden lg:block w-px h-8 bg-gray-300 mr-4" aria-hidden="true"></div>
 
-            {/* Desktop Navigation - Horizontal with constrained width */}
-            <nav className="hidden lg:flex flex-1 items-center" aria-label="Main navigation">
+            {/* Desktop Navigation - Al Jazeera style with menu first */}
+            <nav className="hidden lg:flex items-center" aria-label="Main navigation">
               <ul className="flex items-center" role="menubar">
                 {/* Home */}
                 <li role="none">
@@ -278,8 +275,28 @@ export default function HeaderOptimizedNew({ categories = [], breakingNews }: He
               </ul>
             </nav>
 
-            {/* Right side actions */}
-            <div className="flex items-center ml-2 flex-shrink-0">
+            {/* Vertical divider */}
+            <div className="hidden lg:block w-px h-8 bg-gray-300 mx-4" aria-hidden="true"></div>
+
+            {/* Logo on the right - Al Jazeera style */}
+            <Link href="/" className="hidden lg:flex items-center flex-shrink-0">
+              <div className="flex items-center">
+                <div className="bg-red-700 text-white px-2 py-1 mr-2 rounded-sm">
+                  <span className="font-display text-sm font-bold">RF</span>
+                </div>
+                <div>
+                  <h1 className="font-display text-base font-bold tracking-tight text-gray-900">
+                    Report Focus
+                  </h1>
+                  <p className="text-[8px] text-gray-600 uppercase tracking-wider -mt-0.5">
+                    NEWS
+                  </p>
+                </div>
+              </div>
+            </Link>
+
+            {/* Search icon */}
+            <div className="flex items-center ml-4 flex-shrink-0">
               <Link href="/search" className="p-2 hover:bg-gray-100 rounded-lg transition-colors" aria-label="Search">
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
