@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useCallback, useRef, Fragment } from 'react';
+import { useState, useEffect, useCallback, useRef, Fragment, TouchEvent } from 'react';
 import { WPCategory } from '@/types/wordpress';
 import { mapCategoriesToNavigation } from '@/config/navigation';
 
@@ -69,11 +69,11 @@ export default function HeaderOptimizedNew({ categories = [], breakingNews }: He
   }, []);
 
   // Handle swipe to close mobile menu
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+  const handleTouchStart = useCallback((e: TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   }, []);
 
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+  const handleTouchMove = useCallback((e: TouchEvent) => {
     touchEndX.current = e.touches[0].clientX;
   }, []);
 
