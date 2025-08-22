@@ -73,12 +73,18 @@ async function getArticleData(slug: string) {
 }
 
 
-// Enhanced content renderer with better typography
+// Enhanced content renderer with professional typography
 function FastContentRenderer({ content }: { content: string }) {
+  // Add drop cap to first paragraph
+  const processedContent = content.replace(
+    /<p>([A-Z])/,
+    '<p class="first-paragraph"><span class="drop-cap">$1</span>'
+  );
+  
   return (
     <div 
-      className="prose prose-lg max-w-none prose-headings:font-serif prose-headings:font-bold prose-p:text-gray-700 prose-p:leading-relaxed prose-blockquote:border-l-red-600 prose-blockquote:text-gray-600 prose-a:text-red-600 hover:prose-a:text-red-700 prose-img:rounded-lg"
-      dangerouslySetInnerHTML={{ __html: content }}
+      className="max-w-[680px] mx-auto font-serif text-lg md:text-[1.125rem] lg:text-xl leading-[1.8] text-gray-800 prose prose-headings:font-sans prose-headings:font-bold prose-headings:text-gray-900 prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-p:text-gray-800 prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 prose-blockquote:my-8 prose-a:text-red-600 prose-a:underline hover:prose-a:text-red-700 prose-img:rounded-lg prose-img:my-8 prose-li:mb-2 prose-strong:font-bold prose-strong:text-gray-900"
+      dangerouslySetInnerHTML={{ __html: processedContent }}
     />
   );
 }
@@ -118,53 +124,75 @@ export default async function FastArticlePage({ params }: PostPageProps) {
       
       <main className="min-h-screen bg-white">
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
-          {/* Category & Meta */}
-          <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600 mb-4">
-            {post.categories?.edges?.[0]?.node && (
-              <>
-                <Link 
-                  href={`/news/${post.categories.edges[0].node.slug}/`}
-                  className="text-red-600 font-semibold hover:text-red-700 transition-colors"
-                >
-                  {post.categories.edges[0].node.name}
-                </Link>
-                <span className="text-gray-400">•</span>
-              </>
-            )}
-            <time dateTime={post.date}>{format(new Date(post.date), 'MMMM d, yyyy')}</time>
-            <span className="text-gray-400">•</span>
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              {readingTime} min read
-            </span>
-          </div>
+          {/* Category Badge - NYTimes Style */}
+          {post.categories?.edges?.[0]?.node && (
+            <div className="mb-4">
+              <Link 
+                href={`/news/${post.categories.edges[0].node.slug}/`}
+                className="inline-block text-xs font-bold uppercase tracking-wider text-red-600 hover:text-red-700 transition-colors border-b-2 border-red-600 pb-0.5"
+              >
+                {post.categories.edges[0].node.name}
+              </Link>
+            </div>
+          )}
 
-          {/* Title */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 leading-tight mb-6">
+          {/* Title - Professional Typography */}
+          <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
             {post.title}
           </h1>
 
-          {/* Author section */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-gray-200">
+          {/* Subtitle/Excerpt if available */}
+          {post.excerpt && (
+            <p className="font-serif text-lg md:text-xl text-gray-600 leading-relaxed mb-6">
+              {post.excerpt.replace(/<[^>]*>/g, '').substring(0, 200)}
+            </p>
+          )}
+
+          {/* Meta Information Bar */}
+          <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 pb-6 border-b border-gray-200">
+            <time dateTime={post.date} className="font-medium">
+              {format(new Date(post.date), 'MMMM d, yyyy')}
+            </time>
+            <span className="text-gray-300">•</span>
+            <span className="flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {readingTime} min read
+            </span>
+            {post.modified && post.modified !== post.date && (
+              <>
+                <span className="text-gray-300">•</span>
+                <span className="italic">
+                  Updated {format(new Date(post.modified), 'MMM d, yyyy')}
+                </span>
+              </>
+            )}
+          </div>
+
+          {/* Author section - Professional Style */}
+          <div className="flex flex-wrap items-center justify-between gap-4 py-6">
             {post.author?.node && (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 {post.author.node.avatar?.url && (
                   <Image
                     src={post.author.node.avatar.url}
                     alt={post.author.node.name}
-                    width={40}
-                    height={40}
-                    className="rounded-full"
+                    width={48}
+                    height={48}
+                    className="rounded-full border border-gray-200"
                     loading="lazy"
                   />
                 )}
                 <div>
-                  <div className="font-semibold text-gray-900">
+                  <div className="text-sm text-gray-500 mb-1">By</div>
+                  <Link 
+                    href={`/author/${post.author.node.slug}`}
+                    className="font-bold text-gray-900 hover:text-red-600 transition-colors"
+                  >
                     {post.author.node.name}
-                  </div>
-                  <div className="text-sm text-gray-500">
+                  </Link>
+                  <div className="text-sm text-gray-500 mt-1">
                     Staff Reporter
                   </div>
                 </div>

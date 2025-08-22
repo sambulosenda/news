@@ -16,11 +16,11 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
   const mainCategory = mainArticle.categories?.edges?.[0]?.node;
 
   return (
-    <section className="bg-white border-b border-gray-300">
-      <div className="container-wide py-4 lg:py-6">
+    <section className="bg-white border-b-4 border-gray-900">
+      <div className="container-wide py-6 lg:py-10">
         
         {/* Clean Professional Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
           
           {/* Main Story - Takes up 2 columns */}
           <div className="lg:col-span-2">
@@ -47,15 +47,15 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
                 {mainCategory && (
                   <Link
                     href={`/news/${mainCategory.slug}/`}
-                    className="text-xs font-semibold text-red-600 hover:text-red-700 uppercase tracking-wide"
+                    className="inline-block text-xs font-bold text-red-600 hover:text-red-700 uppercase tracking-wider border-b-2 border-red-600 pb-0.5 mb-3"
                   >
                     {mainCategory.name}
                   </Link>
                 )}
                 
                 {/* Headline */}
-                <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight mt-2 mb-3">
-                  <Link href={mainPostUrl} className="hover:text-gray-700">
+                <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-gray-900 mb-4">
+                  <Link href={mainPostUrl} className="hover:text-gray-700 transition-colors">
                     {mainArticle.title}
                   </Link>
                 </h1>
@@ -63,20 +63,20 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
                 {/* Excerpt */}
                 {mainArticle.excerpt && (
                   <div
-                    className="text-lg text-gray-600 leading-relaxed mb-3 line-clamp-2"
+                    className="font-serif text-lg md:text-xl text-gray-600 leading-relaxed mb-4 line-clamp-3"
                     dangerouslySetInnerHTML={{ __html: mainArticle.excerpt }}
                   />
                 )}
                 
                 {/* Byline */}
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-500 font-medium">
                   {mainArticle.author?.node && (
-                    <span className="font-medium text-gray-700">
-                      By {mainArticle.author.node.name}
+                    <span className="text-gray-700">
+                      By <span className="font-semibold">{mainArticle.author.node.name}</span>
                     </span>
                   )}
-                  {mainArticle.author?.node && <span className="mx-2">•</span>}
-                  <time dateTime={mainArticle.date}>
+                  {mainArticle.author?.node && <span className="mx-2 text-gray-400">•</span>}
+                  <time dateTime={mainArticle.date} className="text-gray-600">
                     {format(postDate, 'MMMM d, yyyy')}
                   </time>
                 </div>
@@ -86,9 +86,9 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
 
           {/* Sidebar Stories */}
           <div className="lg:col-span-1">
-            <div className="lg:border-l lg:pl-8 border-gray-300">
+            <div className="lg:border-l-2 lg:pl-8 border-gray-300">
               {/* Top Stories Header */}
-              <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4 pb-2 border-b border-gray-300">
+              <h2 className="text-base font-bold text-gray-900 uppercase tracking-wider mb-5 pb-3 border-b-2 border-red-600">
                 Top Stories
               </h2>
               

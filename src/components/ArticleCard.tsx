@@ -192,13 +192,13 @@ export default function ArticleCard({
   return (
     <article>
       {showImage && article.featuredImage?.node && (
-        <Link href={postUrl}>
-          <div className="relative aspect-[16/10] mb-3">
+        <Link href={postUrl} className="group">
+          <div className="relative aspect-[16/10] mb-3 overflow-hidden bg-gray-100">
             <Image
               src={article.featuredImage.node.sourceUrl}
               alt={article.featuredImage.node.altText || article.title}
               fill
-              className="object-cover"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
@@ -208,24 +208,24 @@ export default function ArticleCard({
         {showCategory && category && (
           <Link
             href={categoryUrl}
-            className="category-badge mb-2"
+            className="inline-block text-xs font-bold text-red-600 hover:text-red-700 uppercase tracking-wider mb-2 border-b border-red-600 pb-0.5"
           >
             {category.name}
           </Link>
         )}
-        <h3 className="font-semibold text-base lg:text-lg mb-3 line-clamp-2">
-          <Link href={postUrl} className="hover:underline">
+        <h3 className="font-serif text-lg lg:text-xl font-bold mb-3 line-clamp-2 leading-tight text-gray-900">
+          <Link href={postUrl} className="hover:text-gray-700 transition-colors">
             {article.title}
           </Link>
         </h3>
         {showExcerpt && article.excerpt && (
           <div
-            className="text-xs text-gray-700 mb-3 line-clamp-2"
+            className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed font-serif"
             dangerouslySetInnerHTML={{ __html: article.excerpt }}
           />
         )}
         {showAuthor && (
-          <p className="text-xs text-gray-600">
+          <p className="text-xs text-gray-500 font-medium">
             {article.author?.node && `By ${article.author.node.name} • `}
             {format(new Date(article.date), 'MMM d, yyyy')}
           </p>

@@ -49,8 +49,8 @@
 @layer base {
   :root {
     --font-inter: 'Inter', system-ui, sans-serif;
-    --font-merriweather: 'Merriweather', Georgia, serif;
-    --font-playfair: 'Playfair Display', Georgia, serif;
+    --font-serif: Georgia, Times, 'Times New Roman', serif;
+    --font-roboto: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     
     /* Al Jazeera-inspired font sizes */
     --text-xs: 0.75rem;    /* 12px */
@@ -152,23 +152,27 @@
   }
 
   .article-content {
-    @apply prose max-w-none;
+    @apply prose max-w-none font-serif;
   }
 
   .article-content p {
-    @apply text-base leading-7 mb-5 text-gray-700;
+    @apply text-base leading-7 mb-5 text-gray-700 font-serif;
+    font-family: Georgia, Times, 'Times New Roman', serif;
   }
 
   .article-content h2 {
-    @apply font-bold text-2xl mt-8 mb-4 text-gray-900;
+    @apply font-bold text-2xl mt-8 mb-4 text-gray-900 font-serif;
+    font-family: Georgia, Times, 'Times New Roman', serif;
   }
 
   .article-content h3 {
-    @apply font-semibold text-xl mt-6 mb-3 text-gray-900;
+    @apply font-semibold text-xl mt-6 mb-3 text-gray-900 font-serif;
+    font-family: Georgia, Times, 'Times New Roman', serif;
   }
 
   .article-content blockquote {
-    @apply border-l-4 border-gray-300 pl-5 my-6 italic text-gray-600;
+    @apply border-l-4 border-gray-300 pl-5 my-6 italic text-gray-600 font-serif;
+    font-family: Georgia, Times, 'Times New Roman', serif;
   }
 
   .skeleton {
@@ -182,7 +186,43 @@
   .category-badge {
     @apply inline-block px-2 py-1 text-xs font-semibold text-red-600 hover:text-red-700 uppercase tracking-wider transition-colors;
   }
+  
+  /* Professional article typography */
+  .drop-cap {
+    @apply float-left text-7xl font-bold leading-[0.83] mr-2 mt-1 text-gray-900 font-serif;
+  }
+  
+  .first-paragraph {
+    @apply text-xl leading-relaxed text-gray-800;
+  }
+  
+  /* Article content spacing */
+  article p {
+    @apply mb-6;
+  }
+  
+  article h2 {
+    @apply text-2xl font-bold mt-12 mb-6 text-gray-900;
+  }
+  
+  article h3 {
+    @apply text-xl font-semibold mt-8 mb-4 text-gray-900;
+  }
+  
+  article blockquote {
+    @apply border-l-4 border-gray-300 pl-6 my-8 italic text-gray-700;
+  }
+  
+  article ul, article ol {
+    @apply my-6 ml-6;
+  }
+  
+  article li {
+    @apply mb-2;
+  }
+  
 }
+
 
 @layer utilities {
   /* Hide scrollbar for navigation */
