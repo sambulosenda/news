@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import Image from 'next/image';
+import SafeImage from '@/components/SafeImage';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { fetchGraphQLCached } from '@/lib/graphql-cache';
@@ -234,27 +235,25 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             <ShareButtons url={canonicalUrl} title={post.title} />
           </div>
 
-          {/* Featured Image */}
-          {post.featuredImage?.node?.sourceUrl && (
-            <figure className="mb-8">
-              <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
-                <Image
-                  src={post.featuredImage.node.sourceUrl}
-                  alt={post.featuredImage.node.altText || post.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 896px"
-                  className="object-cover"
-                  quality={85}
-                  loading="eager"
-                />
+          {/* Featured Image - Always show with fallback */}
+          <figure className="mb-8">
+            <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
+              <SafeImage
+                src={post.featuredImage?.node?.sourceUrl || ''}
+                alt={post.featuredImage?.node?.altText || post.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 896px"
+                className="object-cover"
+                quality={85}
+                priority
+              />
               </div>
-              {post.featuredImage.node.caption && (
+              {post.featuredImage?.node?.caption && (
                 <figcaption className="mt-2 text-sm text-gray-600 text-center">
                   {post.featuredImage.node.caption}
                 </figcaption>
               )}
             </figure>
-          )}
 
           {/* Article Content - The actual LCP element */}
           <FastContentRenderer content={post.content || ''} />
