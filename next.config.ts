@@ -98,6 +98,23 @@ const nextConfig: NextConfig = {
     return config;
   },
   
+  // Redirects for domain consolidation
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'backend.reportfocusnews.com',
+          },
+        ],
+        destination: 'https://reportfocusnews.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
+
   // Security headers
   async headers() {
     return [

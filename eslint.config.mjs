@@ -28,6 +28,9 @@ const eslintConfig = [
       // Ensure alt text for images (accessibility)
       "jsx-a11y/alt-text": "error",
       
+      // React 17+ doesn't need React in scope for JSX
+      "react/react-in-jsx-scope": "off",
+      
       // Catch potential runtime errors
       "no-undef": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
