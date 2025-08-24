@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect, useCallback, Fragment } from 'react';
 import { WPCategory } from '@/types/wordpress';
 import { mapCategoriesToNavigation } from '@/config/navigation';
+import { getMarketData, formatMarketData } from '@/lib/market-data';
 
 interface HeaderProps {
   categories?: WPCategory[];
@@ -42,6 +43,7 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
   const [johannesburgTime, setJohannesburgTime] = useState('');
   const [harareTime, setHarareTime] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
+  const [marketData, setMarketData] = useState<ReturnType<typeof formatMarketData> | null>(null);
   
   // Map WordPress categories to our navigation structure
   const navigation = mapCategoriesToNavigation(categories);
@@ -64,6 +66,37 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
     const interval = setInterval(updateDateTime, 60000); // Update every minute
     
     return () => clearInterval(interval);
+  }, []);
+
+  // Fetch market data
+  useEffect(() => {
+    const fetchMarketData = async () => {
+      try {
+        const data = await getMarketData();
+        setMarketData(formatMarketData(data));
+      } catch (error) {
+        console.error('Error fetching market data:', error);
+        // Fallback to default values
+        setMarketData({
+          jse: {
+            display: '▲',
+            percent: '0.8%',
+            color: 'text-green-600'
+          },
+          zarUsd: {
+            rate: '18.45',
+            change: '+0.15',
+            color: 'text-green-600'
+          }
+        });
+      }
+    };
+
+    fetchMarketData();
+    // Update market data every 5 minutes
+    const marketInterval = setInterval(fetchMarketData, 5 * 60 * 1000);
+
+    return () => clearInterval(marketInterval);
   }, []);
 
   // Close mobile menu on escape key
@@ -135,13 +168,17 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                 </Link>
               </div>
               <div className="flex items-center gap-4">
-                <div className="hidden lg:flex items-center gap-3 text-xs text-gray-600">
-                  <span className="font-medium">JSE</span>
-                  <span className="text-green-600">▲ 0.8%</span>
-                  <span className="text-gray-400">|</span>
-                  <span className="font-medium">ZAR/USD</span>
-                  <span>18.45</span>
-                </div>
+                {marketData && (
+                  <div className="hidden lg:flex items-center gap-3 text-xs text-gray-600">
+                    <span className="font-medium">JSE</span>
+                    <span className={marketData.jse.color}>
+                      {marketData.jse.display} {marketData.jse.percent}
+                    </span>
+                    <span className="text-gray-400">|</span>
+                    <span className="font-medium">ZAR/USD</span>
+                    <span>{marketData.zarUsd.rate}</span>
+                  </div>
+                )}
                 <Link href="/newsletters" className="hidden md:inline text-xs text-gray-600 hover:text-black transition-colors font-medium">
                   Newsletters
                 </Link>

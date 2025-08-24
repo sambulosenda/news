@@ -110,21 +110,11 @@ export default function Footer() {
       <div className="container-wide py-8">
         {/* Top Section - Logo and Social */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-6 border-b border-gray-200">
-          {/* Logo - Exact same as header */}
+          {/* Logo - Full text like header */}
           <Link href="/" className="flex items-center">
-            <div className="flex items-center">
-              <div className="bg-red-700 text-white px-2 py-1 mr-2 rounded-sm">
-                <span className="font-display text-sm font-bold">RF</span>
-              </div>
-              <div>
-                <h2 className="font-display text-base font-bold tracking-tight text-gray-900">
-                  Report Focus
-                </h2>
-                <p className="text-[8px] text-gray-600 uppercase tracking-wider -mt-0.5">
-                  NEWS
-                </p>
-              </div>
-            </div>
+            <h2 className="font-serif text-2xl font-bold text-gray-900">
+              Report Focus News
+            </h2>
           </Link>
 
           {/* Social Icons */}
