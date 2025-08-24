@@ -308,28 +308,6 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* More News Section */}
-        <section className="border-t border-gray-300 bg-gray-50">
-          <div className="container-wide py-8">
-            <h2 className="text-lg font-bold text-gray-900 pb-2 mb-6 border-b border-gray-300">
-              More News
-            </h2>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {recentPosts.slice(0, 8).map((post: WPPost) => (
-                <ArticleCard
-                  key={post.id}
-                  article={post}
-                  variant="default"
-                  showImage={true}
-                  showExcerpt={false}
-                  showAuthor={false}
-                  showCategory={true}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
       </main>
 
       <Footer />
