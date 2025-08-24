@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="60" viewBox="0 0 600 60">
+  <!-- Red background box for RF -->
+  <rect x="0" y="5" width="50" height="50" fill="#C8102E" rx="4"/>
+  
+  <!-- RF text in white -->
+  <text x="25" y="38" font-family="Georgia, serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">RF</text>
+  
+  <!-- Report Focus News text -->
+  <text x="70" y="35" font-family="Georgia, serif" font-size="28" font-weight="bold" fill="#000000">Report Focus News</text>
+  
+  <!-- Tagline (optional) -->
+  <text x="70" y="50" font-family="Arial, sans-serif" font-size="12" fill="#666666">Southern Africa's Trusted News Source</text>
+</svg>

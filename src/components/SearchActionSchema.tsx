@@ -10,7 +10,7 @@ export default function SearchActionSchema() {
       name: 'Report Focus News',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://reportfocusnews.com/logo.png',
+        url: 'https://reportfocusnews.com/logo.svg',
         width: 800,
         height: 200,
       },

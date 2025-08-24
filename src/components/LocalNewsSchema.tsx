@@ -29,7 +29,7 @@ export default function LocalNewsSchema({
   authorName,
   authorUrl,
   publisherName = 'Report Focus News',
-  publisherLogo = 'https://reportfocusnews.com/logo.png',
+  publisherLogo = 'https://reportfocusnews.com/logo.svg',
   keywords = [],
   category = 'News',
   location,

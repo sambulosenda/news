@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import SafeImage from './SafeImage';
 import { format } from 'date-fns';
 import { WPPost } from '@/types/wordpress';
 import { generateBlurPlaceholder } from '@/lib/image-utils';
@@ -36,13 +36,12 @@ export default function ArticleCard({
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl}>
             <div className="relative aspect-[16/9] mb-4">
-              <Image
+              <SafeImage
                 src={article.featuredImage.node.sourceUrl}
                 alt={article.featuredImage.node.altText || article.title}
                 fill
                 className="object-cover"
                 priority={true}
-                loading="eager"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 800px"
                 placeholder="blur"
                 blurDataURL={generateBlurPlaceholder()}
@@ -59,8 +58,8 @@ export default function ArticleCard({
               {category.name}
             </Link>
           )}
-          <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl mb-4 leading-tight">
-            <Link href={postUrl} className="hover:underline decoration-2 underline-offset-2">
+          <h2 className="mb-4">
+            <Link href={postUrl} className="font-sans font-bold text-xl md:text-2xl lg:text-3xl leading-tight text-black hover:text-gray-700 transition-colors block">
               {article.title}
             </Link>
           </h2>
@@ -86,7 +85,7 @@ export default function ArticleCard({
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl} className="flex-shrink-0">
             <div className="relative w-32 h-32 lg:w-40 lg:h-40">
-              <Image
+              <SafeImage
                 src={article.featuredImage.node.sourceUrl}
                 alt={article.featuredImage.node.altText || article.title}
                 fill
@@ -99,8 +98,8 @@ export default function ArticleCard({
           </Link>
         )}
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-base lg:text-lg mb-3 line-clamp-2 leading-tight">
-            <Link href={postUrl} className="hover:underline">
+          <h3 className="mb-3">
+            <Link href={postUrl} className="font-sans font-bold text-lg lg:text-xl line-clamp-2 leading-tight text-black hover:text-gray-700 transition-colors block">
               {article.title}
             </Link>
           </h3>
@@ -126,8 +125,8 @@ export default function ArticleCard({
             {category.name}
           </Link>
         )}
-        <h3 className="font-semibold text-sm leading-snug">
-          <Link href={postUrl} className="hover:underline">
+        <h3>
+          <Link href={postUrl} className="font-sans font-semibold text-base leading-snug text-black hover:text-gray-700 transition-colors block">
             {article.title}
           </Link>
         </h3>
@@ -141,7 +140,7 @@ export default function ArticleCard({
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl}>
             <div className="relative aspect-[3/2] mb-4">
-              <Image
+              <SafeImage
                 src={article.featuredImage.node.sourceUrl}
                 alt={article.featuredImage.node.altText || article.title}
                 fill
@@ -162,8 +161,8 @@ export default function ArticleCard({
               {category.name}
             </Link>
           )}
-          <h3 className="font-semibold text-base lg:text-lg mb-3 leading-tight line-clamp-3 flex-grow">
-            <Link href={postUrl} className="hover:text-red-600 transition-colors duration-200">
+          <h3 className="mb-3 flex-grow">
+            <Link href={postUrl} className="font-sans font-bold text-lg lg:text-xl leading-tight line-clamp-3 text-black hover:text-gray-700 transition-colors block">
               {article.title}
             </Link>
           </h3>
@@ -194,7 +193,7 @@ export default function ArticleCard({
       {showImage && article.featuredImage?.node && (
         <Link href={postUrl} className="group">
           <div className="relative aspect-[16/10] mb-3 overflow-hidden bg-gray-100">
-            <Image
+            <SafeImage
               src={article.featuredImage.node.sourceUrl}
               alt={article.featuredImage.node.altText || article.title}
               fill
@@ -213,8 +212,8 @@ export default function ArticleCard({
             {category.name}
           </Link>
         )}
-        <h3 className="text-base font-medium mb-2 line-clamp-2 leading-tight text-gray-900">
-          <Link href={postUrl} className="hover:text-gray-600">
+        <h3 className="mb-2">
+          <Link href={postUrl} className="font-sans text-lg font-bold line-clamp-2 leading-tight text-black hover:text-gray-700 transition-colors block">
             {article.title}
           </Link>
         </h3>

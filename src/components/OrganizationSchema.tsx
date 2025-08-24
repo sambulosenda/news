@@ -11,7 +11,7 @@ export default function OrganizationSchema() {
     logo: {
       '@type': 'ImageObject',
       '@id': 'https://reportfocusnews.com#logo',
-      url: 'https://reportfocusnews.com/logo.png',
+      url: 'https://reportfocusnews.com/logo.svg',
       width: 800,
       height: 200,
       caption: 'Report Focus News Logo',
@@ -168,7 +168,7 @@ export default function OrganizationSchema() {
     brand: {
       '@type': 'Brand',
       name: 'Report Focus News',
-      logo: 'https://reportfocusnews.com/logo.png',
+      logo: 'https://reportfocusnews.com/logo.svg',
       slogan: 'Southern Africa\'s News Authority',
     },
 

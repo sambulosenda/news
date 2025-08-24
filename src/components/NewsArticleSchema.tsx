@@ -14,16 +14,32 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
     ? article.excerpt.replace(/<[^>]*>/g, '').substring(0, 160)
     : article.title;
 
+  // Prepare image array with proper ImageObject schema
+  const images = article.featuredImage?.node ? [
+    {
+      "@type": "ImageObject",
+      "url": article.featuredImage.node.sourceUrl,
+      "width": article.featuredImage.node.mediaDetails?.width || 1200,
+      "height": article.featuredImage.node.mediaDetails?.height || 630,
+      "caption": article.featuredImage.node.caption || article.featuredImage.node.altText || article.title
+    }
+  ] : [
+    {
+      "@type": "ImageObject",
+      "url": "https://reportfocusnews.com/og-image.jpg",
+      "width": 1200,
+      "height": 630,
+      "caption": "Report Focus News"
+    }
+  ];
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     "headline": article.title,
     "description": description,
-    "image": article.featuredImage?.node ? [
-      article.featuredImage.node.sourceUrl
-    ] : [
-      "https://reportfocusnews.com/og-image.jpg" // Fallback image
-    ],
+    "image": images,
+    "thumbnailUrl": article.featuredImage?.node?.sourceUrl || "https://reportfocusnews.com/og-image.jpg",
     "datePublished": publishDate,
     "dateModified": modifiedDate,
     "author": {
@@ -36,7 +52,7 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
       "name": "Report Focus News",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://reportfocusnews.com/logo.png",
+        "url": "https://reportfocusnews.com/logo.svg",
         "width": 600,
         "height": 60
       },

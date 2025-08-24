@@ -90,14 +90,47 @@ function FastContentRenderer({ content }: { content: string }) {
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, year, month, day } = await params;
   const { article } = await getArticleData(slug);
   
   if (!article) return { title: 'Article Not Found' };
 
+  const description = article.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
+  const ogImage = article.featuredImage?.node?.sourceUrl || 'https://reportfocusnews.com/og-image.jpg';
+  const canonicalUrl = `https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`;
+
   return {
     title: `${article.title} | Report Focus News`,
-    description: article.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || '',
+    description,
+    openGraph: {
+      title: article.title,
+      description,
+      type: 'article',
+      url: canonicalUrl,
+      images: [
+        {
+          url: ogImage,
+          width: article.featuredImage?.node?.mediaDetails?.width || 1200,
+          height: article.featuredImage?.node?.mediaDetails?.height || 630,
+          alt: article.featuredImage?.node?.altText || article.title,
+        }
+      ],
+      publishedTime: article.date,
+      modifiedTime: article.modified || article.date,
+      authors: article.author?.node?.name ? [article.author.node.name] : ['Report Focus News'],
+      section: article.categories?.edges?.[0]?.node?.name || 'News',
+      tags: article.tags?.edges?.map((tag: any) => tag.node.name) || [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    keywords: article.tags?.edges?.map((tag: any) => tag.node.name).join(', ') || '',
   };
 }
 

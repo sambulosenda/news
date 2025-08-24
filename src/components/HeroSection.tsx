@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import SafeImage from './SafeImage';
 import { format } from 'date-fns';
 import { WPPost } from '@/types/wordpress';
 
@@ -33,7 +33,7 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
               {mainArticle.featuredImage?.node && (
                 <Link href={mainPostUrl} className="block relative group">
                   <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
-                    <Image
+                    <SafeImage
                       src={mainArticle.featuredImage.node.sourceUrl}
                       alt={mainArticle.featuredImage.node.altText || mainArticle.title}
                       fill

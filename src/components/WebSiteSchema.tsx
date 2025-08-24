@@ -10,7 +10,7 @@ export default function WebSiteSchema() {
         "url": "https://reportfocusnews.com",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://reportfocusnews.com/logo.png",
+          "url": "https://reportfocusnews.com/logo.svg",
           "width": 600,
           "height": 60
         },
