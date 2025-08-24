@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import React from "react";
 import { Inter, Roboto } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ApolloWrapper } from "@/lib/apollo-wrapper";
 import SearchActionSchema from "@/components/SearchActionSchema";
 import SiteNavigationSchema from "@/components/SiteNavigationSchema";
@@ -123,6 +124,7 @@ export default function RootLayout({
         <WebSiteSchema />
         <NewsPerformanceOptimizer />
         <ApolloWrapper>{children}</ApolloWrapper>
+        <SpeedInsights />
       </body>
     </html>
   );
