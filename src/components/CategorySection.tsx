@@ -78,31 +78,54 @@ export default function CategorySection({
     );
   }
 
-  // Default variant - Simple grid layout for homepage
+  // Default variant - Clean balanced grid
   return (
-    <section>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="font-serif text-2xl lg:text-3xl font-bold">{title}</h2>
+    <section className="mb-10">
+      <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-300">
+        <h2 className="text-lg font-bold text-gray-900">{title}</h2>
         <Link
           href={`/news/${slug}/`}
-          className="text-sm font-medium text-red-600 hover:text-red-700 hover:underline"
+          className="text-sm text-gray-600 hover:text-gray-900"
         >
-          More in {title} →
+          More →
         </Link>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {articles.slice(0, 6).map((article, index) => (
-          <ArticleCard
-            key={article.id}
-            article={article}
-            variant="default"
-            showImage={index < 3}
-            showExcerpt={false}
-            showAuthor={false}
-            showCategory={false}
-          />
+      
+      {/* Simple 3-column grid with consistent layout */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {articles.slice(0, 3).map((article) => (
+          <div key={article.id}>
+            <ArticleCard
+              article={article}
+              variant="default"
+              showImage={true}
+              showExcerpt={false}
+              showAuthor={false}
+              showCategory={false}
+            />
+          </div>
         ))}
       </div>
+      
+      {/* Additional text-only articles below */}
+      {articles.length > 3 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3 mt-6 pt-6 border-t border-gray-200">
+          {articles.slice(3, 6).map((article) => {
+            const date = new Date(article.date);
+            const url = `/${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${article.slug}/`;
+            
+            return (
+              <div key={article.id}>
+                <h3 className="text-sm font-medium leading-tight">
+                  <Link href={url} className="hover:text-gray-600">
+                    {article.title}
+                  </Link>
+                </h3>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }

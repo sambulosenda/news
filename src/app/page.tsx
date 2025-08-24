@@ -188,15 +188,15 @@ export default async function HomePage() {
         <div className="container-wide py-8 lg:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
             {/* Main Column - 2/3 width */}
-            <div className="lg:col-span-2 space-y-12">
+            <div className="lg:col-span-2">
               {/* Latest News Section */}
               <section>
-                <div className="border-b-3 border-red-600 pb-3 mb-8">
-                  <h2 className="font-serif text-2xl lg:text-3xl font-bold text-gray-900">Latest News</h2>
-                </div>
-                <div className="space-y-6">
+                <h2 className="text-lg font-bold text-gray-900 pb-2 mb-6 border-b border-gray-300">
+                  Latest News
+                </h2>
+                <div className="space-y-4">
                   {mainFeedPosts.map((post: WPPost) => (
-                    <div key={post.id} className="pb-6 border-b border-gray-200 last:border-b-0">
+                    <div key={post.id} className="pb-4 border-b border-gray-200 last:border-0">
                       <ArticleCard
                         article={post}
                         variant="horizontal"
@@ -213,7 +213,7 @@ export default async function HomePage() {
               {/* Category Sections */}
               {categorySections.map(({ category, posts }) => (
                 posts.length > 0 && (
-                  <div key={category.id} className="pt-8 border-t border-gray-300">
+                  <div key={category.id} className="mt-12 pt-8 border-t border-gray-300">
                     <CategorySection
                       title={category.name}
                       slug={category.slug}
@@ -229,42 +229,48 @@ export default async function HomePage() {
             <aside className="space-y-8">
               {/* Most Popular Section */}
               {popularPosts.length > 0 && (
-                <section className="p-6 bg-gray-50 border border-gray-200">
-                  <h2 className="font-serif text-xl lg:text-2xl font-bold text-gray-900 mb-4 pb-3 border-b-3 border-red-600">Most Popular</h2>
-                  <div className="space-y-4 pt-4">
+                <section className="mb-8">
+                  <h3 className="text-lg font-bold text-gray-900 pb-2 mb-4 border-b border-gray-300">
+                    Most Popular
+                  </h3>
+                  <ol className="space-y-3">
                     {popularPosts.slice(0, 5).map((post: WPPost, index: number) => (
-                      <div key={post.id} className="flex items-start gap-3">
-                        <span className="font-bold text-xl text-red-600 min-w-[1.5rem]">
-                          {index + 1}
+                      <li key={post.id} className="flex gap-3">
+                        <span className="text-2xl font-light text-gray-400">
+                          {index + 1}.
                         </span>
-                        <div className="flex-1">
-                          <h3 className="text-sm font-semibold leading-snug">
-                            <a href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`} className="hover:underline">
-                              {post.title}
-                            </a>
-                          </h3>
-                        </div>
-                      </div>
+                        <a 
+                          href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
+                          className="text-sm font-medium leading-tight hover:text-gray-600"
+                        >
+                          {post.title}
+                        </a>
+                      </li>
                     ))}
-                  </div>
+                  </ol>
                 </section>
               )}
 
               {/* Opinion Section */}
               {recentPosts.length > 0 && (
-                <section className="p-6 border border-gray-300">
-                  <h2 className="font-serif text-xl lg:text-2xl font-bold text-gray-900 mb-4 pb-3 border-b-3 border-red-600">Opinion</h2>
-                  <div className="space-y-4 pt-4">
+                <section className="mb-8">
+                  <h3 className="text-lg font-bold text-gray-900 pb-2 mb-4 border-b border-gray-300">
+                    Opinion & Analysis
+                  </h3>
+                  <div className="space-y-4">
                     {recentPosts.slice(0, 4).map((post: WPPost) => (
-                      <article key={post.id} className="pb-4 border-b border-gray-200 last:border-b-0">
-                        <h3 className="text-sm font-semibold mb-2 leading-snug">
-                          <a href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`} className="hover:underline">
+                      <article key={post.id}>
+                        <h4 className="text-sm font-medium mb-1 leading-tight">
+                          <a 
+                            href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
+                            className="hover:text-gray-600"
+                          >
                             {post.title}
                           </a>
-                        </h3>
+                        </h4>
                         {post.author?.node && (
-                          <p className="text-xs text-gray-600">
-                            By {post.author.node.name}
+                          <p className="text-xs text-gray-500">
+                            {post.author.node.name}
                           </p>
                         )}
                       </article>
@@ -274,25 +280,25 @@ export default async function HomePage() {
               )}
 
               {/* Newsletter Signup */}
-              <section className="p-6 bg-gray-900 text-white">
-                <h3 className="font-bold text-lg mb-3">
-                  Morning Briefing
+              <section className="p-4 bg-gray-50 border border-gray-300">
+                <h3 className="font-bold text-sm mb-3">
+                  Subscribe to Newsletter
                 </h3>
-                <p className="text-sm mb-4 leading-relaxed">
-                  Get what you need to know to start your day.
+                <p className="text-xs text-gray-600 mb-3">
+                  Get daily updates in your inbox
                 </p>
-                <form className="space-y-3">
+                <form className="space-y-2">
                   <input
                     type="email"
-                    placeholder="Enter your email"
-                    className="w-full px-4 py-3 text-gray-900 rounded"
+                    placeholder="Email address"
+                    className="w-full px-3 py-2 text-sm border border-gray-300 focus:outline-none focus:border-gray-500"
                     required
                   />
                   <button
                     type="submit"
-                    className="w-full px-4 py-3 bg-white text-gray-900 font-medium rounded hover:bg-gray-100 transition-colors"
+                    className="w-full px-3 py-2 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800"
                   >
-                    Sign Up
+                    Subscribe
                   </button>
                 </form>
               </section>
@@ -300,26 +306,25 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Today's Paper Section */}
-        <section className="bg-gray-50 border-t-4 border-gray-900">
-          <div className="container-wide py-12 lg:py-16">
-            <div className="mb-10">
-              <h2 className="font-serif text-3xl lg:text-4xl font-bold text-gray-900 mb-3">Today&apos;s Paper</h2>
-              <p className="text-base text-gray-600 font-serif">The front page of today&apos;s Report Focus News</p>
-            </div>
+        {/* More News Section */}
+        <section className="border-t border-gray-300 bg-gray-50">
+          <div className="container-wide py-8">
+            <h2 className="text-lg font-bold text-gray-900 pb-2 mb-6 border-b border-gray-300">
+              More News
+            </h2>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {recentPosts.slice(0, 8).map((post: WPPost) => (
-              <ArticleCard
-                key={post.id}
-                article={post}
-                variant="default"
-                showImage={true}
-                showExcerpt={false}
-                showAuthor={false}
-                showCategory={true}
-              />
-            ))}
+              {recentPosts.slice(0, 8).map((post: WPPost) => (
+                <ArticleCard
+                  key={post.id}
+                  article={post}
+                  variant="default"
+                  showImage={true}
+                  showExcerpt={false}
+                  showAuthor={false}
+                  showCategory={true}
+                />
+              ))}
             </div>
           </div>
         </section>

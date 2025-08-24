@@ -121,7 +121,7 @@ export default function ArticleCard({
         {showCategory && category && (
           <Link
             href={categoryUrl}
-            className="inline-block text-xs font-semibold text-red-600 hover:text-red-700 uppercase tracking-wider mb-1"
+            className="inline-block text-xs text-gray-600 uppercase tracking-wide mb-1"
           >
             {category.name}
           </Link>
@@ -198,7 +198,7 @@ export default function ArticleCard({
               src={article.featuredImage.node.sourceUrl}
               alt={article.featuredImage.node.altText || article.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
@@ -208,19 +208,19 @@ export default function ArticleCard({
         {showCategory && category && (
           <Link
             href={categoryUrl}
-            className="inline-block text-xs font-bold text-red-600 hover:text-red-700 uppercase tracking-wider mb-2 border-b border-red-600 pb-0.5"
+            className="inline-block text-xs text-gray-600 uppercase tracking-wide mb-2"
           >
             {category.name}
           </Link>
         )}
-        <h3 className="font-serif text-lg lg:text-xl font-bold mb-3 line-clamp-2 leading-tight text-gray-900">
-          <Link href={postUrl} className="hover:text-gray-700 transition-colors">
+        <h3 className="text-base font-medium mb-2 line-clamp-2 leading-tight text-gray-900">
+          <Link href={postUrl} className="hover:text-gray-600">
             {article.title}
           </Link>
         </h3>
         {showExcerpt && article.excerpt && (
           <div
-            className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed font-serif"
+            className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: article.excerpt }}
           />
         )}
