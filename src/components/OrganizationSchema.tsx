@@ -6,7 +6,7 @@ export default function OrganizationSchema() {
     '@type': 'NewsMediaOrganization',
     '@id': 'https://reportfocusnews.com#organization',
     name: 'Report Focus News',
-    alternateName: 'Report Focus',
+    alternateName: ['ReportFocusNews', 'Report Focus', 'RF News', 'reportfocusnews'],
     url: 'https://reportfocusnews.com',
     logo: {
       '@type': 'ImageObject',

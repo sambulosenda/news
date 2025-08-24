@@ -9,8 +9,9 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-merriweather)', 'Georgia', 'serif'],
-        display: ['var(--font-playfair)', 'Georgia', 'serif'],
+        serif: ['Georgia', 'Times', 'Times New Roman', 'serif'],
+        display: ['Georgia', 'Times', 'Times New Roman', 'serif'],
+        roboto: ['var(--font-roboto)', 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],
@@ -24,6 +25,12 @@ module.exports = {
         '5xl': ['3rem', { lineHeight: '1.15' }],
         '6xl': ['3.75rem', { lineHeight: '1.1' }],
         '7xl': ['4.5rem', { lineHeight: '1.1' }],
+        // Al Jazeera article sizes
+        'article-body': ['1.25rem', { lineHeight: '1.875rem' }], // 20px/30px
+        'article-body-mobile': ['1rem', { lineHeight: '1.5rem' }], // 16px/24px
+        'article-title': ['2.5rem', { lineHeight: '3.25rem' }], // 40px/52px
+        'article-title-mobile': ['1.75rem', { lineHeight: '2.25rem' }], // 28px/36px
+        'article-title-tablet': ['2.125rem', { lineHeight: '2.75rem' }], // 34px/44px
       },
       colors: {
         brand: {

@@ -595,3 +595,68 @@ The site's aggressive caching strategy (30-second revalidation) and geographic t
 ---
 
 **Next Steps**: Begin with Phase 1 implementation focusing on NewsArticle schema and enhanced news sitemap. These foundational changes will have the highest immediate impact on Google News visibility.
+
+---
+
+# Article Page Professional Design Improvements
+
+## Current State Analysis
+The article page currently lacks the professional, polished look of major news publications like NYTimes. Key issues identified:
+- Basic typography without proper hierarchy
+- Minimal visual polish and spacing
+- Lack of professional article metadata presentation
+- Missing design elements that enhance readability
+
+## Goal
+Transform the article page to have a professional, NYTimes-inspired design that enhances readability and user experience.
+
+## Todo List
+
+### Phase 1: Typography & Layout Enhancement
+- [ ] Improve headline typography with better font sizing and weight
+- [ ] Add professional subtitle/excerpt display
+- [ ] Enhance article metadata presentation (date, author, reading time)
+- [ ] Improve article body typography for better readability
+
+### Phase 2: Visual Design Elements
+- [ ] Add a professional category badge design
+- [ ] Implement better author byline with avatar
+- [ ] Add visual separators and spacing improvements
+- [ ] Enhance featured image presentation with caption styling
+
+### Phase 3: Interactive Elements
+- [ ] Improve share buttons design and placement
+- [ ] Add print-friendly button
+- [ ] Enhance mobile responsive design
+- [ ] Add article navigation (next/previous)
+
+### Phase 4: Content Enhancement
+- [ ] Style article excerpts/lead paragraphs
+- [ ] Improve blockquote styling
+- [ ] Add drop caps for first paragraph
+- [ ] Enhance list and link styling within articles
+
+## Implementation Approach
+- Keep changes simple and focused
+- Preserve existing functionality
+- Use existing Tailwind classes where possible
+- Test responsive design at all breakpoints
+- Ensure fast loading and performance
+
+## Design Principles
+1. **Clean & Minimal**: Focus on content with minimal distractions
+2. **Professional Typography**: Use proper font hierarchy and spacing
+3. **Visual Hierarchy**: Clear distinction between different content elements
+4. **Mobile-First**: Ensure excellent mobile experience
+5. **Performance**: Maintain fast load times
+
+## Files to Modify
+1. `/src/app/[year]/[month]/[day]/[slug]/page.tsx` - Main article page component
+2. `/src/app/globals.css` - Global styles for typography
+3. `/tailwind.config.js` - Typography and spacing configurations
+
+## Next Steps
+1. Review this plan with user
+2. Begin implementation starting with typography improvements
+3. Test each change on mobile and desktop
+4. Ensure no performance regression
