@@ -4,7 +4,9 @@ import HeaderWrapper from '@/components/HeaderWrapper';
 import Footer from '@/components/Footer';
 import ArticleCard from '@/components/ArticleCard';
 import SearchBar from '@/components/SearchBar';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import { WPPost } from '@/types/wordpress';
+import { Metadata } from 'next';
 
 interface SearchPageProps {
   searchParams: Promise<{
@@ -30,8 +32,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const query = params.q || '';
   const posts = await searchPosts(query);
 
+  const breadcrumbItems = [
+    { name: 'Home', url: 'https://reportfocusnews.com' },
+    { name: 'Search', url: 'https://reportfocusnews.com/search' }
+  ];
+
   return (
     <>
+      <BreadcrumbSchema items={breadcrumbItems} />
       <HeaderWrapper />
       
       <main className="container-wide py-8 min-h-screen">
@@ -102,7 +110,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   );
 }
 
-export const metadata = {
-  title: 'Search - Report Focus News',
-  description: 'Search for news articles and stories on Report Focus News',
+export const metadata: Metadata = {
+  title: 'Search | Report Focus News',
+  description: 'Search for news articles and stories from South Africa and Zimbabwe on Report Focus News',
+  openGraph: {
+    title: 'Search | Report Focus News',
+    description: 'Search for news articles and stories from South Africa and Zimbabwe',
+    type: 'website',
+    url: 'https://reportfocusnews.com/search',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };

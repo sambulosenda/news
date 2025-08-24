@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
-import { Inter, Merriweather, Playfair_Display } from "next/font/google";
+import { Inter, Roboto } from "next/font/google";
 import { ApolloWrapper } from "@/lib/apollo-wrapper";
 import SearchActionSchema from "@/components/SearchActionSchema";
 import SiteNavigationSchema from "@/components/SiteNavigationSchema";
@@ -17,27 +17,21 @@ const inter = Inter({
   adjustFontFallback: true, // Better fallback matching
 });
 
-const merriweather = Merriweather({
+const roboto = Roboto({
+  weight: ['400', '500', '700'],
   subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-merriweather",
-  display: "optional", // Don't block render
-  preload: false, // Only preload critical font
-  adjustFontFallback: true,
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-playfair",
+  variable: "--font-roboto",
   display: "optional",
-  preload: false,
+  preload: true,
   adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://reportfocusnews.com'),
-  title: "Report Focus News | SA & Zimbabwe Breaking News | Politics, Business, Load Shedding Updates",
+  title: {
+    default: "Report Focus News - South Africa & Zimbabwe Breaking News",
+    template: "%s | Report Focus News"
+  },
   description: "Your trusted source for breaking news from South Africa and Zimbabwe. Live updates on load shedding, politics, business, crime and current affairs across Southern Africa.",
   keywords: "South Africa news, Zimbabwe news, load shedding today, Eskom, SASSA grants, petrol price, breaking news SA, Johannesburg news, Harare news, ZAR USD exchange rate",
   openGraph: {
@@ -121,7 +115,7 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="Report Focus News RSS Feed" href="/rss.xml" />
       </head>
       <body
-        className={`${inter.variable} ${merriweather.variable} ${playfair.variable} font-sans antialiased bg-white text-gray-900`}
+        className={`${inter.variable} ${roboto.variable} font-sans antialiased bg-white text-gray-900`}
       >
         <SearchActionSchema />
         <SiteNavigationSchema />

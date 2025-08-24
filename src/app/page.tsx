@@ -14,7 +14,9 @@ import { WPPost, WPCategory } from '@/types/wordpress';
 export const revalidate = 30;
 
 export const metadata: Metadata = {
-  title: 'Report Focus News - South Africa & Zimbabwe Breaking News | Politics, Business, Sports',
+  title: {
+    absolute: 'Report Focus News - South Africa & Zimbabwe Breaking News'
+  },
   description: 'Breaking news from South Africa and Zimbabwe. Latest updates on politics, business, economy, sports, and entertainment. Your trusted source for Southern African news coverage.',
   keywords: 'South Africa news, Zimbabwe news, breaking news, SA politics, Zimbabwe politics, JSE news, business news Africa, Johannesburg news, Harare news, Southern Africa, SADC news, ANC, ZANU-PF, Springboks, Proteas, Report Focus News',
   alternates: {
