@@ -13,149 +13,100 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
 
   const postDate = new Date(mainArticle.date);
   const mainPostUrl = `/${format(postDate, 'yyyy')}/${format(postDate, 'MM')}/${format(postDate, 'dd')}/${mainArticle.slug}/`;
-  const mainCategory = mainArticle.categories?.edges?.[0]?.node;
 
   return (
-    <section className="bg-white border-b border-gray-300">
+    <section className="bg-white border-b-2 border-gray-200">
       <div className="container-wide py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Main Story - Takes up 2 columns */}
-          <div className="lg:col-span-2">
-            <article>
-              {/* Main Image */}
+        {/* Main Hero Section */}
+        <div className="mb-8">
+          {/* Main Headline - Full Width at Top */}
+          <h1 className="mb-6">
+            <Link href={mainPostUrl} className="font-sans text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-black hover:text-gray-700 transition-colors block">
+              {mainArticle.title}
+            </Link>
+          </h1>
+
+          {/* Image and Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left: Main Image */}
+            <div className="lg:col-span-1">
               {mainArticle.featuredImage?.node && (
-                <Link href={mainPostUrl} className="block mb-4 group">
-                  <div className="relative aspect-[3/2] overflow-hidden bg-gray-100">
+                <Link href={mainPostUrl} className="block relative group">
+                  <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
                     <Image
                       src={mainArticle.featuredImage.node.sourceUrl}
                       alt={mainArticle.featuredImage.node.altText || mainArticle.title}
                       fill
                       priority
                       className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 800px"
+                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
+                    {/* Play button overlay */}
+                    <div className="absolute bottom-4 left-4">
+                      <div className="bg-blue-600 text-white px-3 py-1.5 flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <span className="text-xs font-bold">
+                          {mainArticle.categories?.edges?.[0]?.node?.name || 'Watch'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </Link>
               )}
-              
-              {/* Content */}
-              <div>
-                {/* Category */}
-                {mainCategory && (
-                  <Link
-                    href={`/news/${mainCategory.slug}/`}
-                    className="inline-block text-xs font-bold text-red-600 hover:text-red-700 uppercase tracking-wider mb-2"
-                  >
-                    {mainCategory.name}
-                  </Link>
-                )}
-                
-                {/* Headline */}
-                <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight text-gray-900 mb-3">
-                  <Link href={mainPostUrl} className="hover:text-gray-700">
-                    {mainArticle.title}
-                  </Link>
-                </h1>
-                
-                {/* Excerpt */}
+            </div>
+
+            {/* Right: Excerpt and Related Stories */}
+            <div className="lg:col-span-1">
+              {/* Main Article Excerpt */}
+              <div className="mb-6">
                 {mainArticle.excerpt && (
                   <div
-                    className="text-base text-gray-600 leading-relaxed mb-3 line-clamp-2"
+                    className="text-lg text-gray-700 leading-relaxed mb-4 line-clamp-3"
                     dangerouslySetInnerHTML={{ __html: mainArticle.excerpt }}
                   />
                 )}
                 
-                {/* Byline */}
-                <div className="text-sm text-gray-500 font-medium">
-                  {mainArticle.author?.node && (
-                    <span className="text-gray-700">
-                      By <span className="font-semibold">{mainArticle.author.node.name}</span>
-                    </span>
-                  )}
-                  {mainArticle.author?.node && <span className="mx-2 text-gray-400">•</span>}
-                  <time dateTime={mainArticle.date} className="text-gray-600">
-                    {format(postDate, 'MMMM d, yyyy')}
-                  </time>
-                </div>
               </div>
-            </article>
-          </div>
 
-          {/* Sidebar Stories */}
-          <div className="lg:col-span-1">
-            <div className="lg:border-l lg:pl-6 border-gray-300">
-              {/* Top Stories Header */}
-              <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 pb-2 border-b border-gray-300">
-                Top Stories
-              </h2>
-              
-              {/* Side Articles List */}
+              {/* Secondary Headline */}
+              {sideArticles[0] && (() => {
+                const secondaryArticle = sideArticles[0];
+                const secondaryDate = new Date(secondaryArticle.date);
+                const secondaryUrl = `/${format(secondaryDate, 'yyyy')}/${format(secondaryDate, 'MM')}/${format(secondaryDate, 'dd')}/${secondaryArticle.slug}/`;
+                
+                return (
+                  <div className="mb-6">
+                    <h2 className="font-sans text-xl font-bold leading-tight text-gray-900">
+                      <Link href={secondaryUrl} className="hover:text-blue-600 transition-colors">
+                        {secondaryArticle.title}
+                      </Link>
+                    </h2>
+                  </div>
+                );
+              })()}
+
+              {/* Related Stories */}
               <div className="space-y-4">
-                {sideArticles.slice(0, 5).map((article, index) => {
+                {sideArticles.slice(1, 4).map((article) => {
                   const sidePostDate = new Date(article.date);
                   const sidePostUrl = `/${format(sidePostDate, 'yyyy')}/${format(sidePostDate, 'MM')}/${format(sidePostDate, 'dd')}/${article.slug}/`;
-                  const sideCategory = article.categories?.edges?.[0]?.node;
 
                   return (
-                    <article 
-                      key={article.id} 
-                      className={`${index > 0 ? 'pt-4 border-t border-gray-200' : ''}`}
-                    >
-                      {/* Show image only for first item */}
-                      {index === 0 && article.featuredImage?.node && (
-                        <Link href={sidePostUrl} className="block mb-3">
-                          <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
-                            <Image
-                              src={article.featuredImage.node.sourceUrl}
-                              alt={article.featuredImage.node.altText || article.title}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 768px) 100vw, 400px"
-                            />
-                          </div>
-                        </Link>
-                      )}
-                      
-                      {/* Category */}
-                      {sideCategory && (
-                        <Link
-                          href={`/news/${sideCategory.slug}/`}
-                          className="text-xs font-semibold text-red-600 hover:text-red-700 uppercase tracking-wide"
+                    <article key={article.id} className="group">
+                      <h3 className="font-sans text-lg font-bold leading-snug text-gray-900 mb-2">
+                        <Link 
+                          href={sidePostUrl} 
+                          className="hover:text-blue-600 transition-colors"
                         >
-                          {sideCategory.name}
-                        </Link>
-                      )}
-                      
-                      {/* Title */}
-                      <h3 className={`font-serif font-bold leading-tight mt-1 ${index === 0 ? 'text-xl' : 'text-base'}`}>
-                        <Link href={sidePostUrl} className="hover:text-gray-700">
                           {article.title}
                         </Link>
                       </h3>
-                      
-                      {/* Show date for smaller items */}
-                      {index > 0 && (
-                        <p className="text-xs text-gray-500 mt-1">
-                          {format(sidePostDate, 'MMM d, yyyy')}
-                        </p>
-                      )}
                     </article>
                   );
                 })}
               </div>
-
-              {/* More News Link */}
-              {sideArticles.length > 5 && (
-                <div className="mt-6 pt-4 border-t border-gray-200">
-                  <Link 
-                    href="/news" 
-                    className="text-sm font-semibold text-red-600 hover:text-red-700"
-                  >
-                    More News →
-                  </Link>
-                </div>
-              )}
             </div>
           </div>
         </div>

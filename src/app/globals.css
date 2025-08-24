@@ -76,9 +76,7 @@
   }
   
   /* Global heading styles - Al Jazeera style */
-  h1 {
-    @apply text-3xl md:text-4xl font-bold;
-  }
+  /* h1 styles removed - defined per component */
   
   h2 {
     @apply text-2xl md:text-3xl font-bold;
