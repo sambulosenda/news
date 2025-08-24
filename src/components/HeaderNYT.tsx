@@ -25,9 +25,23 @@ const formatDate = (date: Date): string => {
   return date.toLocaleDateString('en-US', options);
 };
 
+// Get current time for different cities
+const getTimeForCity = (timeZone: string): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone,
+    hour12: false
+  };
+  return new Date().toLocaleTimeString('en-US', options);
+};
+
 export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formattedDate, setFormattedDate] = useState('');
+  const [johannesburgTime, setJohannesburgTime] = useState('');
+  const [harareTime, setHarareTime] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
   
   // Map WordPress categories to our navigation structure
   const navigation = mapCategoriesToNavigation(categories);
@@ -38,9 +52,18 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
   const unfeatured = navigation.filter(item => !item.featured || item.slug === 'breaking-news');
   const moreNav = [...remainingFeatured, ...unfeatured];
 
-  // Set date on client side
+  // Set date and times on client side
   useEffect(() => {
-    setFormattedDate(formatDate(new Date()));
+    const updateDateTime = () => {
+      setFormattedDate(formatDate(new Date()));
+      setJohannesburgTime(getTimeForCity('Africa/Johannesburg'));
+      setHarareTime(getTimeForCity('Africa/Harare'));
+    };
+    
+    updateDateTime();
+    const interval = setInterval(updateDateTime, 60000); // Update every minute
+    
+    return () => clearInterval(interval);
   }, []);
 
   // Close mobile menu on escape key
@@ -68,38 +91,61 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
 
   return (
     <>
-      {/* Breaking News Banner */}
+      {/* Breaking News Banner - More subtle */}
       {breakingNews?.show && (
-        <div className="bg-gradient-to-r from-red-700 to-red-600 text-white py-2.5 px-4">
-          <div className="container-wide flex items-center justify-center">
-            <span className="inline-flex h-2 w-2 rounded-full bg-white animate-pulse mr-2" aria-hidden="true"></span>
-            <Link href={breakingNews.link} className="text-sm font-semibold hover:underline">
-              BREAKING: {breakingNews.title}
+        <div className="bg-red-600 text-white py-2 px-4">
+          <div className="container-wide flex items-center justify-center gap-2">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-white animate-pulse" aria-hidden="true"></span>
+              <span className="text-xs font-bold uppercase tracking-wider">Breaking</span>
+            </span>
+            <Link href={breakingNews.link} className="text-sm hover:underline">
+              {breakingNews.title}
             </Link>
           </div>
         </div>
       )}
 
       <header className="sticky top-0 z-50 bg-white shadow-sm">
-        {/* Top bar with date and subscribe */}
-        <div className="border-b border-gray-200">
+        {/* Enhanced Top Bar with Professional Elements */}
+        <div className="border-b border-gray-200 bg-gray-50">
           <div className="container-wide">
-            <div className="flex justify-between items-center py-2">
-              <div className="flex items-center space-x-4">
+            <div className="flex justify-between items-center py-2.5">
+              <div className="flex items-center gap-3 text-xs text-gray-600">
                 {formattedDate && (
-                  <time className="text-gray-600 text-sm" dateTime={new Date().toISOString()}>
+                  <time className="font-medium" dateTime={new Date().toISOString()}>
                     {formattedDate}
                   </time>
                 )}
-                <Link href="/today" className="hidden sm:inline text-gray-600 hover:text-black transition-colors text-sm">
+                <span className="hidden sm:inline text-gray-400">|</span>
+                {johannesburgTime && (
+                  <span className="hidden sm:inline">
+                    <span className="font-medium">JHB</span> {johannesburgTime}
+                  </span>
+                )}
+                {harareTime && (
+                  <span className="hidden md:inline">
+                    <span className="text-gray-400 mx-1">•</span>
+                    <span className="font-medium">HRE</span> {harareTime}
+                  </span>
+                )}
+                <span className="hidden lg:inline text-gray-400">|</span>
+                <Link href="/today" className="hidden lg:inline hover:text-black transition-colors font-medium">
                   Today's Paper
                 </Link>
               </div>
-              <div className="flex items-center space-x-4">
-                <Link href="/newsletters" className="hidden md:inline text-gray-600 hover:text-black transition-colors text-sm">
+              <div className="flex items-center gap-4">
+                <div className="hidden lg:flex items-center gap-3 text-xs text-gray-600">
+                  <span className="font-medium">JSE</span>
+                  <span className="text-green-600">▲ 0.8%</span>
+                  <span className="text-gray-400">|</span>
+                  <span className="font-medium">ZAR/USD</span>
+                  <span>18.45</span>
+                </div>
+                <Link href="/newsletters" className="hidden md:inline text-xs text-gray-600 hover:text-black transition-colors font-medium">
                   Newsletters
                 </Link>
-                <Link href="/subscribe" className="bg-black text-white px-4 py-1.5 rounded text-sm font-semibold hover:bg-gray-800 transition-colors">
+                <Link href="/subscribe" className="bg-black text-white px-4 py-1.5 text-xs font-bold uppercase tracking-wider hover:bg-gray-800 transition-colors">
                   Subscribe
                 </Link>
               </div>
@@ -132,22 +178,22 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
               {/* Mobile logo - centered on mobile */}
               <div className="flex lg:hidden flex-1 justify-center">
                 <Link href="/">
-                  <h1 className="font-serif text-3xl font-bold tracking-tight text-black">
-                    Report Focus
+                  <h1 className="font-serif text-xl font-bold tracking-tight text-black">
+                    Report Focus News
                   </h1>
                 </Link>
               </div>
 
-              {/* Desktop Logo on the left */}
+              {/* Desktop Logo - Clean Professional Style */}
               <Link href="/" className="hidden lg:block flex-shrink-0">
-                <h1 className="font-serif text-4xl font-bold tracking-tight text-black">
-                  Report Focus
+                <h1 className="font-serif text-2xl font-bold tracking-tight text-black">
+                  Report Focus News
                 </h1>
               </Link>
 
-              {/* Desktop Navigation - Menu items in the center */}
+              {/* Desktop Navigation - Professional Spacing */}
               <nav className="hidden lg:flex flex-1 justify-center items-center" aria-label="Main navigation">
-                <ul className="flex items-center gap-2" role="menubar">
+                <ul className="flex items-center gap-0" role="menubar">
                   {/* Main navigation items */}
                   {featuredNav.map((section) => {
                     const hasChildren = section.children && section.children.length > 0;
@@ -157,7 +203,7 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                         <li className="relative group" role="none">
                           <Link
                             href={`/news/${section.slug}/`}
-                            className="flex items-center gap-1 px-4 py-2.5 text-base font-bold text-gray-700 hover:text-red-700 transition-colors"
+                            className="flex items-center gap-1 px-4 py-3 text-sm font-bold uppercase tracking-wider text-gray-800 hover:text-black hover:bg-gray-50 transition-all border-b-2 border-transparent hover:border-black"
                             role="menuitem"
                             aria-haspopup={hasChildren ? "true" : undefined}
                           >
@@ -204,7 +250,7 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                   {moreNav.length > 0 && (
                     <li className="relative group" role="none">
                       <button
-                        className="flex items-center gap-1 px-4 py-2.5 text-base font-bold text-gray-700 hover:text-red-700 transition-colors"
+                        className="flex items-center gap-1 px-4 py-3 text-sm font-bold uppercase tracking-wider text-gray-800 hover:text-black hover:bg-gray-50 transition-all border-b-2 border-transparent hover:border-black"
                         role="menuitem"
                         aria-haspopup="true"
                       >
@@ -234,12 +280,35 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                 </ul>
               </nav>
 
-              {/* Search icon */}
-              <Link href="/search" className="p-3 hover:bg-gray-100 rounded-lg transition-colors" aria-label="Search">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                </svg>
-              </Link>
+              {/* Enhanced Search */}
+              <div className="relative flex items-center">
+                {searchOpen ? (
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center bg-white border border-gray-300 rounded-lg shadow-lg animate-fade-in">
+                    <input
+                      type="search"
+                      placeholder="Search news..."
+                      className="px-4 py-2 w-64 text-sm focus:outline-none rounded-l-lg"
+                      autoFocus
+                      onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
+                    />
+                    <button className="px-3 py-2 hover:bg-gray-50 border-l border-gray-200">
+                      <svg className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  <button 
+                    onClick={() => setSearchOpen(true)}
+                    className="p-3 hover:bg-gray-100 rounded-lg transition-colors" 
+                    aria-label="Search"
+                  >
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -256,7 +325,7 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
             <div className="fixed left-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white z-50 lg:hidden overflow-y-auto animate-slide-in-left">
               <div className="sticky top-0 bg-white border-b border-gray-200 p-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-serif text-2xl font-bold">Report Focus</h2>
+                  <h2 className="font-serif text-xl font-bold">Report Focus News</h2>
                   <button
                     onClick={() => setMobileMenuOpen(false)}
                     className="p-3 hover:bg-gray-100 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
