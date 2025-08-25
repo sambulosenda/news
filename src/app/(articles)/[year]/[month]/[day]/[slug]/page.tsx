@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { fetchGraphQLCached } from '@/lib/api/graphql-cache';
 import { GET_POST_BY_SLUG } from '@/lib/queries/posts';
+import { GET_POST_WITH_SEO } from '@/lib/queries/posts-with-seo';
 import HeaderWrapper from '@/components/layout/HeaderWrapper';
 import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/common/BackToTop';
@@ -58,12 +59,23 @@ interface PostPageProps {
 // Optimized data fetching - article only first, related posts lazy loaded
 async function getArticleData(slug: string) {
   try {
-    // Fetch only the article with longer cache
-    const articleData = await fetchGraphQLCached(
-      GET_POST_BY_SLUG, 
-      { slug }, 
-      { ttl: 300 } // 5 minute cache for articles
-    );
+    // Try to fetch with SEO data first
+    let articleData;
+    try {
+      articleData = await fetchGraphQLCached(
+        GET_POST_WITH_SEO, 
+        { slug }, 
+        { ttl: 300 } // 5 minute cache for articles
+      );
+    } catch (seoError) {
+      // Fallback to regular query if SEO fields not available
+      console.log('SEO fields not available, using standard query');
+      articleData = await fetchGraphQLCached(
+        GET_POST_BY_SLUG, 
+        { slug }, 
+        { ttl: 300 }
+      );
+    }
     
     const article = articleData?.postBy || null;
     return { article };
@@ -96,16 +108,34 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   
   if (!article) return { title: 'Article Not Found' };
 
-  const description = article.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
-  const ogImage = article.featuredImage?.node?.sourceUrl || 'https://reportfocusnews.com/og-image.jpg';
-  const canonicalUrl = `https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`;
+  // Use AIOSEO meta description if available, otherwise fall back to excerpt
+  const description = 
+    article.seo?.metaDesc || 
+    article.seo?.opengraphDescription ||
+    article.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || 
+    '';
+  
+  // Use AIOSEO title if available
+  const seoTitle = article.seo?.title || article.title;
+  
+  // Use AIOSEO OG image if available
+  const ogImage = 
+    article.seo?.opengraphImage?.sourceUrl ||
+    article.featuredImage?.node?.sourceUrl || 
+    'https://reportfocusnews.com/og-image.jpg';
+  
+  // Use AIOSEO canonical if available
+  const canonicalUrl = 
+    article.seo?.canonical || 
+    `https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`;
 
   return {
-    title: `${article.title} | Report Focus News`,
+    title: seoTitle.includes('Report Focus') ? seoTitle : `${seoTitle} | Report Focus News`,
     description,
+    keywords: article.seo?.metaKeywords || article.tags?.edges?.map((tag: any) => tag.node.name).join(', ') || '',
     openGraph: {
-      title: article.title,
-      description,
+      title: article.seo?.opengraphTitle || seoTitle,
+      description: article.seo?.opengraphDescription || description,
       type: 'article',
       url: canonicalUrl,
       images: [
@@ -124,9 +154,9 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.title,
-      description,
-      images: [ogImage],
+      title: article.seo?.twitterTitle || article.seo?.opengraphTitle || seoTitle,
+      description: article.seo?.twitterDescription || article.seo?.opengraphDescription || description,
+      images: [article.seo?.twitterImage?.sourceUrl || ogImage],
     },
     alternates: {
       canonical: canonicalUrl,
