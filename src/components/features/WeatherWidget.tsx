@@ -38,90 +38,87 @@ export default function WeatherWidget({
   lat, 
   lon, 
   detectLocation = false,
-  compact = false 
-}: WeatherWidgetProps) {
+  compact = false,
+  detailed = false
+}: WeatherWidgetProps & { detailed?: boolean }) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+    
     const fetchWeather = async () => {
       try {
+        setLoading(true);
+        setError(null);
         let url = '';
         
-        if (detectLocation) {
-          // Get user's location
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              async (position) => {
-                const { latitude, longitude } = position.coords;
-                url = `/api/weather?lat=${latitude}&lon=${longitude}`;
-                const res = await fetch(url);
-                const data = await res.json();
-                setWeather(data);
-                setLoading(false);
-              },
-              () => {
-                setError('Location access denied. Showing Johannesburg weather.');
-                // Default to Johannesburg
-                fetchDefaultWeather();
-              }
-            );
-          } else {
-            fetchDefaultWeather();
-          }
-        } else if (lat && lon) {
+        if (lat && lon) {
           url = `/api/weather?lat=${lat}&lon=${lon}`;
-          const res = await fetch(url);
-          const data = await res.json();
-          setWeather(data);
-          setLoading(false);
         } else if (city) {
           url = `/api/weather?city=${city}`;
-          const res = await fetch(url);
-          const data = await res.json();
-          setWeather(data);
-          setLoading(false);
+        } else {
+          url = `/api/weather?city=Johannesburg`;
         }
-      } catch (err) {
-        setError('Failed to load weather data');
-        setLoading(false);
-      }
-    };
-
-    const fetchDefaultWeather = async () => {
-      try {
-        const url = `/api/weather?city=Johannesburg`;
+        
+        console.log('Fetching weather from:', url);
         const res = await fetch(url);
+        
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        
         const data = await res.json();
+        console.log('Weather data received:', data);
         setWeather(data);
         setLoading(false);
       } catch (err) {
+        console.error('Weather fetch error:', err);
         setError('Failed to load weather data');
         setLoading(false);
       }
     };
 
     fetchWeather();
-  }, [city, lat, lon, detectLocation]);
+  }, [city, lat, lon, isClient]);
 
   if (loading) {
     return (
       <div className="animate-pulse">
-        <div className="h-32 bg-gray-200 rounded-lg"></div>
+        <div className="h-24 bg-gray-200 rounded-lg"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-red-600 p-4 bg-red-50 rounded-lg">
+      <div className="text-red-600 text-sm p-2 bg-red-50 rounded-lg">
         {error}
       </div>
     );
   }
 
-  if (!weather) return null;
+  if (!isClient) {
+    return (
+      <div className="animate-pulse">
+        <div className="h-24 bg-gray-200 rounded-lg"></div>
+      </div>
+    );
+  }
+
+  if (!weather) {
+    return (
+      <div className="text-gray-500 text-sm p-2">
+        No weather data available
+      </div>
+    );
+  }
 
   const temp = Math.round(weather.main.temp);
   const feelsLike = Math.round(weather.main.feels_like);
@@ -129,21 +126,21 @@ export default function WeatherWidget({
 
   if (compact) {
     return (
-      <div className="p-4">
+      <div className="">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-semibold text-lg">{weather.name}</h3>
-            <p className="text-3xl font-bold">{temp}°C</p>
+            <p className="text-2xl font-bold">{temp}°C</p>
             <p className="text-sm text-gray-600 capitalize">
               {weather.weather[0].description}
             </p>
           </div>
-          <div className="relative w-20 h-20">
+          <div className="relative w-16 h-16">
             <Image
               src={iconUrl}
               alt={weather.weather[0].description}
               fill
               className="object-contain"
+              unoptimized
             />
           </div>
         </div>
@@ -152,12 +149,14 @@ export default function WeatherWidget({
   }
 
   return (
-    <div className="p-6">
+    <div className="">
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="text-2xl font-bold">
-            {weather.name}, {weather.sys.country}
-          </h3>
+          {!detailed && (
+            <h3 className="text-2xl font-bold">
+              {weather.name}, {weather.sys.country}
+            </h3>
+          )}
           <p className="text-5xl font-bold mt-2">{temp}°C</p>
           <p className="text-gray-600">Feels like {feelsLike}°C</p>
           <p className="text-lg capitalize mt-2">
@@ -170,6 +169,7 @@ export default function WeatherWidget({
             alt={weather.weather[0].description}
             fill
             className="object-contain"
+            unoptimized
           />
         </div>
       </div>

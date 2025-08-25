@@ -34,7 +34,16 @@ export async function GET(request: NextRequest) {
     });
 
     if (!response.ok) {
-      throw new Error('Weather API request failed');
+      const errorData = await response.text();
+      console.error('OpenWeatherMap API error:', response.status, errorData);
+      
+      // If API key is invalid or not activated, fall back to mock data
+      if (response.status === 401) {
+        console.warn('API key invalid or not activated yet. Using mock data.');
+        return generateMockWeatherData(city, lat, lon);
+      }
+      
+      throw new Error(`Weather API request failed: ${response.status}`);
     }
 
     const data = await response.json();

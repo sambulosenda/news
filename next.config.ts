@@ -46,6 +46,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'secure.gravatar.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'openweathermap.org',
+        pathname: '/img/**',
+      },
     ],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
