@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { fetchGraphQLCached } from '@/lib/api/graphql-cache';
 import { GET_POST_BY_SLUG } from '@/lib/queries/posts';
-import { GET_POST_WITH_SEO } from '@/lib/queries/posts-with-seo';
 import HeaderWrapper from '@/components/layout/HeaderWrapper';
 import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/common/BackToTop';
@@ -59,23 +58,12 @@ interface PostPageProps {
 // Optimized data fetching - article only first, related posts lazy loaded
 async function getArticleData(slug: string) {
   try {
-    // Try to fetch with SEO data first
-    let articleData;
-    try {
-      articleData = await fetchGraphQLCached(
-        GET_POST_WITH_SEO, 
-        { slug }, 
-        { ttl: 300 } // 5 minute cache for articles
-      );
-    } catch (seoError) {
-      // Fallback to regular query if SEO fields not available
-      console.log('SEO fields not available, using standard query');
-      articleData = await fetchGraphQLCached(
-        GET_POST_BY_SLUG, 
-        { slug }, 
-        { ttl: 300 }
-      );
-    }
+    // Use standard query - AIOSEO fields are causing errors
+    const articleData = await fetchGraphQLCached(
+      GET_POST_BY_SLUG, 
+      { slug }, 
+      { ttl: 300 } // 5 minute cache for articles
+    );
     
     const article = articleData?.postBy || null;
     return { article };
@@ -108,34 +96,33 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   
   if (!article) return { title: 'Article Not Found' };
 
-  // Use AIOSEO meta description if available, otherwise fall back to excerpt
+  // Use excerpt for meta description
   const description = 
-    article.seo?.metaDesc || 
-    article.seo?.opengraphDescription ||
     article.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || 
     '';
   
-  // Use AIOSEO title if available
-  const seoTitle = article.seo?.title || article.title;
+  // Use article title
+  const seoTitle = article.title;
   
-  // Use AIOSEO OG image if available
+  // Use featured image
   const ogImage = 
-    article.seo?.opengraphImage?.sourceUrl ||
     article.featuredImage?.node?.sourceUrl || 
     'https://reportfocusnews.com/og-image.jpg';
   
-  // Use AIOSEO canonical if available
+  // Build canonical URL
   const canonicalUrl = 
-    article.seo?.canonical || 
     `https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`;
 
+  // Keep tags for SEO metadata only, not for display
+  const keywords = article.tags?.edges?.map((tag: any) => tag.node.name).join(', ') || '';
+  
   return {
     title: seoTitle.includes('Report Focus') ? seoTitle : `${seoTitle} | Report Focus News`,
     description,
-    keywords: article.seo?.metaKeywords || article.tags?.edges?.map((tag: any) => tag.node.name).join(', ') || '',
+    keywords,
     openGraph: {
-      title: article.seo?.opengraphTitle || seoTitle,
-      description: article.seo?.opengraphDescription || description,
+      title: seoTitle,
+      description: description,
       type: 'article',
       url: canonicalUrl,
       images: [
@@ -154,14 +141,13 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.seo?.twitterTitle || article.seo?.opengraphTitle || seoTitle,
-      description: article.seo?.twitterDescription || article.seo?.opengraphDescription || description,
-      images: [article.seo?.twitterImage?.sourceUrl || ogImage],
+      title: seoTitle,
+      description: description,
+      images: [ogImage],
     },
     alternates: {
       canonical: canonicalUrl,
     },
-    keywords: article.tags?.edges?.map((tag: any) => tag.node.name).join(', ') || '',
   };
 }
 
@@ -280,25 +266,6 @@ export default async function FastArticlePage({ params }: PostPageProps) {
 
           {/* Article Content - The actual LCP element */}
           <FastContentRenderer content={post.content || ''} />
-
-          {/* Tags - Non-critical, can load later */}
-          {post.tags?.edges && post.tags.edges.length > 0 && (
-            <Suspense fallback={null}>
-              <div className="mt-8 pt-8 border-t">
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.edges.map((tag: { node: { id: string; name: string; slug: string } }) => (
-                    <Link
-                      key={tag.node.id}
-                      href={`/tag/${tag.node.slug}`}
-                      className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm"
-                    >
-                      {tag.node.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </Suspense>
-          )}
         </article>
 
         {/* Lazy-loaded Related Posts */}
