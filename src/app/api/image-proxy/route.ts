@@ -18,10 +18,14 @@ export async function GET(request: NextRequest) {
     // Fetch image with proper headers to bypass hotlink protection
     const imageResponse = await fetch(url, {
       headers: {
-        'Referer': 'https://backend.reportfocusnews.com',
-        'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
-        'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+        'Referer': 'https://backend.reportfocusnews.com/',
+        'Origin': 'https://backend.reportfocusnews.com',
+        'User-Agent': 'WordPress/6.3.1',
+        'Accept': 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Cache-Control': 'no-cache',
       },
+      redirect: 'follow',
     });
 
     if (!imageResponse.ok) {
