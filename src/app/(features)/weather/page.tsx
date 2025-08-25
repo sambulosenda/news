@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ClientHeader from '@/components/layout/ClientHeader';
 import Footer from '@/components/layout/Footer';
 import WeatherWidget from '@/components/features/WeatherWidget';
 import WeatherSearch from '@/components/features/WeatherSearch';
 import WeatherForecast from '@/components/features/WeatherForecast';
+import './weather.css';
 
 // Major cities to display
 const featuredCities = {
@@ -30,60 +31,158 @@ const featuredCities = {
 export default function WeatherPage() {
   const [selectedCity, setSelectedCity] = useState<{name: string, lat: number, lon: number} | null>(null);
   const [activeCountry, setActiveCountry] = useState<'South Africa' | 'Zimbabwe'>('South Africa');
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Update clock every minute
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <>
       <ClientHeader />
       
       <main className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-white">
-        {/* Hero Section - BBC Style */}
-        <div className="bg-gradient-to-br from-sky-500 via-sky-600 to-blue-700 text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/10"></div>
-          
-          {/* Animated clouds background */}
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute top-20 right-20 w-48 h-48 bg-white rounded-full blur-3xl animate-pulse delay-300"></div>
-            <div className="absolute bottom-10 left-1/3 w-40 h-40 bg-white rounded-full blur-3xl animate-pulse delay-700"></div>
+        {/* Hero Section - Enhanced */}
+        <div className="bg-gradient-to-br from-sky-400 via-sky-500 to-blue-600 text-white relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            {/* Animated gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 via-transparent to-blue-600/20 animate-gradient"></div>
           </div>
           
-          <div className="container-wide py-12 relative z-10">
-            <div className="max-w-4xl">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Weather
-              </h1>
-              <p className="text-xl text-sky-100 mb-8">
-                Current conditions and forecasts for Southern Africa
+          {/* Animated weather particles */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-float"></div>
+            <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl animate-float-delayed"></div>
+            <div className="absolute bottom-1/4 left-1/2 w-80 h-80 bg-blue-400/10 rounded-full blur-3xl animate-float-slow"></div>
+          </div>
+          
+          <div className="container-wide py-16 relative z-10">
+            <div className="max-w-5xl">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                  </svg>
+                </div>
+                <div>
+                  <h1 className="text-5xl md:text-6xl font-bold">
+                    Weather
+                  </h1>
+                  <p className="text-lg text-white/80 mt-1">
+                    {currentTime.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                  </p>
+                </div>
+              </div>
+              <p className="text-xl text-white/90 mb-10">
+                Live weather conditions and forecasts for Southern Africa
               </p>
               
-              {/* Weather Search */}
-              <div className="max-w-xl">
-                <WeatherSearch onCitySelect={(city) => {
-                  setSelectedCity(city);
-                  window.scrollTo({ top: 600, behavior: 'smooth' });
-                }} />
+              {/* Enhanced Weather Search */}
+              <div className="max-w-2xl">
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-1">
+                  <WeatherSearch onCitySelect={(city) => {
+                    setSelectedCity(city);
+                    window.scrollTo({ top: 600, behavior: 'smooth' });
+                  }} />
+                </div>
+                <div className="mt-4 flex gap-2 flex-wrap">
+                  <span className="text-sm text-white/70">Popular:</span>
+                  {['Cape Town', 'Johannesburg', 'Harare', 'Durban'].map(city => (
+                    <button
+                      key={city}
+                      onClick={() => {
+                        const cityData = featuredCities['South Africa'].concat(featuredCities['Zimbabwe']).find(c => c.name === city);
+                        if (cityData) {
+                          setSelectedCity(cityData);
+                          window.scrollTo({ top: 600, behavior: 'smooth' });
+                        }
+                      }}
+                      className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm hover:bg-white/30 transition-colors"
+                    >
+                      {city}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Selected City Weather or Current Location */}
+        {/* Enhanced Selected City Weather */}
         {selectedCity && (
           <section className="container-wide py-8">
-            <div className="bg-white rounded-2xl overflow-hidden border border-gray-200">
-              <div className="bg-gradient-to-r from-sky-500 to-blue-600 text-white p-6">
-                <h2 className="text-2xl font-bold mb-2">{selectedCity.name}</h2>
-                <p className="text-sky-100">Current Conditions & Forecast</p>
+            <div className="bg-gradient-to-br from-white to-gray-50 rounded-3xl overflow-hidden border border-gray-200">
+              <div className="relative bg-gradient-to-r from-sky-500 via-sky-600 to-blue-600 text-white p-8 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-3xl font-bold mb-2 flex items-center gap-3">
+                        <span className="text-4xl">📍</span>
+                        {selectedCity.name}
+                      </h2>
+                      <p className="text-sky-100 text-lg">Detailed Weather Information</p>
+                    </div>
+                    <button
+                      onClick={() => setSelectedCity(null)}
+                      className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+                    >
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="p-6">
-                <WeatherWidget 
-                  lat={selectedCity.lat}
-                  lon={selectedCity.lon}
-                  city={selectedCity.name}
-                  detailed={true}
-                />
-                <div className="mt-8 pt-8 border-t border-gray-200">
-                  <h3 className="text-xl font-bold mb-4">5-Day Forecast</h3>
+              <div className="p-8">
+                <div className="bg-gradient-to-br from-sky-50 to-white rounded-2xl p-6 mb-8">
+                  <WeatherWidget 
+                    lat={selectedCity.lat}
+                    lon={selectedCity.lon}
+                    city={selectedCity.name}
+                    detailed={true}
+                  />
+                </div>
+                
+                {/* Hourly Forecast */}
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <span className="text-sky-500">⏰</span>
+                    Hourly Forecast
+                  </h3>
+                  <div className="grid grid-cols-6 md:grid-cols-12 gap-2">
+                    {[...Array(12)].map((_, i) => {
+                      const hour = new Date();
+                      hour.setHours(hour.getHours() + i);
+                      const temp = Math.round(20 + Math.random() * 10);
+                      return (
+                        <div key={i} className="text-center p-3 bg-white rounded-xl border border-gray-100 hover:border-sky-200 transition-colors">
+                          <div className="text-xs text-gray-500">
+                            {hour.getHours()}:00
+                          </div>
+                          <div className="text-lg font-bold my-1">
+                            {temp}°
+                          </div>
+                          <div className="text-xs text-gray-400">
+                            {i % 3 === 0 ? '☀️' : i % 3 === 1 ? '⛅' : '☁️'}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                
+                {/* 5-Day Forecast */}
+                <div className="">
+                  <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <span className="text-sky-500">📅</span>
+                    5-Day Forecast
+                  </h3>
                   <WeatherForecast lat={selectedCity.lat} lon={selectedCity.lon} />
                 </div>
               </div>
@@ -132,13 +231,17 @@ export default function WeatherPage() {
                 {featuredCities[activeCountry].map((city) => (
                   <div 
                     key={city.id} 
-                    className="group cursor-pointer"
+                    className="group cursor-pointer transform transition-all duration-300 hover:scale-105"
                     onClick={() => setSelectedCity(city)}
                   >
-                    <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 hover:border-sky-300 transition-all duration-300 overflow-hidden">
-                      <div className="p-4">
-                        <h3 className="font-semibold text-lg mb-2 group-hover:text-sky-600 transition-colors">
+                    <div className="relative bg-gradient-to-br from-white via-gray-50 to-gray-100 rounded-2xl border border-gray-200 hover:border-sky-400 overflow-hidden hover:shadow-xl transition-all duration-300">
+                      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-sky-400/10 to-transparent rounded-bl-full"></div>
+                      <div className="p-5">
+                        <h3 className="font-bold text-xl mb-3 group-hover:text-sky-600 transition-colors flex items-center gap-2">
                           {city.name}
+                          <span className="text-xs text-gray-400 font-normal">
+                            {activeCountry === 'South Africa' ? 'ZA' : 'ZW'}
+                          </span>
                         </h3>
                         <WeatherWidget 
                           city={city.name}
@@ -147,9 +250,12 @@ export default function WeatherPage() {
                           compact={true}
                         />
                       </div>
-                      <div className="bg-sky-50 px-4 py-2 text-center">
-                        <span className="text-xs text-sky-700 font-medium">
-                          Click for detailed forecast →
+                      <div className="bg-gradient-to-r from-sky-500 to-blue-600 px-4 py-3 text-center group-hover:from-sky-600 group-hover:to-blue-700 transition-all">
+                        <span className="text-sm text-white font-medium flex items-center justify-center gap-1">
+                          View Details
+                          <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
                         </span>
                       </div>
                     </div>

@@ -128,7 +128,7 @@ export default function WeatherSearch({ onCitySelect }: WeatherSearchProps) {
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Search for a city..."
-          className="w-full px-4 py-3 pl-12 bg-white/90 backdrop-blur-sm rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 border border-white/20"
+          className="w-full px-5 py-4 pl-14 bg-white/95 backdrop-blur-md rounded-2xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-3 focus:ring-white/40 border border-white/30 text-lg font-medium"
         />
         <svg
           className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"
