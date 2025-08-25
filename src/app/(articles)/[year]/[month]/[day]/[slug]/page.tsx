@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import Image from 'next/image';
 import SafeImage from '@/components/common/SafeImage';
 import DirectImage from '@/components/common/DirectImage';
+import ProxyImage from '@/components/common/ProxyImage';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { fetchGraphQLCached } from '@/lib/api/graphql-cache';
@@ -232,7 +233,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
           {/* Featured Image - Always show with fallback */}
           <figure className="mb-8">
             <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
-              <DirectImage
+              <ProxyImage
                 src={post.featuredImage?.node?.sourceUrl || ''}
                 alt={post.featuredImage?.node?.altText || post.title}
                 fill
