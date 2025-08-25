@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchGraphQLCached } from '@/lib/graphql-cache';
+import { fetchGraphQLCached } from '@/lib/api/graphql-cache';
 import { GET_RECENT_POSTS } from '@/lib/queries/posts';
 
 export async function GET(request: NextRequest) {

@@ -46,7 +46,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
     ],
-    sitemap: 'https://reportfocusnews.com/sitemap_index.xml',
+    sitemap: 'https://reportfocusnews.com/sitemap-index.xml',
     host: 'https://reportfocusnews.com',
   };
 }

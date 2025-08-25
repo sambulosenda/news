@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import HeaderClient from '@/components/HeaderClient';
-import Footer from '@/components/Footer';
+import HeaderClient from '@/components/layout/HeaderClient';
+import Footer from '@/components/layout/Footer';
 
 export default function Error({
   error,

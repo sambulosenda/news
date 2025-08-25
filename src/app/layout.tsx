@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import React from "react";
 import { Inter, Roboto } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ApolloWrapper } from "@/lib/apollo-wrapper";
-import SearchActionSchema from "@/components/SearchActionSchema";
-import SiteNavigationSchema from "@/components/SiteNavigationSchema";
-import OrganizationSchema from "@/components/OrganizationSchema";
-import NewsPerformanceOptimizer from "@/components/NewsPerformanceOptimizer";
-import WebSiteSchema from "@/components/WebSiteSchema";
-import "./globals.css";
+import { ApolloWrapper } from "@/lib/api/apollo-wrapper";
+import SearchActionSchema from "@/components/seo/SearchActionSchema";
+import SiteNavigationSchema from "@/components/seo/SiteNavigationSchema";
+import OrganizationSchema from "@/components/seo/OrganizationSchema";
+import NewsPerformanceOptimizer from "@/components/performance/NewsPerformanceOptimizer";
+import WebSiteSchema from "@/components/seo/WebSiteSchema";
+import "@/styles/globals.css";
 
 const inter = Inter({
   subsets: ["latin"],

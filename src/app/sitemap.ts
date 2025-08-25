@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
-import { fetchAllPosts, fetchAllCategories } from '@/lib/sitemap-helpers';
-import { detectLocationFromContent } from '@/lib/location-detector';
+import { fetchAllPosts, fetchAllCategories } from '@/lib/utils/sitemap-helpers';
+import { detectLocationFromContent } from '@/lib/utils/location-detector';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://reportfocusnews.com';
