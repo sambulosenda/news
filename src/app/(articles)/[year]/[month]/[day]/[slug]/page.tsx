@@ -171,16 +171,9 @@ export default async function FastArticlePage({ params }: PostPageProps) {
           )}
 
           {/* Title - Professional Typography */}
-          <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
+          <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
             {post.title}
           </h1>
-
-          {/* Subtitle/Excerpt if available */}
-          {post.excerpt && (
-            <p className="font-serif text-lg md:text-xl text-gray-600 leading-relaxed mb-6">
-              {post.excerpt.replace(/<[^>]*>/g, '').substring(0, 200)}
-            </p>
-          )}
 
           {/* Meta Information Bar */}
           <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 pb-6 border-b border-gray-200">
