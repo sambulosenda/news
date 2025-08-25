@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import SafeImage from '@/components/common/SafeImage';
+import ProxyImage from '@/components/common/ProxyImage';
 import { format } from 'date-fns';
 import { WPPost } from '@/types/wordpress';
-import { generateBlurPlaceholder } from '@/lib/utils/image-utils';
 
 interface ArticleCardProps {
   article: WPPost;
@@ -36,15 +35,11 @@ export default function ArticleCard({
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl}>
             <div className="relative aspect-[16/9] mb-4">
-              <SafeImage
+              <ProxyImage
                 src={article.featuredImage.node.sourceUrl}
                 alt={article.featuredImage.node.altText || article.title}
                 fill
                 className="object-cover"
-                priority={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 800px"
-                placeholder="blur"
-                blurDataURL={generateBlurPlaceholder()}
               />
             </div>
           </Link>
@@ -85,14 +80,11 @@ export default function ArticleCard({
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl} className="flex-shrink-0">
             <div className="relative w-32 h-32 lg:w-40 lg:h-40">
-              <SafeImage
+              <ProxyImage
                 src={article.featuredImage.node.sourceUrl}
                 alt={article.featuredImage.node.altText || article.title}
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 96px, 128px"
-                placeholder="blur"
-                blurDataURL={generateBlurPlaceholder()}
               />
             </div>
           </Link>
@@ -140,14 +132,11 @@ export default function ArticleCard({
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl}>
             <div className="relative aspect-[3/2] mb-4">
-              <SafeImage
+              <ProxyImage
                 src={article.featuredImage.node.sourceUrl}
                 alt={article.featuredImage.node.altText || article.title}
                 fill
                 className="object-cover transition-transform duration-300 hover:scale-105"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                placeholder="blur"
-                blurDataURL={generateBlurPlaceholder()}
               />
             </div>
           </Link>
@@ -193,12 +182,11 @@ export default function ArticleCard({
       {showImage && article.featuredImage?.node && (
         <Link href={postUrl} className="group">
           <div className="relative aspect-[16/10] mb-3 overflow-hidden bg-gray-100">
-            <SafeImage
+            <ProxyImage
               src={article.featuredImage.node.sourceUrl}
               alt={article.featuredImage.node.altText || article.title}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
         </Link>

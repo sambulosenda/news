@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import SafeImage from '@/components/common/SafeImage';
+import ProxyImage from '@/components/common/ProxyImage';
 import { format } from 'date-fns';
 import { WPPost } from '@/types/wordpress';
 
@@ -33,13 +33,11 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
               {mainArticle.featuredImage?.node && (
                 <Link href={mainPostUrl} className="block relative group">
                   <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
-                    <SafeImage
+                    <ProxyImage
                       src={mainArticle.featuredImage.node.sourceUrl}
                       alt={mainArticle.featuredImage.node.altText || mainArticle.title}
                       fill
-                      priority
                       className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
                     {/* Play button overlay */}
                     <div className="absolute bottom-4 left-4">
