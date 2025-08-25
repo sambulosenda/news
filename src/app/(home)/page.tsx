@@ -1,3 +1,4 @@
+import React from 'react';
 import { Metadata } from 'next';
 import { fetchGraphQLDirect } from '@/lib/api/fetch-direct';
 import { GET_HOMEPAGE_DATA_SIMPLE } from '@/lib/queries/homepage-simple';
@@ -9,6 +10,8 @@ import CategorySection from '@/components/sections/CategorySection';
 import ArticleCard from '@/components/cards/ArticleCard';
 import OrganizationSchema from '@/components/seo/OrganizationSchema';
 import { WPPost, WPCategory } from '@/types/wordpress';
+import { BannerAd, SidebarAd, AdUnit } from '@/components/ads/GoogleAdsense';
+import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
 
 // Aggressive revalidation for news homepage - 30 seconds
 export const revalidate = 30;
@@ -185,6 +188,14 @@ export default async function HomePage() {
             sideArticles={sideHeroPosts}
           />
         )}
+        
+        {/* Top Banner Ad - Below Hero */}
+        {shouldShowAds() && (
+          <BannerAd 
+            dataAdClient={ADSENSE_CONFIG.publisherId}
+            dataAdSlot={ADSENSE_CONFIG.adSlots.homepageBanner}
+          />
+        )}
 
         {/* Main Content Area */}
         <div className="container-wide py-8 lg:py-12">
@@ -197,17 +208,30 @@ export default async function HomePage() {
                   Latest News
                 </h2>
                 <div className="space-y-4">
-                  {mainFeedPosts.map((post: WPPost) => (
-                    <div key={post.id} className="pb-4 border-b border-gray-200 last:border-0">
-                      <ArticleCard
-                        article={post}
-                        variant="horizontal"
-                        showImage={true}
-                        showExcerpt={true}
-                        showAuthor={true}
-                        showCategory={true}
-                      />
-                    </div>
+                  {mainFeedPosts.map((post: WPPost, index: number) => (
+                    <React.Fragment key={post.id}>
+                      <div className="pb-4 border-b border-gray-200 last:border-0">
+                        <ArticleCard
+                          article={post}
+                          variant="horizontal"
+                          showImage={true}
+                          showExcerpt={true}
+                          showAuthor={true}
+                          showCategory={true}
+                        />
+                      </div>
+                      {/* In-feed Ad after 3rd article */}
+                      {index === 2 && shouldShowAds() && (
+                        <div className="py-4 border-b border-gray-200">
+                          <AdUnit 
+                            dataAdClient={ADSENSE_CONFIG.publisherId}
+                            dataAdSlot={ADSENSE_CONFIG.adSlots.homepageInFeed}
+                            dataAdFormat="fluid"
+                            dataAdLayoutKey="-f0-1i+7x-n5+pu"
+                          />
+                        </div>
+                      )}
+                    </React.Fragment>
                   ))}
                 </div>
               </section>
@@ -229,6 +253,14 @@ export default async function HomePage() {
 
             {/* Sidebar - 1/3 width */}
             <aside className="space-y-6">
+              {/* Sidebar Ad - Top */}
+              {shouldShowAds() && (
+                <SidebarAd 
+                  dataAdClient={ADSENSE_CONFIG.publisherId}
+                  dataAdSlot={ADSENSE_CONFIG.adSlots.homepageSidebar}
+                />
+              )}
+              
               {/* Most Popular Section */}
               {popularPosts.length > 0 && (
                 <section>

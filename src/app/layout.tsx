@@ -8,6 +8,8 @@ import SiteNavigationSchema from "@/components/seo/SiteNavigationSchema";
 import OrganizationSchema from "@/components/seo/OrganizationSchema";
 import NewsPerformanceOptimizer from "@/components/performance/NewsPerformanceOptimizer";
 import WebSiteSchema from "@/components/seo/WebSiteSchema";
+import { GoogleAdsenseScript } from "@/components/ads/GoogleAdsense";
+import { ADSENSE_CONFIG, shouldShowAds } from "@/config/adsense";
 import "@/styles/globals.css";
 
 const inter = Inter({
@@ -124,6 +126,7 @@ export default function RootLayout({
         <WebSiteSchema />
         <NewsPerformanceOptimizer />
         <ApolloWrapper>{children}</ApolloWrapper>
+        {shouldShowAds() && <GoogleAdsenseScript pId={ADSENSE_CONFIG.publisherId} />}
         <SpeedInsights />
       </body>
     </html>

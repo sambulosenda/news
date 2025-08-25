@@ -12,6 +12,8 @@ import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/common/BackToTop';
 import NewsArticleSchema from '@/components/seo/NewsArticleSchema';
 import dynamic from 'next/dynamic';
+import { InArticleAd, SidebarAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
+import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
 
 // Lazy load non-critical components
 const RelatedPostsSection = dynamic(() => import('@/components/sections/RelatedPostsSection'), {
@@ -263,10 +265,30 @@ export default async function FastArticlePage({ params }: PostPageProps) {
                 />
               )}
             </figure>
+            
+          {/* Ad after featured image */}
+          {shouldShowAds() && (
+            <div className="mb-8">
+              <InArticleAd 
+                dataAdClient={ADSENSE_CONFIG.publisherId}
+                dataAdSlot={ADSENSE_CONFIG.adSlots.articleInContent}
+              />
+            </div>
+          )}
 
           {/* Article Content - The actual LCP element */}
           <FastContentRenderer content={post.content || ''} />
         </article>
+        
+        {/* Bottom Article Ad */}
+        {shouldShowAds() && (
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
+            <ResponsiveAd 
+              dataAdClient={ADSENSE_CONFIG.publisherId}
+              dataAdSlot={ADSENSE_CONFIG.adSlots.articleBottom}
+            />
+          </div>
+        )}
 
         {/* Lazy-loaded Related Posts */}
         <RelatedPostsSection slug={slug} />
