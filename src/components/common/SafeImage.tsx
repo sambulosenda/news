@@ -70,7 +70,11 @@ export default function SafeImage({
   };
 
   const handleError = () => {
-    console.warn(`Image failed to load: ${imgSrc}`);
+    console.error(`[SafeImage] Failed to load image:`, {
+      originalSrc: src,
+      attemptedSrc: imgSrc,
+      alt: alt
+    });
     setHasError(true);
     setIsLoading(false);
     
@@ -79,11 +83,13 @@ export default function SafeImage({
       // First try to fix the URL
       const validUrl = getValidImageUrl(src);
       if (validUrl !== imgSrc && validUrl !== FALLBACK_IMAGE) {
+        console.log(`[SafeImage] Retrying with fixed URL: ${validUrl}`);
         setImgSrc(validUrl);
         setHasError(false);
         setIsLoading(true);
       } else {
         // Use fallback image
+        console.log(`[SafeImage] Using fallback image for: ${src}`);
         setImgSrc(FALLBACK_IMAGE);
       }
     }

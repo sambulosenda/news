@@ -21,6 +21,22 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'backend.reportfocusnews.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'backend.reportfocusnews.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'reportfocusnews.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.reportfocusnews.com',
+        pathname: '/**',
       },
       {
         protocol: 'https',
