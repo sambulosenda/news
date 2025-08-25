@@ -29,11 +29,11 @@ export default function ClientHeader() {
 
   // Default categories for immediate rendering
   const defaultCategories: WPCategory[] = [
-    { id: '1', name: 'Politics', slug: 'politics', uri: '/category/politics' },
-    { id: '2', name: 'Business', slug: 'business', uri: '/category/business' },
-    { id: '3', name: 'Technology', slug: 'technology', uri: '/category/technology' },
-    { id: '4', name: 'Sports', slug: 'sports', uri: '/category/sports' },
-    { id: '5', name: 'Entertainment', slug: 'entertainment', uri: '/category/entertainment' },
+    { id: '1', databaseId: 1, name: 'Politics', slug: 'politics' },
+    { id: '2', databaseId: 2, name: 'Business', slug: 'business' },
+    { id: '3', databaseId: 3, name: 'Technology', slug: 'technology' },
+    { id: '4', databaseId: 4, name: 'Sports', slug: 'sports' },
+    { id: '5', databaseId: 5, name: 'Entertainment', slug: 'entertainment' },
   ] as WPCategory[];
 
   const breakingNews = {

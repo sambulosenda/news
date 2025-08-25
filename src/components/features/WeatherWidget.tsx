@@ -38,7 +38,7 @@ export default function WeatherWidget({
   city, 
   lat, 
   lon, 
-  detectLocation = false,
+  // detectLocation = false, // Currently unused
   compact = false,
   detailed = false
 }: WeatherWidgetProps & { detailed?: boolean }) {

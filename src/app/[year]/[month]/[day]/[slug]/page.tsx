@@ -12,7 +12,7 @@ import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/common/BackToTop';
 import NewsArticleSchema from '@/components/seo/NewsArticleSchema';
 import dynamic from 'next/dynamic';
-import { InArticleAd, SidebarAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
+import { InArticleAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
 
 // Lazy load non-critical components

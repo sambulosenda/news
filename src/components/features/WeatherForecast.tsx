@@ -28,13 +28,13 @@ interface WeatherForecastProps {
 export default function WeatherForecast({ lat, lon }: WeatherForecastProps) {
   const [forecast, setForecast] = useState<ForecastDay[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, _setError] = useState<string | null>(null);
 
   useEffect(() => {
     // For now, we'll generate mock forecast data
     // In production, this would call the OpenWeatherMap forecast API
     const generateMockForecast = () => {
-      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const _days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       const weatherConditions = [
         { main: 'Clear', icon: '01d', description: 'clear sky' },
         { main: 'Clouds', icon: '02d', description: 'few clouds' },
