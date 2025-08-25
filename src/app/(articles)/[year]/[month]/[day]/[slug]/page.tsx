@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import Image from 'next/image';
 import SafeImage from '@/components/common/SafeImage';
+import DirectImage from '@/components/common/DirectImage';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { fetchGraphQLCached } from '@/lib/api/graphql-cache';
@@ -231,14 +232,11 @@ export default async function FastArticlePage({ params }: PostPageProps) {
           {/* Featured Image - Always show with fallback */}
           <figure className="mb-8">
             <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
-              <SafeImage
+              <DirectImage
                 src={post.featuredImage?.node?.sourceUrl || ''}
                 alt={post.featuredImage?.node?.altText || post.title}
                 fill
-                sizes="(max-width: 768px) 100vw, 896px"
                 className="object-cover"
-                quality={85}
-                priority
               />
               </div>
               {post.featuredImage?.node?.caption && (
