@@ -132,9 +132,15 @@ export const navigationConfig: NavSection[] = [
     featured: false,
   },
   {
+    name: 'Weather',
+    slug: 'weather',
+    priority: 15,
+    featured: false,
+  },
+  {
     name: 'Videos',
     slug: 'videos',
-    priority: 15,
+    priority: 16,
     featured: false,
   },
 ];

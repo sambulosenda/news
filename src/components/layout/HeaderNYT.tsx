@@ -303,7 +303,7 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                             {moreNav.map((section) => (
                               <Link
                                 key={section.slug}
-                                href={`/news/${section.slug}/`}
+                                href={section.slug === 'weather' ? '/weather' : `/news/${section.slug}/`}
                                 className="block px-5 py-3 text-sm font-medium text-gray-700 hover:text-red-700 hover:bg-red-50 transition-colors"
                               >
                                 {section.name}
@@ -418,6 +418,13 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
 
                 <div className="mt-8 pt-6 border-t border-gray-200 space-y-2">
                   <Link
+                    href="/weather"
+                    className="block px-6 py-4 text-base font-medium text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 min-h-[48px] flex items-center"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Weather
+                  </Link>
+                  <Link
                     href="/search"
                     className="block px-6 py-4 text-base font-medium text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 min-h-[48px] flex items-center"
                     onClick={() => setMobileMenuOpen(false)}
@@ -443,7 +450,7 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                     className="block px-6 py-4 text-base text-white bg-red-700 font-semibold hover:bg-red-800 rounded-xl text-center shadow-md transition-all duration-200 mt-4 min-h-[48px] flex items-center justify-center"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Subscribeb
+                    Subscribe
                   </Link>
                 </div>
               </nav>
