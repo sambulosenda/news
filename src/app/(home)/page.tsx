@@ -228,22 +228,22 @@ export default async function HomePage() {
             </div>
 
             {/* Sidebar - 1/3 width */}
-            <aside className="space-y-8">
+            <aside className="space-y-6">
               {/* Most Popular Section */}
               {popularPosts.length > 0 && (
-                <section className="mb-8">
-                  <h3 className="text-lg font-bold text-gray-900 pb-2 mb-4 border-b border-gray-300">
+                <section>
+                  <h3 className="text-base font-bold text-gray-900 pb-2 mb-3 border-b border-gray-900">
                     Most Popular
                   </h3>
                   <ol className="space-y-3">
                     {popularPosts.slice(0, 5).map((post: WPPost, index: number) => (
-                      <li key={post.id} className="flex gap-3">
-                        <span className="text-2xl font-light text-gray-400">
+                      <li key={post.id} className="flex items-start">
+                        <span className="text-gray-400 font-light text-xl mr-3 mt-0.5">
                           {index + 1}.
                         </span>
                         <a 
                           href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
-                          className="text-sm font-medium leading-tight hover:text-gray-600"
+                          className="text-sm leading-snug hover:text-gray-600 transition-colors font-medium"
                         >
                           {post.title}
                         </a>
@@ -255,17 +255,17 @@ export default async function HomePage() {
 
               {/* Opinion Section */}
               {recentPosts.length > 0 && (
-                <section className="mb-8">
-                  <h3 className="text-lg font-bold text-gray-900 pb-2 mb-4 border-b border-gray-300">
+                <section>
+                  <h3 className="text-base font-bold text-gray-900 pb-2 mb-3 border-b border-gray-900">
                     Opinion & Analysis
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {recentPosts.slice(0, 4).map((post: WPPost) => (
                       <article key={post.id}>
-                        <h4 className="text-sm font-medium mb-1 leading-tight">
+                        <h4 className="text-sm font-semibold mb-1 leading-snug">
                           <a 
                             href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
-                            className="hover:text-gray-600"
+                            className="hover:text-gray-600 transition-colors"
                           >
                             {post.title}
                           </a>
@@ -282,23 +282,23 @@ export default async function HomePage() {
               )}
 
               {/* Newsletter Signup */}
-              <section className="p-4 bg-gray-50 border border-gray-300">
-                <h3 className="font-bold text-sm mb-3">
+              <section className="p-4 bg-gray-50 border border-gray-200">
+                <h3 className="font-bold text-base mb-2">
                   Subscribe to Newsletter
                 </h3>
                 <p className="text-xs text-gray-600 mb-3">
-                  Get daily updates in your inbox
+                  Get daily updates delivered straight to your inbox
                 </p>
                 <form className="space-y-2">
                   <input
                     type="email"
-                    placeholder="Email address"
-                    className="w-full px-3 py-2 text-sm border border-gray-300 focus:outline-none focus:border-gray-500"
+                    placeholder="Enter your email address"
+                    className="w-full px-3 py-2 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                     required
                   />
                   <button
                     type="submit"
-                    className="w-full px-3 py-2 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800"
+                    className="w-full px-3 py-2 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
                   >
                     Subscribe
                   </button>

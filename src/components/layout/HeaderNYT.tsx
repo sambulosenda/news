@@ -162,10 +162,6 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                     <span className="font-medium">HRE</span> {harareTime}
                   </span>
                 )}
-                <span className="hidden lg:inline text-gray-400">|</span>
-                <Link href="/today" className="hidden lg:inline hover:text-black transition-colors font-medium">
-                  Today's Paper
-                </Link>
               </div>
               <div className="flex items-center gap-4">
                 {marketData && (
@@ -430,13 +426,6 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Search
-                  </Link>
-                  <Link
-                    href="/today"
-                    className="block px-6 py-4 text-base font-medium text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 min-h-[48px] flex items-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Today's Paper
                   </Link>
                   <Link
                     href="/newsletters"
