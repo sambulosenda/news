@@ -283,9 +283,12 @@ export default async function PostPage({ params }: PostPageProps) {
                 />
               </div>
               {post.featuredImage.node.caption && (
-                <p className="mt-2 text-sm text-gray-600">
-                  {post.featuredImage.node.caption}
-                </p>
+                <p 
+                  className="mt-2 text-sm text-gray-600"
+                  dangerouslySetInnerHTML={{ 
+                    __html: post.featuredImage.node.caption.replace(/<\/?p>/g, '') 
+                  }}
+                />
               )}
             </div>
           )}

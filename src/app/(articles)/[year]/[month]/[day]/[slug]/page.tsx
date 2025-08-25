@@ -242,9 +242,12 @@ export default async function FastArticlePage({ params }: PostPageProps) {
               />
               </div>
               {post.featuredImage?.node?.caption && (
-                <figcaption className="mt-2 text-sm text-gray-600 text-center">
-                  {post.featuredImage.node.caption}
-                </figcaption>
+                <figcaption 
+                  className="mt-2 text-sm text-gray-600 text-center"
+                  dangerouslySetInnerHTML={{ 
+                    __html: post.featuredImage.node.caption.replace(/<\/?p>/g, '') 
+                  }}
+                />
               )}
             </figure>
 
