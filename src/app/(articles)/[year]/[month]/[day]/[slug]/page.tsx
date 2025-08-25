@@ -2,8 +2,6 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import Image from 'next/image';
-import SafeImage from '@/components/common/SafeImage';
-import DirectImage from '@/components/common/DirectImage';
 import ProxyImage from '@/components/common/ProxyImage';
 import Link from 'next/link';
 import { format } from 'date-fns';
