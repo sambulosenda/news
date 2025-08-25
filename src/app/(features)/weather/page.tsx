@@ -49,6 +49,51 @@ export default async function WeatherPage() {
 
         {/* Client-side interactive weather component */}
         <WeatherWrapper />
+        {/* Hourly forecast (real data) */}
+        {/*
+          Example: Fetch hourly forecast for current location or selected city
+          Use OpenWeatherMap One Call API (or similar)
+        */}
+        {/*
+        import { useEffect, useState } from 'react';
+        import { format } from 'date-fns';
+        function HourlyForecast({ lat, lon }) {
+          const [hourly, setHourly] = useState([]);
+          const [loading, setLoading] = useState(true);
+          const [error, setError] = useState(null);
+          useEffect(() => {
+            async function fetchHourly() {
+              try {
+                setLoading(true);
+                setError(null);
+                const res = await fetch(`/api/weather/hourly?lat=${lat}&lon=${lon}`);
+                if (!res.ok) throw new Error('Failed to fetch hourly');
+                const data = await res.json();
+                setHourly(data.hourly.slice(0, 12));
+                setLoading(false);
+              } catch (err) {
+                setError(err.message);
+                setLoading(false);
+              }
+            }
+            fetchHourly();
+          }, [lat, lon]);
+          if (loading) return <div>Loading hourly forecast...</div>;
+          if (error) return <div>Error: {error}</div>;
+          return (
+            <div className="grid grid-cols-6 gap-2 mt-6">
+              {hourly.map((h, i) => (
+                <div key={h.dt} className="flex flex-col items-center">
+                  <span className="text-xs font-medium">{format(new Date(h.dt * 1000), 'H:00')}</span>
+                  <img src={`https://openweathermap.org/img/wn/${h.weather[0].icon}.png`} alt={h.weather[0].main} className="w-8 h-8" />
+                  <span className="text-sm">{Math.round(h.temp)}°C</span>
+                  <span className="text-xs text-gray-500">{h.weather[0].main}</span>
+                </div>
+              ))}
+            </div>
+          );
+        }
+        */}
         
         {/* Additional structured data for weather */}
         <script

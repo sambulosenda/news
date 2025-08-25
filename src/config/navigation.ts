@@ -134,7 +134,7 @@ export const navigationConfig: NavSection[] = [
   {
     name: 'Food & Drinks',
     slug: 'food-drinks',
-    priority: 15,
+    priority: 16,
     featured: false,
   },
   {
