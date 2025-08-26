@@ -78,19 +78,19 @@ async function getArticleData(slug: string) {
 
 // Enhanced content renderer with professional typography
 function FastContentRenderer({ content }: { content: string }) {
-  // Add styles directly to HTML elements for larger font
+  // Add styles directly to HTML elements for optimized font size
   const processedContent = content
-    // Add font size to all paragraphs
-    .replace(/<p>/g, '<p style="font-size: 1.25rem; line-height: 1.8; margin-bottom: 1.5rem; color: #374151;">')
-    // Add font size to lists
-    .replace(/<li>/g, '<li style="font-size: 1.25rem; line-height: 1.8; margin-bottom: 0.75rem;">')
+    // Add font size to all paragraphs - reduced for better readability
+    .replace(/<p>/g, '<p style="font-size: 1.125rem; line-height: 1.75; margin-bottom: 1.5rem; color: #374151;">')
+    // Add font size to lists - reduced for better readability
+    .replace(/<li>/g, '<li style="font-size: 1.125rem; line-height: 1.75; margin-bottom: 0.75rem;">')
     // Style headings
     .replace(/<h2>/g, '<h2 style="font-size: 1.875rem; font-weight: bold; margin-top: 3rem; margin-bottom: 1.5rem;">')
     .replace(/<h3>/g, '<h3 style="font-size: 1.5rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem;">')
     // Add drop cap to first paragraph
     .replace(
-      /<p style="font-size: 1.25rem; line-height: 1.8; margin-bottom: 1.5rem; color: #374151;">([A-Z])/,
-      '<p class="first-paragraph" style="font-size: 1.25rem; line-height: 1.8; margin-bottom: 1.5rem; color: #374151;"><span class="drop-cap">$1</span>'
+      /<p style="font-size: 1.125rem; line-height: 1.75; margin-bottom: 1.5rem; color: #374151;">([A-Z])/,
+      '<p class="first-paragraph" style="font-size: 1.125rem; line-height: 1.75; margin-bottom: 1.5rem; color: #374151;"><span class="drop-cap">$1</span>'
     );
   
   return (
