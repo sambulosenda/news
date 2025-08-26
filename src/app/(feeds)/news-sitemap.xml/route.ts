@@ -1,10 +1,48 @@
 import { fetchGraphQL } from '@/lib/api/fetch-graphql';
-import { GET_ALL_POSTS } from '@/lib/queries/posts';
 import { format } from 'date-fns';
 import { detectLocationFromContent } from '@/lib/utils/location-detector';
 
+// Custom query to include featured images
+const GET_NEWS_SITEMAP_POSTS = `
+  query GetNewsSitemapPosts($first: Int!) {
+    posts(first: $first, where: { orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          slug
+          date
+          modified
+          title
+          content
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+              caption
+            }
+          }
+          categories {
+            edges {
+              node {
+                name
+              }
+            }
+          }
+          tags {
+            edges {
+              node {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export async function GET() {
-  const postsData = await fetchGraphQL(GET_ALL_POSTS, { first: 1000 });
+  const postsData = await fetchGraphQL(GET_NEWS_SITEMAP_POSTS, { first: 1000 });
   
   type Post = {
     slug: string;
@@ -13,6 +51,13 @@ export async function GET() {
     title: string;
     content?: string;
     excerpt?: string;
+    featuredImage?: {
+      node?: {
+        sourceUrl?: string;
+        altText?: string;
+        caption?: string;
+      };
+    };
     categories?: {
       edges: Array<{
         node: {
@@ -46,7 +91,8 @@ export async function GET() {
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   ${recentPosts.map(post => {
     const postDate = new Date(post.date);
     const year = postDate.getFullYear();
@@ -74,9 +120,20 @@ export async function GET() {
       ] : ['South Africa', 'Zimbabwe'])
     ].filter(Boolean).slice(0, 10);
     
+    // Convert WordPress backend image URL to frontend proxy URL
+    const imageUrl = post.featuredImage?.node?.sourceUrl 
+      ? `https://reportfocusnews.com/api/image-proxy?url=${encodeURIComponent(post.featuredImage.node.sourceUrl)}`
+      : null;
+    
     return `
   <url>
     <loc>https://reportfocusnews.com/${year}/${month}/${day}/${post.slug}/</loc>
+    ${imageUrl ? `
+    <image:image>
+      <image:loc>${escapeXml(imageUrl)}</image:loc>
+      <image:title>${escapeXml(post.featuredImage?.node?.altText || post.title)}</image:title>
+      <image:caption>${escapeXml(post.featuredImage?.node?.caption || post.title)}</image:caption>
+    </image:image>` : ''}
     <news:news>
       <news:publication>
         <news:name>Report Focus News</news:name>
