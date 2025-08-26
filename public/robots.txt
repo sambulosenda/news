@@ -11,6 +11,7 @@ Allow: /search
 
 # Sitemaps
 Sitemap: https://www.reportfocusnews.com/sitemap.xml
+Sitemap: https://www.reportfocusnews.com/news-sitemap.xml
 
 # Crawl delay for politeness
 Crawl-delay: 1
@@ -23,6 +24,16 @@ Disallow: /admin/
 # Specific bot rules
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-News
+Allow: /
+Disallow: /weather
+Disallow: /faq/
+Disallow: /about/
+Disallow: /contact
+Disallow: /privacy
+Disallow: /terms
 Crawl-delay: 0
 
 User-agent: Bingbot
