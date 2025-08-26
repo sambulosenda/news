@@ -38,10 +38,10 @@ const RelatedPostsSection = dynamic(() => import('@/components/sections/RelatedP
   ),
 });
 
-// Dynamic rendering with aggressive edge caching for news
+// Dynamic rendering with aggressive caching for news
 export const revalidate = 60; // 1 minute revalidation for breaking news
 export const dynamicParams = true; // Allow dynamic params for new articles
-export const runtime = 'edge'; // Use edge runtime for faster responses
+// Removed edge runtime - causing client-side errors
 
 // Import components directly for server components
 import ShareButtons from '@/components/features/ShareButtons';
