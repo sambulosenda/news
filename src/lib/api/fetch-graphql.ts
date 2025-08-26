@@ -13,7 +13,12 @@ const client = new ApolloClient({
       Category: {
         keyFields: ['id'],
       },
+      Tag: {
+        keyFields: ['id'],
+      },
     },
+    // Disable cache warnings in production
+    possibleTypes: {},
   }),
   defaultOptions: {
     query: {

@@ -1,10 +1,8 @@
-import { fetchGraphQL } from '@/lib/api/fetch-graphql';
-import { gql } from '@apollo/client';
 import { format } from 'date-fns';
 import { detectLocationFromContent } from '@/lib/utils/location-detector';
 
-// Custom query to include featured images
-const GET_NEWS_SITEMAP_POSTS = gql`
+// Direct GraphQL query
+const GET_NEWS_SITEMAP_POSTS = `
   query GetNewsSitemapPosts($first: Int!) {
     posts(first: $first, where: { orderby: { field: DATE, order: DESC } }) {
       edges {
@@ -42,59 +40,104 @@ const GET_NEWS_SITEMAP_POSTS = gql`
   }
 `;
 
-export async function GET() {
-  const postsData = await fetchGraphQL(GET_NEWS_SITEMAP_POSTS, { first: 1000 });
+// Fetch posts directly from GraphQL
+async function fetchPosts(first: number = 1000) {
+  try {
+    const response = await fetch('https://backend.reportfocusnews.com/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: GET_NEWS_SITEMAP_POSTS,
+        variables: { first }
+      }),
+    });
+
+    const data = await response.json();
+    return data?.data?.posts?.edges || [];
+  } catch (error) {
+    console.error('Failed to fetch posts:', error);
+    return [];
+  }
+}
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const debug = searchParams.get('debug') === 'true';
   
-  type Post = {
-    slug: string;
-    date: string;
-    modified?: string;
-    title: string;
-    content?: string;
-    excerpt?: string;
-    featuredImage?: {
-      node?: {
-        sourceUrl?: string;
-        altText?: string;
-        caption?: string;
-      };
-    };
-    categories?: {
-      edges: Array<{
-        node: {
-          name: string;
-        };
-      }>;
-    };
-    tags?: {
-      edges: Array<{
-        node: {
-          name: string;
-        };
-      }>;
-    };
-  };
-  
-  interface PostEdge {
-    node: Post;
+  if (debug) {
+    console.error('[DEBUG] Fetching news sitemap...');
   }
   
-  const posts: Post[] = postsData?.posts?.edges?.map((edge: PostEdge) => edge.node) || [];
-  
-  // Filter posts from last 7 days (optimal for Google News)
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  
-  const recentPosts = posts.filter(post => {
-    const postDate = new Date(post.date);
-    return postDate >= sevenDaysAgo;
-  });
+  try {
+    const edges = await fetchPosts();
+    
+    if (debug) {
+      console.error('[DEBUG] Posts fetched:', edges.length);
+    }
+    
+    type Post = {
+      slug: string;
+      date: string;
+      modified?: string;
+      title: string;
+      content?: string;
+      excerpt?: string;
+      featuredImage?: {
+        node?: {
+          sourceUrl?: string;
+          altText?: string;
+          caption?: string;
+        };
+      };
+      categories?: {
+        edges: Array<{
+          node: {
+            name: string;
+          };
+        }>;
+      };
+      tags?: {
+        edges: Array<{
+          node: {
+            name: string;
+          };
+        }>;
+      };
+    };
+    
+    const posts: Post[] = edges.map((edge: any) => edge.node);
+    
+    if (debug && posts.length > 0) {
+      console.error('[DEBUG] First post:', posts[0].title, posts[0].date);
+    }
+    
+    // Filter posts - use 30 days by default, can override with ?days=N
+    const daysToInclude = parseInt(searchParams.get('days') || '30');
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - daysToInclude);
+    
+    const recentPosts = debug 
+      ? posts.slice(0, 20) // In debug mode, just show first 20
+      : posts.filter(post => {
+          const postDate = new Date(post.date);
+          return postDate >= cutoffDate;
+        });
+    
+    // If no recent posts, show the 10 most recent regardless of date
+    const finalPosts = recentPosts.length > 0 ? recentPosts : posts.slice(0, 10);
+    
+    if (debug) {
+      console.error('[DEBUG] Posts after filtering:', finalPosts.length);
+    }
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  ${recentPosts.map(post => {
+  ${finalPosts.map(post => {
     const postDate = new Date(post.date);
     const year = postDate.getFullYear();
     const month = String(postDate.getMonth() + 1).padStart(2, '0');
@@ -152,12 +195,27 @@ export async function GET() {
   }).join('')}
 </urlset>`;
 
-  return new Response(xml, {
-    headers: {
-      'Content-Type': 'application/xml',
-      'Cache-Control': 'public, max-age=300, s-maxage=300', // 5 minutes for breaking news
-    },
-  });
+    return new Response(xml, {
+      headers: {
+        'Content-Type': 'application/xml; charset=utf-8',
+        'Cache-Control': 'public, max-age=300, s-maxage=300',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
+  } catch (error) {
+    console.error('Error generating news sitemap:', error);
+    return new Response(
+      `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"></urlset>`,
+      {
+        headers: {
+          'Content-Type': 'application/xml; charset=utf-8',
+          'Cache-Control': 'public, max-age=300, s-maxage=300',
+        },
+      }
+    );
+  }
 }
 
 function escapeXml(str: string): string {
