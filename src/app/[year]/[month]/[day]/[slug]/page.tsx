@@ -38,10 +38,10 @@ const RelatedPostsSection = dynamic(() => import('@/components/sections/RelatedP
   ),
 });
 
-// Optimized caching for news articles
-export const revalidate = 300; // 5 minutes - balance between freshness and performance
-export const dynamicParams = true;
-export const fetchCache = 'default-cache';
+// Dynamic rendering with aggressive edge caching for news
+export const revalidate = 60; // 1 minute revalidation for breaking news
+export const dynamicParams = true; // Allow dynamic params for new articles
+export const runtime = 'edge'; // Use edge runtime for faster responses
 
 // Import components directly for server components
 import ShareButtons from '@/components/features/ShareButtons';
@@ -57,14 +57,14 @@ interface PostPageProps {
   }>;
 }
 
-// Optimized data fetching - article only first, related posts lazy loaded
+// Optimized data fetching with edge caching
 async function getArticleData(slug: string) {
   try {
     // Use standard query - AIOSEO fields are causing errors
     const articleData = await fetchGraphQLCached(
       GET_POST_BY_SLUG, 
       { slug }, 
-      { ttl: 300 } // 5 minute cache for articles
+      { ttl: 60 } // 1 minute cache for breaking news
     );
     
     const article = articleData?.postBy || null;
