@@ -111,10 +111,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 }
 
 export const metadata: Metadata = {
-  title: 'Search | Report Focus News',
+  title: 'Search',  // Template adds " | Report Focus News"
   description: 'Search for news articles and stories from South Africa and Zimbabwe on Report Focus News',
   openGraph: {
-    title: 'Search | Report Focus News',
+    title: 'Search | Report Focus News',  // OpenGraph keeps full title
     description: 'Search for news articles and stories from South Africa and Zimbabwe',
     type: 'website',
     url: 'https://reportfocusnews.com/search',

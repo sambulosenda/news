@@ -151,7 +151,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   ].filter(Boolean).join(', ');
   
   return {
-    title: seoTitle.includes('Report Focus') ? seoTitle : `${seoTitle} | Report Focus News`,
+    title: seoTitle, // The template in layout.tsx will add " | Report Focus News"
     description,
     keywords,
     openGraph: {

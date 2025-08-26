@@ -4,7 +4,7 @@ import HeaderWrapper from '@/components/layout/HeaderWrapper';
 import Footer from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
-  title: 'FAQ Hub - Frequently Asked Questions | Report Focus News',
+  title: 'FAQ Hub - Frequently Asked Questions',  // Template adds " | Report Focus News"
   description: 'Find answers to frequently asked questions about South Africa and Zimbabwe. Load shedding, elections, economy, visas, and more.',
   keywords: 'FAQ South Africa, FAQ Zimbabwe, frequently asked questions, help center, load shedding FAQ, elections FAQ, economy FAQ',
   alternates: {

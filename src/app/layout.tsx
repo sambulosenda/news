@@ -130,8 +130,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         
         {/* Additional SEO */}
-        {/* TODO: Replace with your actual Google Search Console verification code */}
-        {/* <meta name="google-site-verification" content="YOUR_ACTUAL_CODE_HERE" /> */}
+        {/* Google Search Console - Site already verified through domain verification */}
         <link rel="alternate" type="application/rss+xml" title="Report Focus News RSS Feed" href="/rss.xml" />
       </head>
       <body

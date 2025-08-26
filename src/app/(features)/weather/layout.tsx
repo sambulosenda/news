@@ -2,11 +2,11 @@ import { Metadata } from 'next';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'Weather Forecast South Africa & Zimbabwe | Live Weather Updates | Report Focus News',
+  title: 'Weather Forecast South Africa & Zimbabwe | Live Weather Updates',  // Template adds " | Report Focus News"
   description: 'Get accurate weather forecasts for South Africa and Zimbabwe. Live weather updates for Johannesburg, Cape Town, Harare, Durban, and more. 5-day forecasts, hourly predictions, UV index, and weather warnings.',
   keywords: 'weather South Africa, weather Zimbabwe, Johannesburg weather, Cape Town weather, Harare weather, Durban weather, weather forecast, Southern Africa weather, live weather updates, 5-day forecast, hourly weather, UV index South Africa',
   openGraph: {
-    title: 'Weather Forecast - South Africa & Zimbabwe | Report Focus News',
+    title: 'Weather Forecast - South Africa & Zimbabwe',  // Template adds " | Report Focus News"
     description: 'Live weather updates and forecasts for major cities in South Africa and Zimbabwe. Get accurate 5-day forecasts, hourly predictions, and weather warnings.',
     type: 'website',
     url: 'https://www.reportfocusnews.com/weather',

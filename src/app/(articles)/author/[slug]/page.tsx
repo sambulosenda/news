@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
   const { author } = await getAuthorData(slug);
 
   return {
-    title: `${author.name} - Journalist | Report Focus News`,
+    title: `${author.name} - Journalist`,  // Template adds " | Report Focus News"
     description: author.bio || `Read latest articles by ${author.name} on Report Focus News. Expert coverage of South Africa and Zimbabwe news.`,
     openGraph: {
       title: `${author.name} - Report Focus News`,
