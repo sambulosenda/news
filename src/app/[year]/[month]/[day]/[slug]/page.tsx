@@ -78,15 +78,24 @@ async function getArticleData(slug: string) {
 
 // Enhanced content renderer with professional typography
 function FastContentRenderer({ content }: { content: string }) {
-  // Add drop cap to first paragraph
-  const processedContent = content.replace(
-    /<p>([A-Z])/,
-    '<p class="first-paragraph"><span class="drop-cap">$1</span>'
-  );
+  // Add styles directly to HTML elements for larger font
+  let processedContent = content
+    // Add font size to all paragraphs
+    .replace(/<p>/g, '<p style="font-size: 1.25rem; line-height: 1.8; margin-bottom: 1.5rem; color: #374151;">')
+    // Add font size to lists
+    .replace(/<li>/g, '<li style="font-size: 1.25rem; line-height: 1.8; margin-bottom: 0.75rem;">')
+    // Style headings
+    .replace(/<h2>/g, '<h2 style="font-size: 1.875rem; font-weight: bold; margin-top: 3rem; margin-bottom: 1.5rem;">')
+    .replace(/<h3>/g, '<h3 style="font-size: 1.5rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem;">')
+    // Add drop cap to first paragraph
+    .replace(
+      /<p style="font-size: 1.25rem; line-height: 1.8; margin-bottom: 1.5rem; color: #374151;">([A-Z])/,
+      '<p class="first-paragraph" style="font-size: 1.25rem; line-height: 1.8; margin-bottom: 1.5rem; color: #374151;"><span class="drop-cap">$1</span>'
+    );
   
   return (
     <div 
-      className="max-w-[700px] mx-auto font-serif text-[1.125rem] md:text-[1.25rem] lg:text-[1.375rem] leading-[1.75] text-gray-800 prose prose-lg prose-headings:font-sans prose-headings:font-bold prose-headings:text-gray-900 prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-p:text-gray-800 prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 prose-blockquote:my-8 prose-a:text-red-600 prose-a:underline hover:prose-a:text-red-700 prose-img:rounded-lg prose-img:my-8 prose-li:mb-3 prose-strong:font-bold prose-strong:text-gray-900"
+      className="article-content max-w-[720px] mx-auto font-serif text-gray-800"
       dangerouslySetInnerHTML={{ __html: processedContent }}
     />
   );
