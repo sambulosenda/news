@@ -15,18 +15,20 @@ import "@/styles/globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "optional", // Don't block render for fonts
+  display: "swap", // Better for Core Web Vitals - shows text immediately with fallback
   preload: true,
   adjustFontFallback: true, // Better fallback matching
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
 });
 
 const roboto = Roboto({
   weight: ['400', '500', '700'],
   subsets: ["latin"],
   variable: "--font-roboto",
-  display: "optional",
+  display: "swap", // Better for Core Web Vitals
   preload: true,
   adjustFontFallback: true,
+  fallback: ['Georgia', 'Times New Roman', 'serif'],
 });
 
 export const metadata: Metadata = {
@@ -95,12 +97,26 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Preconnect to optimize external resources */}
+        {/* Critical resource preloading for better performance */}
         <link rel="preconnect" href="https://backend.reportfocusnews.com" />
         <link rel="dns-prefetch" href="https://backend.reportfocusnews.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        
+        {/* Preload critical images for LCP optimization */}
+        <link rel="preload" as="image" href="/og-image.jpg" fetchPriority="high" />
+        
+        {/* Preload critical CSS (if using external stylesheets) */}
+        <link rel="preload" as="style" href="/_next/static/css/app.css" />
+        
+        {/* Resource hints for third-party services */}
+        {shouldShowAds() && (
+          <>
+            <link rel="preconnect" href="https://googleads.g.doubleclick.net" />
+            <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+          </>
+        )}
         
         {/* Favicon and app icons */}
         <link rel="icon" href="/favicon.ico" sizes="any" />

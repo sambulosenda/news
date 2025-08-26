@@ -1,54 +1,75 @@
 # Report Focus News Robots.txt
-# https://www.reportfocusnews.com
+# https://reportfocusnews.com
+# Last updated: 2024
 
+# Default rules for all crawlers
 User-agent: *
 Allow: /
-Allow: /weather
 Allow: /news/
 Allow: /category/
-Allow: /author/
+Allow: /20*/  # Allow date-based URLs (articles)
 Allow: /search
+Allow: /weather
 
-# Sitemaps
-Sitemap: https://www.reportfocusnews.com/sitemap.xml
-Sitemap: https://www.reportfocusnews.com/news-sitemap.xml
-
-# Crawl delay for politeness
-Crawl-delay: 1
-
-# Block admin and API paths
+# Block non-essential paths
 Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
+Disallow: /*.json$
+Disallow: /*?*utm_
+Disallow: /*?*ref=
 
-# Specific bot rules
+# Sitemaps
+Sitemap: https://reportfocusnews.com/sitemap-index.xml
+Sitemap: https://reportfocusnews.com/sitemap.xml
+Sitemap: https://reportfocusnews.com/news-sitemap.xml
+
+# Google crawlers - Priority access
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 0
 
+# Google News - Optimized for news content
 User-agent: Googlebot-News
 Allow: /
+Allow: /20*/  # Priority for dated articles
+Allow: /news/
 Disallow: /weather
 Disallow: /faq/
-Disallow: /about/
-Disallow: /contact
-Disallow: /privacy
-Disallow: /terms
+Disallow: /search
+Disallow: /author/
+Disallow: /page/
+Disallow: /tag/
 Crawl-delay: 0
 
 User-agent: Bingbot
 Allow: /
 Crawl-delay: 1
 
-# Block bad bots
+# Rate limit aggressive SEO bots
 User-agent: AhrefsBot
-Disallow: /
+Crawl-delay: 10
+Disallow: /api/
+Disallow: /_next/
 
 User-agent: SemrushBot
-Disallow: /
+Crawl-delay: 10
+Disallow: /api/
+Disallow: /_next/
 
 User-agent: DotBot
+Crawl-delay: 15
 Disallow: /
 
 User-agent: MJ12bot
+Crawl-delay: 20
 Disallow: /
+
+# Block malicious bots completely
+User-agent: PetalBot
+Disallow: /
+
+User-agent: GPTBot
+Allow: /news/
+Disallow: /api/
+Crawl-delay: 2

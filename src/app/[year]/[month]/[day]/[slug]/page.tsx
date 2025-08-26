@@ -106,6 +106,9 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   
   if (!article) return { title: 'Article Not Found' };
 
+  // Import location detection
+  const { detectLocationFromContent } = await import('@/lib/utils/location-detector');
+
   // Use excerpt for meta description
   const description = 
     article.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || 
@@ -123,8 +126,29 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   const canonicalUrl = 
     `https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`;
 
-  // Keep tags for SEO metadata only, not for display
-  const keywords = article.tags?.edges?.map((tag: any) => tag.node.name).join(', ') || '';
+  // Detect location for enhanced regional SEO
+  const category = article.categories?.edges?.[0]?.node?.name || '';
+  const tags = article.tags?.edges?.map((tag: any) => tag.node.name) || [];
+  const location = detectLocationFromContent(
+    article.title || '',
+    article.content || article.excerpt || '',
+    category,
+    tags
+  );
+
+  // Enhanced keywords with location
+  const locationKeywords = location ? [
+    location.country,
+    ...(location.city ? [location.city] : []),
+    'Southern Africa',
+    `${location.country} news`,
+    `${location.country} ${category.toLowerCase()}`
+  ] : ['South Africa', 'Zimbabwe', 'Southern Africa'];
+
+  const keywords = [
+    ...tags.slice(0, 5),
+    ...locationKeywords
+  ].filter(Boolean).join(', ');
   
   return {
     title: seoTitle.includes('Report Focus') ? seoTitle : `${seoTitle} | Report Focus News`,
@@ -157,6 +181,20 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     },
     alternates: {
       canonical: canonicalUrl,
+    },
+    other: {
+      // Add geo-targeting meta tags for regional SEO
+      ...(location ? {
+        'geo.region': location.country === 'Zimbabwe' ? 'ZW' : 'ZA',
+        'geo.placename': location.city || (location.country === 'Zimbabwe' ? 'Harare' : 'Johannesburg'),
+        'geo.position': location.country === 'Zimbabwe' ? '-17.8292;31.0522' : '-26.2041;28.0473',
+        'ICBM': location.country === 'Zimbabwe' ? '-17.8292, 31.0522' : '-26.2041, 28.0473',
+      } : {
+        'geo.region': 'ZA',
+        'geo.placename': 'South Africa',
+      }),
+      'target_audience': location?.country || 'South Africa, Zimbabwe',
+      'content_location': location ? `${location.city || location.country}` : 'Southern Africa',
     },
   };
 }

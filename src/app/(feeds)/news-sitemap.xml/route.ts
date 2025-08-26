@@ -113,8 +113,9 @@ export async function GET(request: Request) {
       console.error('[DEBUG] First post:', posts[0].title, posts[0].date);
     }
     
-    // Filter posts - use 30 days by default, can override with ?days=N
-    const daysToInclude = parseInt(searchParams.get('days') || '30');
+    // Filter posts - use 2 days for Google News (they only accept articles from last 2 days)
+    // Can override with ?days=N for testing
+    const daysToInclude = parseInt(searchParams.get('days') || '2');
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - daysToInclude);
     
@@ -123,7 +124,7 @@ export async function GET(request: Request) {
       : posts.filter(post => {
           const postDate = new Date(post.date);
           return postDate >= cutoffDate;
-        });
+        }).slice(0, 1000); // Google News max limit is 1000 URLs
     
     // If no recent posts, show the 10 most recent regardless of date
     const finalPosts = recentPosts.length > 0 ? recentPosts : posts.slice(0, 10);
