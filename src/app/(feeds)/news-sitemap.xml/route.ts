@@ -35,13 +35,13 @@ export async function GET() {
   
   const posts: Post[] = postsData?.posts?.edges?.map((edge: PostEdge) => edge.node) || [];
   
-  // Filter posts from last 2 days (Google News requirement)
-  const twoDaysAgo = new Date();
-  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+  // Filter posts from last 7 days (optimal for Google News)
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   
   const recentPosts = posts.filter(post => {
     const postDate = new Date(post.date);
-    return postDate >= twoDaysAgo;
+    return postDate >= sevenDaysAgo;
   });
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -97,7 +97,7 @@ export async function GET() {
   return new Response(xml, {
     headers: {
       'Content-Type': 'application/xml',
-      'Cache-Control': 'public, max-age=900, s-maxage=900', // 15 minutes for faster news updates
+      'Cache-Control': 'public, max-age=300, s-maxage=300', // 5 minutes for breaking news
     },
   });
 }
