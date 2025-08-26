@@ -313,29 +313,6 @@ export default async function HomePage() {
                 </section>
               )}
 
-              {/* Newsletter Signup */}
-              <section className="p-4 bg-gray-50 border border-gray-200">
-                <h3 className="font-bold text-base mb-2">
-                  Subscribe to Newsletter
-                </h3>
-                <p className="text-xs text-gray-600 mb-3">
-                  Get daily updates delivered straight to your inbox
-                </p>
-                <form className="space-y-2">
-                  <input
-                    type="email"
-                    placeholder="Enter your email address"
-                    className="w-full px-3 py-2 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="w-full px-3 py-2 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
-                  >
-                    Subscribe
-                  </button>
-                </form>
-              </section>
             </aside>
           </div>
         </div>

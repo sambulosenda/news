@@ -31,7 +31,6 @@ const footerLinks = {
     { name: 'Accessibility', href: '/accessibility' },
   ],
   connect: [
-    { name: 'Newsletter', href: '/newsletters' },
     { name: 'RSS Feed', href: '/rss.xml' },
     { name: 'Mobile Apps', href: '/mobile-apps' },
   ]
@@ -204,17 +203,6 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-              
-              {/* Newsletter Button */}
-              <Link
-                href="/newsletters"
-                className="inline-flex items-center px-3 py-1.5 bg-red-700 hover:bg-red-800 text-white text-xs font-medium rounded transition-colors mt-4"
-              >
-                Subscribe
-                <svg className="w-3 h-3 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </Link>
             </div>
           </div>
         </div>

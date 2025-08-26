@@ -6,7 +6,6 @@ export const ROUTES = {
   contact: '/contact',
   privacy: '/privacy',
   terms: '/terms',
-  newsletters: '/newsletters',
   mobileApps: '/mobile-apps',
   
   // Dynamic routes

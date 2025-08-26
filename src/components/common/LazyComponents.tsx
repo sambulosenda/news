@@ -3,16 +3,6 @@ import dynamic from 'next/dynamic';
 // Lazy load heavy components with loading states
 // This reduces initial bundle by ~80KB
 
-export const NewsletterSignup = dynamic(
-  () => import('@/components/forms/NewsletterSignup'),
-  {
-    loading: () => (
-      <div className="h-32 bg-gray-100 animate-pulse rounded-lg" />
-    ),
-    ssr: false, // Don't SSR newsletter signup
-  }
-);
-
 export const SearchBarEnhanced = dynamic(
   () => import('@/components/forms/SearchBarEnhanced'),
   {
