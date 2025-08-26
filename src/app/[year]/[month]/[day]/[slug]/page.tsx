@@ -86,7 +86,7 @@ function FastContentRenderer({ content }: { content: string }) {
   
   return (
     <div 
-      className="max-w-[680px] mx-auto font-serif text-lg md:text-[1.125rem] lg:text-xl leading-[1.8] text-gray-800 prose prose-headings:font-sans prose-headings:font-bold prose-headings:text-gray-900 prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-p:text-gray-800 prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 prose-blockquote:my-8 prose-a:text-red-600 prose-a:underline hover:prose-a:text-red-700 prose-img:rounded-lg prose-img:my-8 prose-li:mb-2 prose-strong:font-bold prose-strong:text-gray-900"
+      className="max-w-[700px] mx-auto font-serif text-[1.125rem] md:text-[1.25rem] lg:text-[1.375rem] leading-[1.75] text-gray-800 prose prose-lg prose-headings:font-sans prose-headings:font-bold prose-headings:text-gray-900 prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-p:text-gray-800 prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 prose-blockquote:my-8 prose-a:text-red-600 prose-a:underline hover:prose-a:text-red-700 prose-img:rounded-lg prose-img:my-8 prose-li:mb-3 prose-strong:font-bold prose-strong:text-gray-900"
       dangerouslySetInnerHTML={{ __html: processedContent }}
     />
   );
