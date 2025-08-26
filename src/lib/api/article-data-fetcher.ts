@@ -37,11 +37,14 @@ export async function fetchArticleWithMetadata(
   }
 
   try {
-    // Single API call for both page and metadata
+    // Single API call for both page and metadata with optimized caching
     const articleData = await fetchGraphQLCached(
       GET_POST_BY_SLUG,
       { slug },
-      { ttl: 60 } // 1 minute cache for breaking news
+      { 
+        ttl: 60, // 1 minute cache for breaking news
+        staleWhileRevalidate: 300 // Serve stale content for 5 minutes while refreshing
+      }
     );
 
     const article = articleData?.postBy;
@@ -58,8 +61,8 @@ export async function fetchArticleWithMetadata(
       timestamp: Date.now(),
     });
 
-    // Clean cache periodically
-    if (metadataCache.size > 50) {
+    // Clean cache periodically - keep more items for better performance
+    if (metadataCache.size > 100) {
       const oldestKey = metadataCache.keys().next().value;
       if (oldestKey) metadataCache.delete(oldestKey);
     }

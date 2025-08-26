@@ -1,35 +1,18 @@
 import type { Metadata } from "next";
 import React from "react";
-import { Inter, Roboto } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ApolloWrapper } from "@/lib/api/apollo-wrapper";
 import SearchActionSchema from "@/components/seo/SearchActionSchema";
 import SiteNavigationSchema from "@/components/seo/SiteNavigationSchema";
 import OrganizationSchema from "@/components/seo/OrganizationSchema";
 import NewsPerformanceOptimizer from "@/components/performance/NewsPerformanceOptimizer";
+import PerformanceMonitor from "@/components/performance/PerformanceMonitor";
 import WebSiteSchema from "@/components/seo/WebSiteSchema";
 import { GoogleAdsenseScript } from "@/components/ads/GoogleAdsense";
 import { ADSENSE_CONFIG, shouldShowAds } from "@/config/adsense";
+import { fontVariables, fontStyles } from "@/lib/fonts";
+import "@/styles/critical.css";
 import "@/styles/globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap", // Better for Core Web Vitals - shows text immediately with fallback
-  preload: true,
-  adjustFontFallback: true, // Better fallback matching
-  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-});
-
-const roboto = Roboto({
-  weight: ['400', '500', '700'],
-  subsets: ["latin"],
-  variable: "--font-roboto",
-  display: "swap", // Better for Core Web Vitals
-  preload: true,
-  adjustFontFallback: true,
-  fallback: ['Georgia', 'Times New Roman', 'serif'],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://reportfocusnews.com'),
@@ -97,18 +80,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Inline critical font styles for zero-delay font loading */}
+        <style dangerouslySetInnerHTML={{ __html: fontStyles }} />
+        
         {/* Critical resource preloading for better performance */}
         <link rel="preconnect" href="https://backend.reportfocusnews.com" />
         <link rel="dns-prefetch" href="https://backend.reportfocusnews.com" />
+        
+        {/* Preload critical web fonts - will work when network is available */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         
         {/* Preload critical images for LCP optimization */}
         <link rel="preload" as="image" href="/og-image.jpg" fetchPriority="high" />
-        
-        {/* Preload critical CSS (if using external stylesheets) */}
-        <link rel="preload" as="style" href="/_next/static/css/app.css" />
         
         {/* Resource hints for third-party services */}
         {shouldShowAds() && (
@@ -134,13 +119,14 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="Report Focus News RSS Feed" href="/rss.xml" />
       </head>
       <body
-        className={`${inter.variable} ${roboto.variable} font-sans antialiased bg-white text-gray-900`}
+        className={`${fontVariables} font-sans antialiased bg-white text-gray-900`}
       >
         <SearchActionSchema />
         <SiteNavigationSchema />
         <OrganizationSchema />
         <WebSiteSchema />
         <NewsPerformanceOptimizer />
+        <PerformanceMonitor />
         <ApolloWrapper>{children}</ApolloWrapper>
         {shouldShowAds() && <GoogleAdsenseScript pId={ADSENSE_CONFIG.publisherId} />}
         <SpeedInsights />
