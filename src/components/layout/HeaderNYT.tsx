@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useCallback, Fragment, useRef } from 'react';
+import { useState, useEffect, useCallback, Fragment, useRef, FormEvent } from 'react';
 import { WPCategory } from '@/types/wordpress';
 import { mapCategoriesToNavigation } from '@/config/navigation';
 import { getMarketData, formatMarketData } from '@/lib/data/market-data';
@@ -163,7 +163,7 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
     };
   }, [searchOpen]);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleSearchSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
