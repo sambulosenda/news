@@ -1,9 +1,10 @@
 import { fetchGraphQL } from '@/lib/api/fetch-graphql';
+import { gql } from '@apollo/client';
 import { format } from 'date-fns';
 import { detectLocationFromContent } from '@/lib/utils/location-detector';
 
 // Custom query to include featured images
-const GET_NEWS_SITEMAP_POSTS = `
+const GET_NEWS_SITEMAP_POSTS = gql`
   query GetNewsSitemapPosts($first: Int!) {
     posts(first: $first, where: { orderby: { field: DATE, order: DESC } }) {
       edges {
