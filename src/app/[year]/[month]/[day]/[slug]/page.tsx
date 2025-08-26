@@ -230,16 +230,18 @@ export default async function FastArticlePage({ params }: PostPageProps) {
                   />
                 )}
                 <div>
-                  <div className="text-sm text-gray-500 mb-1">By</div>
+                  <div className="text-sm text-gray-500">By</div>
                   <Link 
                     href={`/author/${post.author.node.slug}`}
                     className="font-bold text-gray-900 hover:text-red-600 transition-colors"
                   >
                     {post.author.node.name}
                   </Link>
-                  <div className="text-sm text-gray-500 mt-1">
-                    Staff Reporter
-                  </div>
+                  {post.author.node.description && !post.author.node.name.toLowerCase().includes('staff') && (
+                    <div className="text-sm text-gray-500 mt-1">
+                      {post.author.node.description}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
