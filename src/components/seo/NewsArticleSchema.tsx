@@ -10,23 +10,26 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
   const publishDate = new Date(article.date).toISOString();
   const modifiedDate = article.modified ? new Date(article.modified).toISOString() : publishDate;
   
-  // Extract plain text from excerpt for description
-  const description = article.excerpt
-    ? article.excerpt.replace(/<[^>]*>/g, '').substring(0, 160)
-    : article.title;
+  // Use Yoast meta description if available, otherwise excerpt
+  const description = article.seo?.metaDesc ||
+    (article.excerpt
+      ? article.excerpt.replace(/<[^>]*>/g, '').substring(0, 160)
+      : article.title);
 
   // Helper to get SEO-friendly image URLs for structured data
   const getSeoImageUrl = (url: string | undefined) => {
     return getImageUrl(url, { context: 'seo' });
   };
   
-  const images = article.featuredImage?.node ? [
+  // Use Yoast OpenGraph image if available, otherwise featured image
+  const imageUrl = article.seo?.opengraphImage?.sourceUrl || article.featuredImage?.node?.sourceUrl;
+  const images = imageUrl ? [
     {
       "@type": "ImageObject",
-      "url": getSeoImageUrl(article.featuredImage.node.sourceUrl),
-      "width": article.featuredImage.node.mediaDetails?.width || 1200,
-      "height": article.featuredImage.node.mediaDetails?.height || 630,
-      "caption": article.featuredImage.node.caption || article.featuredImage.node.altText || article.title
+      "url": getSeoImageUrl(imageUrl),
+      "width": article.featuredImage?.node?.mediaDetails?.width || 1200,
+      "height": article.featuredImage?.node?.mediaDetails?.height || 630,
+      "caption": article.featuredImage?.node?.caption || article.featuredImage?.node?.altText || article.title
     }
   ] : [
     {
@@ -38,19 +41,29 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
     }
   ];
 
+  // Build keywords from Yoast focus keywords and tags
+  const focusKeyword = article.seo?.focuskw || '';
+  const metaKeywords = article.seo?.metaKeywords ? article.seo.metaKeywords.split(',').map((k: string) => k.trim()) : [];
+  const yoastKeywords = [focusKeyword, ...metaKeywords].filter(Boolean);
+  
+  const allKeywords = [
+    ...yoastKeywords,
+    ...(article.tags?.edges?.map(tag => tag.node.name) || [])
+  ].filter(Boolean);
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
-    "headline": article.title,
+    "headline": article.seo?.title || article.title,
     "description": description,
     "image": images,
-    "thumbnailUrl": getSeoImageUrl(article.featuredImage?.node?.sourceUrl),
+    "thumbnailUrl": getSeoImageUrl(imageUrl),
     "datePublished": publishDate,
     "dateModified": modifiedDate,
     "author": {
       "@type": "Person",
       "name": article.author?.node?.name || "Report Focus News Staff",
-      "url": `https://reportfocusnews.com/author/${article.author?.node?.name?.toLowerCase().replace(/\s+/g, '-') || 'staff'}/`
+      "url": `https://reportfocusnews.com/author/${article.author?.node?.slug || article.author?.node?.name?.toLowerCase().replace(/\s+/g, '-') || 'staff'}/`
     },
     "publisher": {
       "@type": "NewsMediaOrganization",
@@ -73,11 +86,11 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
       ]
     },
     "articleSection": article.categories?.edges?.[0]?.node?.name || "News",
-    "keywords": article.tags?.edges?.map(tag => tag.node.name).join(', ') || "",
-    "url": url,
+    "keywords": allKeywords.join(', '),
+    "url": article.seo?.canonical || url,
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": url
+      "@id": article.seo?.canonical || url
     },
     "isAccessibleForFree": true,
     "speakable": {

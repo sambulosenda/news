@@ -110,24 +110,31 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   // Import location detection
   const { detectLocationFromContent } = await import('@/lib/utils/location-detector');
 
-  // Use excerpt for meta description
+  // Use Yoast meta description if available, otherwise fall back to excerpt
   const description = 
+    article.seo?.metaDesc ||
     article.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || 
     '';
   
-  // Use article title
-  const seoTitle = article.title;
+  // Use Yoast SEO title if available, otherwise use article title
+  // Remove any existing site name from Yoast title to prevent duplication with template
+  const rawSeoTitle = article.seo?.title || article.title;
+  const seoTitle = rawSeoTitle
+    .replace(/ [\|\-–—] Report Focus News$/i, '')  // Remove common separators with site name at end
+    .replace(/^Report Focus News [\|\-–—] /i, ''); // Remove site name at beginning
   
-  // Use SEO context for Open Graph images - Google needs direct URLs
-  const ogImage = getImageUrl(article.featuredImage?.node?.sourceUrl, { context: 'seo' });
+  // Use Yoast OpenGraph image if available, otherwise featured image
+  const ogImageUrl = article.seo?.opengraphImage?.sourceUrl || article.featuredImage?.node?.sourceUrl;
+  const ogImage = getImageUrl(ogImageUrl, { context: 'seo' });
   
-  // Build canonical URL
+  // Build canonical URL - use Yoast canonical if available
   const canonicalUrl = 
+    article.seo?.canonical || 
     `https://reportfocusnews.com/${year}/${month}/${day}/${slug}/`;
 
   // Detect location for enhanced regional SEO
   const category = article.categories?.edges?.[0]?.node?.name || '';
-  const tags = article.tags?.edges?.map((tag: any) => tag.node.name) || [];
+  const tags = article.tags?.edges?.map((tag: { node: { name: string } }) => tag.node.name) || [];
   const location = detectLocationFromContent(
     article.title || '',
     article.content || article.excerpt || '',
@@ -144,7 +151,13 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     `${location.country} ${category.toLowerCase()}`
   ] : ['South Africa', 'Zimbabwe', 'Southern Africa'];
 
+  // Include Yoast focus keywords in the keyword list  
+  const focusKeyword = article.seo?.focuskw || '';
+  const metaKeywords = article.seo?.metaKeywords ? article.seo.metaKeywords.split(',').map((k: string) => k.trim()) : [];
+  const yoastKeywords = [focusKeyword, ...metaKeywords].filter(Boolean);
+  
   const keywords = [
+    ...yoastKeywords,
     ...tags.slice(0, 5),
     ...locationKeywords
   ].filter(Boolean).join(', ');
@@ -154,10 +167,10 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     description,
     keywords,
     openGraph: {
-      title: seoTitle,
-      description: description,
-      type: 'article',
-      url: canonicalUrl,
+      title: article.seo?.opengraphTitle?.replace(/ [\|\-–—] Report Focus News$/i, '').replace(/^Report Focus News [\|\-–—] /i, '') || seoTitle,
+      description: article.seo?.opengraphDescription || description,
+      type: (article.seo?.opengraphType as 'article' | 'website' | 'profile' | 'music.song' | 'music.album' | 'music.playlist' | 'music.radio_station' | 'video.movie' | 'video.episode' | 'video.tv_show' | 'video.other' | 'book' | 'profile') || 'article',
+      url: article.seo?.opengraphUrl || canonicalUrl,
       images: [
         {
           url: ogImage,
@@ -170,13 +183,13 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       modifiedTime: article.modified || article.date,
       authors: article.author?.node?.name ? [article.author.node.name] : ['Report Focus News'],
       section: article.categories?.edges?.[0]?.node?.name || 'News',
-      tags: article.tags?.edges?.map((tag: any) => tag.node.name) || [],
+      tags: article.tags?.edges?.map((tag: { node: { name: string } }) => tag.node.name) || [],
     },
     twitter: {
       card: 'summary_large_image',
-      title: seoTitle,
-      description: description,
-      images: [ogImage],
+      title: article.seo?.twitterTitle?.replace(/ [\|\-–—] Report Focus News$/i, '').replace(/^Report Focus News [\|\-–—] /i, '') || seoTitle,
+      description: article.seo?.twitterDescription || description,
+      images: [article.seo?.twitterImage?.sourceUrl ? getImageUrl(article.seo.twitterImage.sourceUrl, { context: 'seo' }) : ogImage],
     },
     alternates: {
       canonical: canonicalUrl,

@@ -28,6 +28,7 @@ export interface WPPost {
         url: string;
       };
       description?: string;
+      slug?: string;
     };
   };
   categories?: {
@@ -39,6 +40,29 @@ export interface WPPost {
     edges: Array<{
       node: WPTag;
     }>;
+  };
+  seo?: {
+    title?: string;
+    metaDesc?: string;
+    canonical?: string;
+    opengraphTitle?: string;
+    opengraphDescription?: string;
+    opengraphImage?: {
+      sourceUrl: string;
+    };
+    opengraphUrl?: string;
+    opengraphType?: string;
+    twitterTitle?: string;
+    twitterDescription?: string;
+    twitterImage?: {
+      sourceUrl: string;
+    } | null;
+    schema?: {
+      articleType?: string[];
+    };
+    focuskw?: string;
+    metaKeywords?: string;
+    cornerstone?: boolean;
   };
 }
 

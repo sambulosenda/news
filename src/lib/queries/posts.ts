@@ -26,6 +26,7 @@ export const POST_FIELDS = gql`
         name
         firstName
         lastName
+        slug
         avatar {
           url
         }
@@ -41,6 +42,29 @@ export const POST_FIELDS = gql`
           slug
         }
       }
+    }
+    seo {
+      title
+      metaDesc
+      canonical
+      opengraphTitle
+      opengraphDescription
+      opengraphImage {
+        sourceUrl
+      }
+      opengraphUrl
+      opengraphType
+      twitterTitle
+      twitterDescription
+      twitterImage {
+        sourceUrl
+      }
+      schema {
+        articleType
+      }
+      focuskw
+      metaKeywords
+      cornerstone
     }
   }
 `;
