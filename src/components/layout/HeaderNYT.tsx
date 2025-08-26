@@ -227,9 +227,6 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                     <span>{marketData.zarUsd.rate}</span>
                   </div>
                 )}
-                <Link href="/subscribe" className="bg-black text-white px-4 py-1.5 text-xs font-bold uppercase tracking-wider hover:bg-gray-800 transition-colors">
-                  Subscribes
-                </Link>
               </div>
             </div>
           </div>
@@ -503,13 +500,6 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Search
-                  </Link>
-                  <Link
-                    href="/subscribe"
-                    className="block px-6 py-4 text-base text-white bg-red-700 font-semibold hover:bg-red-800 rounded-xl text-center shadow-md transition-all duration-200 mt-4 min-h-[48px] flex items-center justify-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Subscribe
                   </Link>
                 </div>
               </nav>
