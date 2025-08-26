@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useCallback, Fragment } from 'react';
+import { useState, useEffect, useCallback, Fragment, useRef } from 'react';
 import { WPCategory } from '@/types/wordpress';
 import { mapCategoriesToNavigation } from '@/config/navigation';
 import { getMarketData, formatMarketData } from '@/lib/data/market-data';
+import { useRouter } from 'next/navigation';
 
 interface HeaderProps {
   categories?: WPCategory[];
@@ -43,7 +44,11 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
   const [johannesburgTime, setJohannesburgTime] = useState<string | null>(null);
   const [harareTime, setHarareTime] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const [marketData, setMarketData] = useState<ReturnType<typeof formatMarketData> | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchModalRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   
   // Map WordPress categories to our navigation structure
   const navigation = mapCategoriesToNavigation(categories);
@@ -121,6 +126,51 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
   const toggleMobileMenu = useCallback(() => {
     setMobileMenuOpen(prev => !prev);
   }, []);
+
+  // Focus search input when modal opens
+  useEffect(() => {
+    if (searchOpen) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+    }
+  }, [searchOpen]);
+
+  // Close search on escape key or clicking outside
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && searchOpen) {
+        setSearchOpen(false);
+        setSearchTerm('');
+      }
+    };
+    
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchModalRef.current && !searchModalRef.current.contains(event.target as Node)) {
+        setSearchOpen(false);
+        setSearchTerm('');
+      }
+    };
+
+    if (searchOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [searchOpen]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchOpen(false);
+      setSearchTerm('');
+    }
+  };
 
   return (
     <>
@@ -314,38 +364,66 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                 </ul>
               </nav>
 
-              {/* Enhanced Search */}
-              <div className="relative flex items-center">
-                {searchOpen ? (
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center bg-white border border-gray-300 rounded-lg shadow-lg animate-fade-in">
-                    <input
-                      type="search"
-                      placeholder="Search news..."
-                      className="px-4 py-2 w-64 text-sm focus:outline-none rounded-l-lg"
-                      autoFocus
-                      onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
-                    />
-                    <button className="px-3 py-2 hover:bg-gray-50 border-l border-gray-200">
-                      <svg className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                      </svg>
-                    </button>
-                  </div>
-                ) : (
-                  <button 
-                    onClick={() => setSearchOpen(true)}
-                    className="p-3 hover:bg-gray-100 rounded-lg transition-colors" 
-                    aria-label="Search"
-                  >
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                    </svg>
-                  </button>
-                )}
-              </div>
+              {/* Search Icon Button */}
+              <button 
+                onClick={() => setSearchOpen(!searchOpen)}
+                className="p-3 hover:bg-gray-100 rounded-lg transition-colors" 
+                aria-label="Search"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
+
+        {/* Simple Search Bar Below Navigation */}
+        {searchOpen && (
+          <div 
+            ref={searchModalRef}
+            className="absolute top-full left-0 right-0 bg-gray-50 border-b border-gray-200 shadow-md z-50 animate-slide-down"
+          >
+            <div className="container-wide py-3">
+              <form onSubmit={handleSearchSubmit} className="flex gap-3 max-w-2xl mx-auto">
+                <div className="relative flex-1">
+                  <input
+                    ref={searchInputRef}
+                    type="search"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search news..."
+                    className="w-full pl-12 pr-12 py-3 text-base bg-white border border-gray-300 rounded-full focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600"
+                    aria-label="Search news"
+                  />
+                  <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchOpen(false);
+                      setSearchTerm('');
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                    aria-label="Close search"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transition-colors"
+                  aria-label="Submit search"
+                >
+                  Search
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
 
         {/* Mobile menu */}
         {mobileMenuOpen && (

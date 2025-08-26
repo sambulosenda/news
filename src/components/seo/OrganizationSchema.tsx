@@ -87,11 +87,11 @@ export default function OrganizationSchema() {
     
     // Editorial Information (Critical for Google News)
     diversityPolicy: 'https://reportfocusnews.com/diversity-policy',
-    ethicsPolicy: 'https://reportfocusnews.com/ethics-policy',
-    masthead: 'https://reportfocusnews.com/masthead',
-    missionCoveragePrioritiesPolicy: 'https://reportfocusnews.com/coverage-policy',
-    correctionsPolicy: 'https://reportfocusnews.com/corrections-policy',
-    ownershipFundingInfo: 'https://reportfocusnews.com/ownership',
+    ethicsPolicy: 'https://reportfocusnews.com/ethics',
+    masthead: 'https://reportfocusnews.com/about/team',
+    missionCoveragePrioritiesPolicy: 'https://reportfocusnews.com/about/standards',
+    correctionsPolicy: 'https://reportfocusnews.com/corrections',
+    ownershipFundingInfo: 'https://reportfocusnews.com/about/ownership',
     
     // What the organization covers
     knowsAbout: [

@@ -2,7 +2,7 @@
 export const SITE_CONFIG = {
   name: 'Report Focus News',
   shortName: 'Report Focus',
-  domain: 'www.reportfocusnews.com',
+  domain: 'reportfocusnews.com',
   description: 'Breaking news, analysis, and in-depth reporting',
   locale: 'en_US',
   timezone: 'America/New_York',

@@ -9,11 +9,11 @@ export const seoConfig = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://www.reportfocusnews.com',
+    url: 'https://reportfocusnews.com',
     siteName: 'Report Focus News',
     images: [
       {
-        url: 'https://www.reportfocusnews.com/og-image.jpg',
+        url: 'https://reportfocusnews.com/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Report Focus News',
@@ -34,10 +34,10 @@ export const seoConfig = {
       '@type': 'NewsMediaOrganization',
       name: 'Report Focus News',
       alternateName: ['Report Focus', 'RF News', 'ReportFocusNews'],
-      url: 'https://www.reportfocusnews.com',
+      url: 'https://reportfocusnews.com',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://www.reportfocusnews.com/logo.png',
+        url: 'https://reportfocusnews.com/logo.png',
         width: 600,
         height: 60,
       },
