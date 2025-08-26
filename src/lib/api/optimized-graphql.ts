@@ -44,8 +44,7 @@ export async function fetchArticleOptimized(query: DocumentNode, variables = {})
     const { data } = await client.query({
       query,
       variables,
-      fetchPolicy: 'cache-first', // Try cache first
-      nextFetchPolicy: 'cache-and-network', // Background refresh
+      fetchPolicy: 'cache-first' // Try cache first
     });
     
     return data;

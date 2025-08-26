@@ -53,16 +53,13 @@ export const LazyAdsenseAd = dynamic(
   }
 );
 
-// Lazy load location detection utilities
-export const LazyLocationDetector = dynamic(
-  () => import('@/lib/utils/location-detector').then(mod => ({ default: mod.detectLocationFromContent })),
-  { ssr: false }
-);
+// Note: Location detector is a utility function, not a component
+// Import it directly where needed instead of lazy loading
 
 // Higher-order component for intersection observer based loading
 export function withIntersectionLoading<P extends object>(
   Component: ComponentType<P>,
-  options: IntersectionObserverInit = {}
+  _options: Record<string, unknown> = {}
 ): ComponentType<P & { threshold?: number }> {
   return function IntersectionWrapper(props: P & { threshold?: number }) {
     const LazyComponent = dynamic(
