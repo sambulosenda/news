@@ -40,8 +40,8 @@ const getTimeForCity = (timeZone: string): string => {
 export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formattedDate, setFormattedDate] = useState('');
-  const [johannesburgTime, setJohannesburgTime] = useState('');
-  const [harareTime, setHarareTime] = useState('');
+  const [johannesburgTime, setJohannesburgTime] = useState<string | null>(null);
+  const [harareTime, setHarareTime] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [marketData, setMarketData] = useState<ReturnType<typeof formatMarketData> | null>(null);
   
@@ -151,17 +151,18 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                   </time>
                 )}
                 <span className="hidden sm:inline text-gray-400">|</span>
-                {typeof window !== 'undefined' && johannesburgTime && (
+                {typeof window !== 'undefined' && johannesburgTime ? (
                   <span className="hidden sm:inline">
+                    <span className="text-gray-400 mx-1">•</span>
                     <span className="font-medium">JHB</span> {johannesburgTime}
                   </span>
-                )}
-                {typeof window !== 'undefined' && harareTime && (
+                ) : null}
+                {typeof window !== 'undefined' && harareTime ? (
                   <span className="hidden md:inline">
                     <span className="text-gray-400 mx-1">•</span>
                     <span className="font-medium">HRE</span> {harareTime}
                   </span>
-                )}
+                ) : null}
               </div>
               <div className="flex items-center gap-4">
                 {typeof window !== 'undefined' && marketData && (

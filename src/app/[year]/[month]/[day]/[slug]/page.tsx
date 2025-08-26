@@ -78,7 +78,7 @@ async function getArticleData(slug: string) {
 // Enhanced content renderer with professional typography
 function FastContentRenderer({ content }: { content: string }) {
   // Add styles directly to HTML elements for larger font
-  let processedContent = content
+  const processedContent = content
     // Add font size to all paragraphs
     .replace(/<p>/g, '<p style="font-size: 1.25rem; line-height: 1.8; margin-bottom: 1.5rem; color: #374151;">')
     // Add font size to lists

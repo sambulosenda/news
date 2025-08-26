@@ -8,8 +8,6 @@ const nextConfig: NextConfig = {
   
   // Enable partial prerendering for breaking news
   experimental: {
-    ppr: false, // Will enable when stable
-    optimizeCss: true,
     webpackBuildWorker: true, // Faster builds
   },
   eslint: {
