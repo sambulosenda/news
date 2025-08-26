@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { detectLocationFromContent } from '@/lib/utils/location-detector';
+import { getImageUrl } from '@/lib/utils/image-url-helper';
 
 // Direct GraphQL query
 const GET_NEWS_SITEMAP_POSTS = `
@@ -165,9 +166,9 @@ export async function GET(request: Request) {
       ] : ['South Africa', 'Zimbabwe'])
     ].filter(Boolean).slice(0, 10);
     
-    // Convert WordPress backend image URL to frontend proxy URL
+    // Use sitemap context for images - ensures Google can access them
     const imageUrl = post.featuredImage?.node?.sourceUrl 
-      ? `https://reportfocusnews.com/api/image-proxy?url=${encodeURIComponent(post.featuredImage.node.sourceUrl)}`
+      ? getImageUrl(post.featuredImage.node.sourceUrl, { context: 'sitemap' })
       : null;
     
     return `

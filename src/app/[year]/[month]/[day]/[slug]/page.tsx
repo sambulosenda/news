@@ -13,6 +13,7 @@ import NewsArticleSchema from '@/components/seo/NewsArticleSchema';
 import dynamic from 'next/dynamic';
 import { InArticleAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
+import { getImageUrl } from '@/lib/utils/image-url-helper';
 
 // Lazy load non-critical components
 const RelatedPostsSection = dynamic(() => import('@/components/sections/RelatedPostsSection'), {
@@ -117,10 +118,8 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   // Use article title
   const seoTitle = article.title;
   
-  // Use featured image with proxy for WordPress images
-  const ogImage = article.featuredImage?.node?.sourceUrl
-    ? `https://reportfocusnews.com/api/image-proxy?url=${encodeURIComponent(article.featuredImage.node.sourceUrl)}`
-    : 'https://reportfocusnews.com/og-image.jpg';
+  // Use SEO context for Open Graph images - Google needs direct URLs
+  const ogImage = getImageUrl(article.featuredImage?.node?.sourceUrl, { context: 'seo' });
   
   // Build canonical URL
   const canonicalUrl = 

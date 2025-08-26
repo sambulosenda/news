@@ -15,8 +15,12 @@ export async function GET(request: NextRequest) {
       return new NextResponse('Missing URL parameter', { status: 400 });
     }
 
-    // Validate it's from our backend
-    if (!url.includes('backend.reportfocusnews.com')) {
+    // Validate it's from our backend or handle Google crawler
+    const userAgent = request.headers.get('user-agent') || '';
+    const isGoogleBot = userAgent.toLowerCase().includes('googlebot') || 
+                         userAgent.toLowerCase().includes('google-inspectiontool');
+    
+    if (!url.includes('backend.reportfocusnews.com') && !isGoogleBot) {
       return new NextResponse('Invalid image source', { status: 403 });
     }
 
