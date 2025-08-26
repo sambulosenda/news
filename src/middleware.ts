@@ -2,10 +2,33 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  
+  // Check for malformed URLs containing social media domains
+  if (pathname.includes('facebook.com') || 
+      pathname.includes('twitter.com') || 
+      pathname.includes('instagram.com') ||
+      pathname.includes('youtube.com') ||
+      pathname.includes('linkedin.com')) {
+    // Extract the clean path before the social media URL
+    const cleanPath = pathname.split(/(?:facebook|twitter|instagram|youtube|linkedin)\.com/)[0];
+    
+    // Redirect to the clean path or 404 if invalid
+    if (cleanPath && cleanPath !== pathname) {
+      return NextResponse.redirect(new URL(cleanPath || '/404', request.url));
+    }
+    return NextResponse.redirect(new URL('/404', request.url));
+  }
+  
+  // Check for excessively long or suspicious pagination URLs
+  if (/\/page\/\d{3,}/.test(pathname)) {
+    // Redirect to search page for page numbers > 99
+    return NextResponse.redirect(new URL('/search', request.url));
+  }
+  
   const response = NextResponse.next();
   
   // Cache control for different paths
-  const pathname = request.nextUrl.pathname;
   
   // Articles: Cache for 1 minute at CDN, 10 seconds in browser
   if (pathname.match(/^\/\d{4}\/\d{2}\/\d{2}\/.+/)) {
