@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import Image from 'next/image';
 import ProxyImage from '@/components/common/ProxyImage';
 import Link from 'next/link';
 import { format } from 'date-fns';
@@ -224,34 +223,17 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             )}
           </div>
 
-          {/* Author section - Professional Style */}
+          {/* Author section - Simplified */}
           <div className="flex flex-wrap items-center justify-between gap-4 py-6">
             {post.author?.node && (
-              <div className="flex items-center gap-4">
-                {post.author.node.avatar?.url && (
-                  <Image
-                    src={post.author.node.avatar.url}
-                    alt={post.author.node.name}
-                    width={48}
-                    height={48}
-                    className="rounded-full border border-gray-200"
-                    loading="lazy"
-                  />
-                )}
-                <div>
-                  <div className="text-sm text-gray-500">By</div>
-                  <Link 
-                    href={`/author/${post.author.node.slug}`}
-                    className="font-bold text-gray-900 hover:text-red-600 transition-colors"
-                  >
-                    {post.author.node.name}
-                  </Link>
-                  {post.author.node.description && !post.author.node.name.toLowerCase().includes('staff') && (
-                    <div className="text-sm text-gray-500 mt-1">
-                      {post.author.node.description}
-                    </div>
-                  )}
-                </div>
+              <div>
+                <span className="text-sm text-gray-500">By </span>
+                <Link 
+                  href={`/author/${post.author.node.slug}`}
+                  className="font-bold text-gray-900 hover:text-red-600 transition-colors"
+                >
+                  {post.author.node.name}
+                </Link>
               </div>
             )}
             <ShareButtons url={canonicalUrl} title={post.title} />
