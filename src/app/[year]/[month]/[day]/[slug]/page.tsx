@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import ProxyImage from '@/components/common/ProxyImage';
+import ServerProxyImage from '@/components/common/ServerProxyImage';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { fetchGraphQLCached } from '@/lib/api/graphql-cache';
@@ -117,10 +117,10 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   // Use article title
   const seoTitle = article.title;
   
-  // Use featured image
-  const ogImage = 
-    article.featuredImage?.node?.sourceUrl || 
-    'https://reportfocusnews.com/og-image.jpg';
+  // Use featured image with proxy for WordPress images
+  const ogImage = article.featuredImage?.node?.sourceUrl
+    ? `https://reportfocusnews.com/api/image-proxy?url=${encodeURIComponent(article.featuredImage.node.sourceUrl)}`
+    : 'https://reportfocusnews.com/og-image.jpg';
   
   // Build canonical URL
   const canonicalUrl = 
@@ -277,14 +277,15 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             <ShareButtons url={canonicalUrl} title={post.title} />
           </div>
 
-          {/* Featured Image - Always show with fallback */}
+          {/* Featured Image - Server-rendered for Google indexing */}
           <figure className="mb-8">
             <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
-              <ProxyImage
+              <ServerProxyImage
                 src={post.featuredImage?.node?.sourceUrl || ''}
                 alt={post.featuredImage?.node?.altText || post.title}
                 fill
                 className="object-cover"
+                priority // Featured image should load with priority
               />
               </div>
               {post.featuredImage?.node?.caption && (

@@ -25,30 +25,30 @@ export default function ProxyImage({
   height,
   fill = false,
 }: ProxyImageProps) {
-  const [imgSrc, setImgSrc] = useState<string>(FALLBACK_IMAGE);
+  // Initialize with actual URL, not fallback - prevents Google from indexing fallback
+  const getProxiedUrl = (originalSrc: string) => {
+    if (!originalSrc) return FALLBACK_IMAGE;
+    if (originalSrc.includes('backend.reportfocusnews.com')) {
+      return `/api/image-proxy?url=${encodeURIComponent(originalSrc)}`;
+    }
+    return originalSrc;
+  };
+  
+  const initialSrc = getProxiedUrl(src);
+  const [imgSrc, setImgSrc] = useState<string>(initialSrc);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    if (!src) {
-      setImgSrc(FALLBACK_IMAGE);
-      setIsLoading(false);
-      return;
-    }
-
-    // If it's a WordPress image, proxy it
-    if (src.includes('backend.reportfocusnews.com')) {
-      const proxiedUrl = `/api/image-proxy?url=${encodeURIComponent(src)}`;
-      setImgSrc(proxiedUrl);
-      console.log('[ProxyImage] Using proxy for:', src);
-    } else {
-      // Use original URL for non-WordPress images
-      setImgSrc(src);
+    const newSrc = getProxiedUrl(src);
+    if (newSrc !== imgSrc) {
+      setImgSrc(newSrc);
+      setIsLoading(true);
+      setHasError(false);
     }
   }, [src]);
 
   const handleError = () => {
-    console.error(`[ProxyImage] Failed to load:`, src);
     setImgSrc(FALLBACK_IMAGE);
     setHasError(true);
     setIsLoading(false);
@@ -57,7 +57,6 @@ export default function ProxyImage({
   const handleLoad = () => {
     setIsLoading(false);
     setHasError(false);
-    console.log('[ProxyImage] Successfully loaded:', src);
   };
 
   if (fill) {

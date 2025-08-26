@@ -14,11 +14,18 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
     ? article.excerpt.replace(/<[^>]*>/g, '').substring(0, 160)
     : article.title;
 
-  // Prepare image array with proper ImageObject schema
+  // Prepare image array with proper ImageObject schema - use proxy URLs for WordPress images
+  const getProxiedImageUrl = (originalUrl: string) => {
+    if (originalUrl && originalUrl.includes('backend.reportfocusnews.com')) {
+      return `https://reportfocusnews.com/api/image-proxy?url=${encodeURIComponent(originalUrl)}`;
+    }
+    return originalUrl;
+  };
+  
   const images = article.featuredImage?.node ? [
     {
       "@type": "ImageObject",
-      "url": article.featuredImage.node.sourceUrl,
+      "url": getProxiedImageUrl(article.featuredImage.node.sourceUrl),
       "width": article.featuredImage.node.mediaDetails?.width || 1200,
       "height": article.featuredImage.node.mediaDetails?.height || 630,
       "caption": article.featuredImage.node.caption || article.featuredImage.node.altText || article.title
@@ -39,7 +46,9 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
     "headline": article.title,
     "description": description,
     "image": images,
-    "thumbnailUrl": article.featuredImage?.node?.sourceUrl || "https://reportfocusnews.com/og-image.jpg",
+    "thumbnailUrl": article.featuredImage?.node?.sourceUrl 
+      ? getProxiedImageUrl(article.featuredImage.node.sourceUrl)
+      : "https://reportfocusnews.com/og-image.jpg",
     "datePublished": publishDate,
     "dateModified": modifiedDate,
     "author": {
