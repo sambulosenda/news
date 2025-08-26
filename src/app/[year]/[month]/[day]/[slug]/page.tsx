@@ -76,26 +76,29 @@ async function getArticleData(slug: string) {
 }
 
 
-// Enhanced content renderer with professional typography
+// Enhanced content renderer with performance optimizations
 function FastContentRenderer({ content }: { content: string }) {
-  // Add styles directly to HTML elements for larger font
+  // Use CSS classes instead of styled-jsx for server components
   const processedContent = content
-    // Add font size to all paragraphs
-    .replace(/<p>/g, '<p style="font-size: 1.125rem; line-height: 1.75; margin-bottom: 1.5rem; color: #374151;">')
-    // Add font size to lists
-    .replace(/<li>/g, '<li style="font-size: 1.125rem; line-height: 1.75; margin-bottom: 0.75rem;">')
-    // Style headings
-    .replace(/<h2>/g, '<h2 style="font-size: 1.875rem; font-weight: bold; margin-top: 3rem; margin-bottom: 1.5rem;">')
-    .replace(/<h3>/g, '<h3 style="font-size: 1.5rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem;">')
-    // Add drop cap to first paragraph
+    // Add CSS classes instead of inline styles
+    .replace(/<p>/g, '<p class="article-paragraph">')
+    .replace(/<li>/g, '<li class="article-list-item">')
+    .replace(/<h2>/g, '<h2 class="article-h2">')
+    .replace(/<h3>/g, '<h3 class="article-h3">')
+    .replace(/<h4>/g, '<h4 class="article-h4">')
+    // Add drop cap to first paragraph with CSS class
     .replace(
-      /<p style="font-size: 1.125rem; line-height: 1.75; margin-bottom: 1.5rem; color: #374151;">([A-Z])/,
-      '<p class="first-paragraph" style="font-size: 1.125rem; line-height: 1.75; margin-bottom: 1.5rem; color: #374151;"><span class="drop-cap">$1</span>'
-    );
+      /<p class="article-paragraph">([A-Z])/,
+      '<p class="article-paragraph first-paragraph"><span class="drop-cap">$1</span>'
+    )
+    // Optimize images for lazy loading (except the first one which should be priority)
+    .replace(/<img/g, '<img loading="lazy" decoding="async"')
+    // Make first image priority
+    .replace(/(<img[^>]*?)loading="lazy"([^>]*?>)/, '$1loading="eager" fetchpriority="high"$2');
   
   return (
     <div 
-      className="article-content max-w-[720px] mx-auto font-serif text-gray-800"
+      className="article-content prose prose-lg max-w-none"
       dangerouslySetInnerHTML={{ __html: processedContent }}
     />
   );
@@ -289,7 +292,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             <ShareButtons url={canonicalUrl} title={post.title} />
           </div>
 
-          {/* Featured Image - Server-rendered for Google indexing */}
+          {/* Featured Image - Optimized for LCP */}
           <figure className="mb-8">
             <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
               <ServerProxyImage
@@ -297,7 +300,9 @@ export default async function FastArticlePage({ params }: PostPageProps) {
                 alt={post.featuredImage?.node?.altText || post.title}
                 fill
                 className="object-cover"
-                priority // Featured image should load with priority
+                priority // Critical for LCP
+                fetchPriority="high" // Browser hint for LCP
+                data-critical="true" // Mark as critical for our optimizer
               />
               </div>
               {post.featuredImage?.node?.caption && (
