@@ -18,7 +18,7 @@ const footerLinks = {
     { name: 'Immigration', href: '/faq/immigration' },
     { name: 'Government', href: '/faq/government' },
     { name: 'Crime & Safety', href: '/faq/safety' },
-    { name: 'Editorials', href: '/opinion/editorials/' },
+    { name: 'Opinion', href: '/news/opinion/' },
   ],
   company: [
     { name: 'About Us', href: '/about' },
