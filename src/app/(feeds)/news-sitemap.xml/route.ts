@@ -91,7 +91,6 @@ export async function GET() {
   });
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
@@ -155,9 +154,8 @@ export async function GET() {
 
   return new Response(xml, {
     headers: {
-      'Content-Type': 'application/xml; charset=utf-8',
+      'Content-Type': 'application/xml',
       'Cache-Control': 'public, max-age=300, s-maxage=300', // 5 minutes for breaking news
-      'X-Content-Type-Options': 'nosniff',
     },
   });
 }
