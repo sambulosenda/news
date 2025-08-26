@@ -151,12 +151,12 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                   </time>
                 )}
                 <span className="hidden sm:inline text-gray-400">|</span>
-                {johannesburgTime && (
+                {typeof window !== 'undefined' && johannesburgTime && (
                   <span className="hidden sm:inline">
                     <span className="font-medium">JHB</span> {johannesburgTime}
                   </span>
                 )}
-                {harareTime && (
+                {typeof window !== 'undefined' && harareTime && (
                   <span className="hidden md:inline">
                     <span className="text-gray-400 mx-1">•</span>
                     <span className="font-medium">HRE</span> {harareTime}
@@ -164,7 +164,7 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
                 )}
               </div>
               <div className="flex items-center gap-4">
-                {marketData && (
+                {typeof window !== 'undefined' && marketData && (
                   <div className="hidden lg:flex items-center gap-3 text-xs text-gray-600">
                     <span className="font-medium">JSE</span>
                     <span className={marketData.jse.color}>
