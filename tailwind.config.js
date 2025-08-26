@@ -26,8 +26,8 @@ module.exports = {
         '6xl': ['3.75rem', { lineHeight: '1.1' }],
         '7xl': ['4.5rem', { lineHeight: '1.1' }],
         // Al Jazeera article sizes
-        'article-body': ['1.25rem', { lineHeight: '1.875rem' }], // 20px/30px
-        'article-body-mobile': ['1rem', { lineHeight: '1.5rem' }], // 16px/24px
+        'article-body': ['1.125rem', { lineHeight: '1.75rem' }], // 18px/28px
+        'article-body-mobile': ['0.875rem', { lineHeight: '1.375rem' }], // 14px/22px
         'article-title': ['2.5rem', { lineHeight: '3.25rem' }], // 40px/52px
         'article-title-mobile': ['1.75rem', { lineHeight: '2.25rem' }], // 28px/36px
         'article-title-tablet': ['2.125rem', { lineHeight: '2.75rem' }], // 34px/44px
