@@ -33,7 +33,7 @@ export default async function ServerRelatedPosts({
         { ttl: 600 } // 10 minutes cache
       );
       
-      relatedPosts = relatedData?.posts?.edges?.map((edge: any) => edge.node) || [];
+      relatedPosts = relatedData?.posts?.edges?.map((edge: { node: WPPost }) => edge.node) || [];
     }
 
     // If no related posts or not enough, get recent posts as fallback

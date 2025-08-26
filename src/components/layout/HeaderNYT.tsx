@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useCallback, Fragment, useRef, FormEvent } from 'react';
+import { useState, useEffect, useCallback, Fragment, useRef } from 'react';
+import type { FormEvent, PointerEvent } from 'react';
 import { WPCategory } from '@/types/wordpress';
 import { mapCategoriesToNavigation } from '@/config/navigation';
 import { getMarketData, formatMarketData } from '@/lib/data/market-data';
@@ -144,8 +145,8 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
         setSearchTerm('');
       }
     };
-    
-    const handleClickOutside = (event: MouseEvent) => {
+
+    const handlePointerDownOutside = (event: PointerEvent | MouseEvent) => {
       if (searchModalRef.current && !searchModalRef.current.contains(event.target as Node)) {
         setSearchOpen(false);
         setSearchTerm('');
@@ -154,16 +155,16 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
 
     if (searchOpen) {
       document.addEventListener('keydown', handleEscape);
-      document.addEventListener('mousedown', handleClickOutside);
+  document.addEventListener('pointerdown', handlePointerDownOutside as (event: Event) => void);
     }
-    
+
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      document.removeEventListener('mousedown', handleClickOutside);
+  document.removeEventListener('pointerdown', handlePointerDownOutside as (event: Event) => void);
     };
   }, [searchOpen]);
 
-  const handleSearchSubmit = (e: FormEvent) => {
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchTerm.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
