@@ -312,7 +312,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
                 authorName={post.author.node.name}
                 authorSlug={post.author.node.slug}
                 variant="full"
-                showAvatar={true}
+                showAvatar={false}
                 className="text-sm"
               />
             )}
@@ -419,7 +419,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
               authorName={post.author.node.name}
               authorSlug={post.author.node.slug}
               variant="detailed"
-              showAvatar={true}
+              showAvatar={false}
             />
           </section>
         )}
