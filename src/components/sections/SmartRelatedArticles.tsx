@@ -5,7 +5,6 @@ import { WPPost } from '@/types/wordpress';
 import { getCDNImageUrl } from '@/lib/cdn';
 import { 
   findRelatedArticles, 
-  groupRelatedByCategory,
   getTrendingRelated 
 } from '@/lib/utils/related-articles';
 

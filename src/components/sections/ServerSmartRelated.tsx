@@ -7,8 +7,8 @@ interface ServerSmartRelatedProps {
   variant?: 'grid' | 'list' | 'mixed';
 }
 
-// GraphQL query to fetch related posts
-const GET_RELATED_POSTS = `
+// GraphQL query to fetch related posts (not used due to API limitations)
+/* const GET_RELATED_POSTS = `
   query GetRelatedPosts($categories: [String], $tags: [String], $exclude: [ID], $first: Int) {
     posts(
       where: { 
@@ -61,10 +61,10 @@ const GET_RELATED_POSTS = `
       }
     }
   }
-`;
+`; */
 
-// Query for fallback recent posts
-const GET_RECENT_POSTS = `
+// Query for fallback recent posts (not used)
+/* const GET_RECENT_POSTS = `
   query GetRecentPosts($exclude: [ID], $first: Int) {
     posts(
       where: { 
@@ -115,7 +115,7 @@ const GET_RECENT_POSTS = `
       }
     }
   }
-`;
+`; */
 
 async function fetchRelatedPosts(currentPost: WPPost): Promise<WPPost[]> {
   try {

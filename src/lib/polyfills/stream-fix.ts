@@ -3,15 +3,15 @@
  * This patches the TransformStream to prevent the transformAlgorithm error
  */
 
-if (typeof globalThis !== 'undefined' && !globalThis.TransformStreamPatched) {
-  const OriginalTransformStream = globalThis.TransformStream;
+if (typeof globalThis !== 'undefined' && !(globalThis as any).TransformStreamPatched) {
+  const OriginalTransformStream = (globalThis as any).TransformStream;
   
   if (OriginalTransformStream) {
-    globalThis.TransformStream = class PatchedTransformStream extends OriginalTransformStream {
+    (globalThis as any).TransformStream = class PatchedTransformStream extends OriginalTransformStream {
       constructor(transformer?: any, writableStrategy?: any, readableStrategy?: any) {
         // Ensure transformer has required methods
         const patchedTransformer = transformer || {};
-        
+        git 
         if (!patchedTransformer.transform) {
           patchedTransformer.transform = (chunk: any, controller: any) => {
             controller.enqueue(chunk);

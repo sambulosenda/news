@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 interface CorrectionNoticeProps {
   corrections: Correction[];
 }
@@ -54,9 +56,9 @@ export default function CorrectionNotice({ corrections }: CorrectionNoticeProps)
           ))}
           <p className="text-xs text-red-700 mt-2">
             We strive for accuracy in all our reporting. View our{' '}
-            <a href="/corrections" className="underline hover:text-red-900">
+            <Link href="/corrections" className="underline hover:text-red-900">
               corrections policy
-            </a>
+            </Link>
             .
           </p>
         </div>

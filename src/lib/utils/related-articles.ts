@@ -181,8 +181,7 @@ export function getSmartRelatedArticles(
   const {
     preferSameAuthor = false,
     preferRecentArticles = true,
-    excludeCategories = [],
-    minScore = 0.1
+    excludeCategories = []
   } = options;
   
   let filteredPosts = allPosts;
