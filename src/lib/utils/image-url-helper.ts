@@ -22,7 +22,6 @@ export function getImageUrl(
   options: ImageUrlOptions = {}
 ): string {
   const { 
-    context = 'browser', 
     fallback = DEFAULT_FALLBACK 
   } = options;
 
