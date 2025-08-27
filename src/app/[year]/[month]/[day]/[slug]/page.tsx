@@ -10,7 +10,6 @@ import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/common/BackToTop';
 import NewsArticleSchema from '@/components/seo/NewsArticleSchema';
 import RevisionHistorySchema from '@/components/seo/RevisionHistorySchema';
-import ArticleTimestamp from '@/components/common/ArticleTimestamp';
 import AuthorByline from '@/components/author/AuthorByline';
 import AuthorSchema from '@/components/seo/AuthorSchema';
 import UpdateTracker from '@/components/article/UpdateTracker';

@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { fetchGraphQLCached } from '@/lib/api/graphql-cache';
 import { GET_POSTS_BY_TAG, GET_TAG_BY_SLUG } from '@/lib/queries/tags';

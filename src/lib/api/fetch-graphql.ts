@@ -8,7 +8,7 @@ const graphqlEndpoint = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://ba
  * Fetch GraphQL data using native fetch API
  * More reliable than Apollo Client in server-side environments
  */
-export async function fetchGraphQL(query: DocumentNode, variables = {}, options = {}) {
+export async function fetchGraphQL(query: DocumentNode, variables = {}, _options = {}) {
   try {
     // Extract the query string from DocumentNode
     const queryString = query.loc?.source.body;
