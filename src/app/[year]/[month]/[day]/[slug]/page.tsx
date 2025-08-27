@@ -23,6 +23,10 @@ import { getImageUrl } from '@/lib/utils/image-url-helper';
 // Import server-side smart related articles
 import ServerSmartRelated from '@/components/sections/ServerSmartRelated';
 
+// Import print components
+import PrintButton from '@/components/article/PrintButton';
+import PrintableArticle from '@/components/article/PrintableArticle';
+
 // Dynamic rendering with aggressive caching for news
 export const revalidate = 60; // 1 minute revalidation for breaking news
 export const dynamicParams = true; // Allow dynamic params for new articles
@@ -229,6 +233,16 @@ export default async function FastArticlePage({ params }: PostPageProps) {
   const wordCount = post.content?.split(' ').length || 0;
   const readingTime = Math.ceil(wordCount / 200);
 
+  // Prepare article data for PrintableArticle
+  const articleData = {
+    title: post.title,
+    content: post.content || '',
+    author: post.author?.node ? { name: post.author.node.name } : undefined,
+    publishedDate: post.date,
+    lastModified: post.modified,
+    categories: post.categories?.edges?.map((edge: any) => edge.node.name) || []
+  };
+
   return (
     <>
       <NewsArticleSchema article={post} url={canonicalUrl} />
@@ -239,11 +253,14 @@ export default async function FastArticlePage({ params }: PostPageProps) {
         />
       )}
       
-      <HeaderWrapper />
-      <ReadingProgress />
+      <div className="no-print">
+        <HeaderWrapper />
+        <ReadingProgress />
+      </div>
       
       <main className="min-h-screen bg-white">
-        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+        <PrintableArticle article={articleData}>
+          <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
           {/* Category Badge - NYTimes Style */}
           {post.categories?.edges?.[0]?.node && (
             <div className="mb-4">
@@ -290,27 +307,32 @@ export default async function FastArticlePage({ params }: PostPageProps) {
                 className="text-sm"
               />
             )}
-            <ShareButtons url={canonicalUrl} title={post.title} />
+            <div className="flex items-center gap-2 no-print">
+              <ShareButtons url={canonicalUrl} title={post.title} />
+              <PrintButton articleTitle={post.title} />
+            </div>
           </div>
 
           {/* Breaking News / Developing Story Banner */}
-          <DevelopingStoryBanner 
-            isBreaking={isBreakingNews(post.date)}
-            lastUpdate={post.modified || post.date}
-            updateCount={post.modified && post.modified !== post.date ? 1 : 0}
-          />
-          
-          {/* Article Update Tracker */}
-          <UpdateTracker 
-            publishDate={post.date}
-            modifiedDate={post.modified}
-            updates={[]} // You can populate this from custom fields if available
-          />
-          
-          {/* Corrections Notice */}
-          <CorrectionNotice 
-            corrections={[]} // You can populate this from custom fields if available
-          />
+          <div className="no-print">
+            <DevelopingStoryBanner 
+              isBreaking={isBreakingNews(post.date)}
+              lastUpdate={post.modified || post.date}
+              updateCount={post.modified && post.modified !== post.date ? 1 : 0}
+            />
+            
+            {/* Article Update Tracker */}
+            <UpdateTracker 
+              publishDate={post.date}
+              modifiedDate={post.modified}
+              updates={[]} // You can populate this from custom fields if available
+            />
+            
+            {/* Corrections Notice */}
+            <CorrectionNotice 
+              corrections={[]} // You can populate this from custom fields if available
+            />
+          </div>
 
           {/* Featured Image - Server-rendered for Google indexing */}
           <figure className="mb-8">
@@ -335,7 +357,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             
           {/* Ad after featured image */}
           {shouldShowAds() && (
-            <div className="mb-8">
+            <div className="mb-8 no-print">
               <InArticleAd 
                 dataAdClient={ADSENSE_CONFIG.publisherId}
                 dataAdSlot={ADSENSE_CONFIG.adSlots.articleInContent}
@@ -345,11 +367,12 @@ export default async function FastArticlePage({ params }: PostPageProps) {
 
           {/* Article Content - The actual LCP element */}
           <FastContentRenderer content={post.content || ''} />
-        </article>
+          </article>
+        </PrintableArticle>
         
         {/* Bottom Article Ad */}
         {shouldShowAds() && (
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8 no-print">
             <ResponsiveAd 
               dataAdClient={ADSENSE_CONFIG.publisherId}
               dataAdSlot={ADSENSE_CONFIG.adSlots.articleBottom}
@@ -359,7 +382,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
 
         {/* Author Card - Enhanced credibility section */}
         {post.author?.node && (
-          <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+          <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 no-print">
             <AuthorByline 
               authorName={post.author.node.name}
               authorSlug={post.author.node.slug}
@@ -370,7 +393,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
         )}
         
         {/* Smart Related Articles with improved algorithm */}
-        <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 no-print">
           <Suspense fallback={
             <div className="mt-12 pt-12 border-t-2 border-gray-200">
               <div className="mb-8">
@@ -395,13 +418,15 @@ export default async function FastArticlePage({ params }: PostPageProps) {
         </section>
       </main>
       
-      <Suspense fallback={<div className="h-96 bg-gray-50" />}>
-        <Footer />
-      </Suspense>
-      <Suspense fallback={null}>
-        <BackToTop />
-      </Suspense>
-      <MobileShareBar url={canonicalUrl} title={post.title} />
+      <div className="no-print">
+        <Suspense fallback={<div className="h-96 bg-gray-50" />}>
+          <Footer />
+        </Suspense>
+        <Suspense fallback={null}>
+          <BackToTop />
+        </Suspense>
+        <MobileShareBar url={canonicalUrl} title={post.title} />
+      </div>
 
     </>
   );

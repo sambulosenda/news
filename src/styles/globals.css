@@ -267,4 +267,312 @@
     -webkit-line-clamp: 4;
     overflow: hidden;
   }
+}/* Print-specific styles for news articles */
+@media print {
+  /* Reset basic styles for print */
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Page setup */
+  @page {
+    margin: 0.75in;
+    size: letter;
+  }
+
+  @page :first {
+    margin-top: 0.5in;
+  }
+
+  /* Basic typography for print */
+  body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  h1 {
+    font-size: 24pt;
+    margin-bottom: 0.5em;
+  }
+
+  h2 {
+    font-size: 18pt;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+
+  h3 {
+    font-size: 14pt;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+
+  p {
+    margin: 0 0 1em 0;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Article specific */
+  article {
+    page-break-before: auto;
+  }
+
+  /* Images */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  figure {
+    margin: 1em 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  figcaption {
+    font-size: 10pt;
+    font-style: italic;
+    margin-top: 0.5em;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  /* Links - show URLs */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 90%;
+    color: #666;
+  }
+
+  /* But not for internal anchors */
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
+  }
+
+  /* Abbreviations - show full text */
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  /* Blockquotes */
+  blockquote {
+    border-left: 4px solid #ccc;
+    padding-left: 1em;
+    margin: 1em 0;
+    font-style: italic;
+    page-break-inside: avoid;
+  }
+
+  /* Code blocks */
+  pre, code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11pt;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border: 1px solid #ddd;
+    padding: 1em;
+    page-break-inside: auto;
+  }
+
+  /* Hide elements not needed for print */
+  .print-hidden,
+  .no-print,
+  nav,
+  header nav,
+  footer,
+  .navigation,
+  .breadcrumb,
+  .social-share,
+  .comments,
+  .related-articles,
+  .advertisement,
+  .ads,
+  .sidebar,
+  .newsletter-signup,
+  .video-player-controls,
+  .interactive-element,
+  .scroll-to-top,
+  .mobile-menu,
+  .search-bar,
+  .user-menu,
+  .notification-bar,
+  .cookie-notice,
+  .sticky-header,
+  .floating-elements,
+  [role="complementary"],
+  [role="navigation"],
+  .weather-widget,
+  .trending-widget,
+  .pagination,
+  .load-more,
+  .infinite-scroll-loader,
+  .share-buttons,
+  .reaction-buttons,
+  .author-bio-social,
+  .print-button,
+  .edit-button,
+  .admin-controls,
+  iframe[src*="youtube"],
+  iframe[src*="vimeo"],
+  iframe[src*="twitter"],
+  iframe[src*="facebook"],
+  .embedded-tweet,
+  .embedded-post,
+  .advertisement-container,
+  .promo-banner,
+  .popup,
+  .modal,
+  .tooltip,
+  .dropdown-menu {
+    display: none !important;
+  }
+
+  /* Show print-only elements */
+  .print-only,
+  .print-visible {
+    display: block !important;
+  }
+
+  /* Article metadata for print */
+  .article-print-header {
+    border-bottom: 2px solid #000;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+  }
+
+  .article-print-meta {
+    font-size: 10pt;
+    color: #666;
+    margin: 0.5em 0;
+  }
+
+  .article-print-url {
+    font-size: 9pt;
+    color: #666;
+    margin-top: 0.5em;
+    word-break: break-all;
+  }
+
+  /* Main content area */
+  .article-content,
+  .main-content,
+  [role="main"] {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Container widths */
+  .container,
+  .wrapper,
+  .content-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Lists */
+  ul, ol {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+  }
+
+  li {
+    margin-bottom: 0.5em;
+    page-break-inside: avoid;
+  }
+
+  /* Horizontal rules */
+  hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+  }
+
+  /* Page breaks */
+  .page-break,
+  .print-page-break {
+    page-break-after: always;
+    break-after: always;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Footer for each page */
+  .print-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 9pt;
+    color: #666;
+    border-top: 1px solid #ddd;
+    padding-top: 0.5em;
+  }
+
+  /* Copyright notice */
+  .print-copyright {
+    font-size: 9pt;
+    text-align: center;
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid #ccc;
+    page-break-inside: avoid;
+  }
+
+  /* QR code for article URL (if implemented) */
+  .print-qr-code {
+    width: 150px;
+    height: 150px;
+    margin: 1em auto;
+    page-break-inside: avoid;
+  }
+
+  /* Ensure text is selectable */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
 }
