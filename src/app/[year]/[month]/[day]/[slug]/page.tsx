@@ -9,12 +9,14 @@ import HeaderWrapper from '@/components/layout/HeaderWrapper';
 import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/common/BackToTop';
 import NewsArticleSchema from '@/components/seo/NewsArticleSchema';
+import RevisionHistorySchema from '@/components/seo/RevisionHistorySchema';
 import ArticleTimestamp from '@/components/common/ArticleTimestamp';
 import AuthorByline from '@/components/author/AuthorByline';
 import AuthorSchema from '@/components/seo/AuthorSchema';
 import UpdateTracker from '@/components/article/UpdateTracker';
 import DevelopingStoryBanner from '@/components/article/DevelopingStoryBanner';
 import CorrectionNotice from '@/components/article/CorrectionNotice';
+import ArticleDates from '@/components/article/ArticleDates';
 import { isBreakingNews } from '@/lib/utils/time-utils';
 import { InArticleAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
@@ -252,6 +254,13 @@ export default async function FastArticlePage({ params }: PostPageProps) {
           authorSlug={post.author.node.slug}
         />
       )}
+      <RevisionHistorySchema 
+        articleUrl={canonicalUrl}
+        headline={post.title}
+        publishDate={post.date}
+        modifiedDate={post.modified}
+        revisions={[]} // This would come from custom fields in WordPress
+      />
       
       <div className="no-print">
         <HeaderWrapper />
@@ -278,22 +287,22 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             {post.title}
           </h1>
 
-          {/* Meta Information Bar */}
-          <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 pb-6 border-b border-gray-200">
-            <ArticleTimestamp 
+          {/* Enhanced Date Display with Update Prominence */}
+          <div className="pb-6 border-b border-gray-200">
+            <ArticleDates 
               publishDate={post.date} 
               modifiedDate={post.modified}
-              showBreaking={true}
-              showUpdate={true}
-              className="font-medium"
+              variant="detailed"
+              showRelativeTime={true}
             />
-            <span className="text-gray-300">•</span>
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {readingTime} min read
-            </span>
+            <div className="mt-3 flex items-center gap-2 text-sm text-gray-500">
+              <span className="flex items-center gap-1">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                {readingTime} min read
+              </span>
+            </div>
           </div>
 
           {/* Enhanced Author section with credentials */}

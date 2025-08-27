@@ -11,9 +11,10 @@ interface UpdateTrackerProps {
 
 interface ArticleUpdate {
   date: string;
-  type: 'correction' | 'addition' | 'clarification' | 'breaking';
+  type: 'correction' | 'addition' | 'clarification' | 'breaking' | 'major_update' | 'minor_update' | 'fact_check';
   description: string;
   author?: string;
+  affectedSection?: string;
 }
 
 /**
@@ -52,6 +53,12 @@ export default function UpdateTracker({
         return '🔵'; // Blue for clarifications
       case 'breaking':
         return '⚡'; // Lightning for breaking updates
+      case 'major_update':
+        return '⭐'; // Star for major updates
+      case 'minor_update':
+        return '✏️'; // Pencil for minor updates
+      case 'fact_check':
+        return '✅'; // Check for fact checks
       default:
         return '📝';
     }
@@ -60,15 +67,36 @@ export default function UpdateTracker({
   const getUpdateLabel = (type: ArticleUpdate['type']) => {
     switch (type) {
       case 'correction':
-        return 'Correction';
+        return 'CORRECTION';
       case 'addition':
-        return 'Update';
+        return 'UPDATE';
       case 'clarification':
-        return 'Clarification';
+        return 'CLARIFICATION';
       case 'breaking':
-        return 'Breaking';
+        return 'BREAKING UPDATE';
+      case 'major_update':
+        return 'MAJOR UPDATE';
+      case 'minor_update':
+        return 'MINOR UPDATE';
+      case 'fact_check':
+        return 'FACT CHECK';
       default:
-        return 'Update';
+        return 'UPDATE';
+    }
+  };
+  
+  const getUpdateColor = (type: ArticleUpdate['type']) => {
+    switch (type) {
+      case 'correction':
+        return 'bg-red-50 border-red-400 text-red-900';
+      case 'breaking':
+        return 'bg-yellow-50 border-yellow-400 text-yellow-900';
+      case 'major_update':
+        return 'bg-purple-50 border-purple-400 text-purple-900';
+      case 'fact_check':
+        return 'bg-green-50 border-green-400 text-green-900';
+      default:
+        return 'bg-blue-50 border-blue-400 text-blue-900';
     }
   };
   
@@ -128,20 +156,53 @@ export default function UpdateTracker({
         </div>
       )}
       
-      {/* SEO metadata for updates */}
+      {/* Enhanced revision history schema for Google News */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "UpdateAction",
-            "object": {
-              "@type": "NewsArticle",
-              "dateModified": modifiedDate || publishDate
-            },
-            "startTime": publishDate,
-            "endTime": modifiedDate || new Date().toISOString(),
-            "actionStatus": "CompletedActionStatus"
+            "@type": "NewsArticle",
+            "dateModified": modifiedDate || publishDate,
+            "backstory": updates.length > 0 ? {
+              "@type": "CreativeWork",
+              "name": "Article Revision History",
+              "text": `This article has been updated ${updates.length} time(s) since publication.`
+            } : undefined,
+            "correction": updates.filter(u => u.type === 'correction').map(update => ({
+              "@type": "CorrectionComment",
+              "dateCreated": update.date,
+              "text": update.description,
+              "creator": update.author ? {
+                "@type": "Person",
+                "name": update.author
+              } : undefined
+            })),
+            "updateHistory": {
+              "@type": "ItemList",
+              "itemListElement": updates.map((update, index) => ({
+                "@type": "UpdateAction",
+                "position": index + 1,
+                "startTime": index === 0 ? publishDate : updates[index - 1].date,
+                "endTime": update.date,
+                "object": {
+                  "@type": "NewsArticle",
+                  "headline": `${getUpdateLabel(update.type)}: ${update.description.substring(0, 100)}`
+                },
+                "agent": update.author ? {
+                  "@type": "Person",
+                  "name": update.author
+                } : {
+                  "@type": "Organization",
+                  "name": "Report Focus News Editorial Team"
+                },
+                "actionStatus": "CompletedActionStatus",
+                "result": {
+                  "@type": "CreativeWork",
+                  "text": update.description
+                }
+              }))
+            }
           })
         }}
       />
