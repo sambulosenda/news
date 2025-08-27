@@ -42,7 +42,7 @@ export const GET_POPULAR_TAGS = gql`
 
 // Get posts by tag with pagination
 export const GET_POSTS_BY_TAG = gql`
-  query GetPostsByTag($slug: String!, $first: Int = 12, $after: String) {
+  query GetPostsByTag($slug: ID!, $slugString: [String!], $first: Int = 12, $after: String) {
     tag(id: $slug, idType: SLUG) {
       id
       databaseId
@@ -50,22 +50,12 @@ export const GET_POSTS_BY_TAG = gql`
       slug
       description
       count
-      seo {
-        title
-        metaDesc
-        canonical
-        opengraphTitle
-        opengraphDescription
-        opengraphImage {
-          sourceUrl
-        }
-      }
     }
     posts(
       first: $first
       after: $after
       where: { 
-        tagSlugIn: [$slug], 
+        tagSlugIn: $slugString, 
         orderby: { field: DATE, order: DESC },
         status: PUBLISH
       }
@@ -133,7 +123,7 @@ export const GET_POSTS_BY_TAG = gql`
 
 // Get tag by slug for single tag info
 export const GET_TAG_BY_SLUG = gql`
-  query GetTagBySlug($slug: String!) {
+  query GetTagBySlug($slug: ID!) {
     tag(id: $slug, idType: SLUG) {
       id
       databaseId
@@ -158,7 +148,7 @@ export const GET_TAG_BY_SLUG = gql`
 
 // Get related tags based on shared posts
 export const GET_RELATED_TAGS = gql`
-  query GetRelatedTags($tagSlug: String!, $first: Int = 10) {
+  query GetRelatedTags($tagSlug: ID!, $first: Int = 10) {
     posts(first: 20, where: { tagSlugIn: [$tagSlug] }) {
       edges {
         node {

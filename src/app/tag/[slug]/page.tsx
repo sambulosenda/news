@@ -41,8 +41,8 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
     };
   }
 
-  const title = tag.seo?.title || `${tag.name} News & Articles`;
-  const description = tag.seo?.metaDesc || tag.description || 
+  const title = `${tag.name} News & Articles`;
+  const description = tag.description || 
     `Latest ${tag.name} news, articles and updates from Report Focus News. Browse all content tagged with ${tag.name}.`;
 
   return {
@@ -50,14 +50,11 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
     description,
     keywords: `${tag.name}, ${tag.name} news, ${tag.name} articles, ${tag.name} updates, South Africa ${tag.name}, Zimbabwe ${tag.name}`,
     openGraph: {
-      title: tag.seo?.opengraphTitle || title,
-      description: tag.seo?.opengraphDescription || description,
+      title: title,
+      description: description,
       type: 'website',
       url: `https://reportfocusnews.com/tag/${slug}/`,
-      images: tag.seo?.opengraphImage ? [{
-        url: tag.seo.opengraphImage.sourceUrl,
-        alt: tag.name
-      }] : [],
+      images: [],
       siteName: 'Report Focus News'
     },
     twitter: {
@@ -66,7 +63,7 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
       description: description.substring(0, 200)
     },
     alternates: {
-      canonical: tag.seo?.canonical || `https://reportfocusnews.com/tag/${slug}/`
+      canonical: `https://reportfocusnews.com/tag/${slug}/`
     },
     robots: {
       index: true,
@@ -95,7 +92,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
     ),
     fetchGraphQLCached(
       GET_POSTS_BY_TAG,
-      { slug, first: postsPerPage, after },
+      { slug, slugString: [slug], first: postsPerPage, after },
       { ttl: 60 } // 1 minute cache for posts
     )
   ]);
@@ -103,8 +100,35 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
   const tag = tagData?.tag;
   const posts = postsData?.posts;
 
+  // If tag doesn't exist, show a helpful message instead of 404
   if (!tag) {
-    notFound();
+    return (
+      <>
+        <HeaderWrapper />
+        <main className="min-h-screen bg-gray-50">
+          <div className="container-wide py-12">
+            <div className="max-w-2xl mx-auto text-center">
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                Tag Not Found
+              </h1>
+              <p className="text-gray-600 mb-8">
+                The tag "{slug}" doesn't exist yet or has no associated articles.
+              </p>
+              <p className="text-sm text-gray-500 mb-8">
+                Tags will be available as content is properly categorized and tagged in the content management system.
+              </p>
+              <Link 
+                href="/" 
+                className="inline-block px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Go to Homepage
+              </Link>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
   }
 
   const totalPosts = tag.count || 0;
