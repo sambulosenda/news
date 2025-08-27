@@ -1,3 +1,5 @@
+import { getCDNImageUrl } from '@/lib/cdn';
+
 interface ServerProxyImageProps {
   src: string;
   alt: string;
@@ -9,8 +11,8 @@ interface ServerProxyImageProps {
 }
 
 /**
- * Server-side image component that immediately renders the correct proxy URL
- * This ensures Google crawlers see the actual image, not a fallback
+ * Server-side image component that immediately renders CDN URLs
+ * This ensures Google crawlers see the actual image URL
  * Uses native img tag for better SSR compatibility
  */
 export default function ServerProxyImage({
@@ -22,17 +24,12 @@ export default function ServerProxyImage({
   fill = false,
   priority = false,
 }: ServerProxyImageProps) {
-  // Generate proxy URL immediately for WordPress images
+  // Generate CDN URL immediately for WordPress images
   const getImageUrl = () => {
     if (!src) return ''; // Return empty for no image
     
-    // If it's a WordPress backend image, proxy it
-    if (src.includes('backend.reportfocusnews.com')) {
-      return `/api/image-proxy?url=${encodeURIComponent(src)}`;
-    }
-    
-    // Use original URL for non-WordPress images
-    return src;
+    // Convert to CDN URL for all images
+    return getCDNImageUrl(src);
   };
 
   const imageUrl = getImageUrl();

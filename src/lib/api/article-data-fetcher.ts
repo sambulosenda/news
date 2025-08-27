@@ -1,6 +1,7 @@
 import { fetchGraphQLCached } from './graphql-cache';
 import { GET_POST_BY_SLUG } from '@/lib/queries/posts';
 import { detectLocationFromContent } from '@/lib/utils/location-detector';
+import { getCDNImageUrl } from '@/lib/cdn';
 
 // Memoization for metadata generation
 const metadataCache = new Map<string, any>();
@@ -84,9 +85,9 @@ async function generateOptimizedMetadata(
   // Use article title
   const title = article.title;
   
-  // Optimize image URL generation
+  // Use CDN URL for Open Graph image
   const ogImage = article.featuredImage?.node?.sourceUrl
-    ? `https://reportfocusnews.com/api/image-proxy?url=${encodeURIComponent(article.featuredImage.node.sourceUrl)}`
+    ? getCDNImageUrl(article.featuredImage.node.sourceUrl)
     : 'https://reportfocusnews.com/og-image.jpg';
   
   // Build canonical URL

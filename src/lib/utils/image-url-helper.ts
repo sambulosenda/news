@@ -1,7 +1,9 @@
 /**
  * Image URL Helper
- * Manages image URLs for different contexts (browser vs crawler)
+ * Manages image URLs with Bunny CDN integration
  */
+
+import { getCDNImageUrl } from '@/lib/cdn';
 
 interface ImageUrlOptions {
   context?: 'browser' | 'seo' | 'sitemap';
@@ -12,8 +14,8 @@ const DEFAULT_FALLBACK = 'https://reportfocusnews.com/og-image.jpg';
 
 /**
  * Get the appropriate image URL based on context
- * - For browsers: Use proxy to avoid CORS and hotlinking issues
- * - For SEO/crawlers: Use direct URLs that Google can access
+ * - All contexts now use CDN URLs for better performance and SEO
+ * - CDN provides global distribution and caching
  */
 export function getImageUrl(
   originalUrl: string | undefined | null,
@@ -29,28 +31,9 @@ export function getImageUrl(
     return fallback;
   }
 
-  // For SEO contexts (meta tags, structured data, sitemaps)
-  // Use direct URLs so Google and other crawlers can access them
-  if (context === 'seo' || context === 'sitemap') {
-    // Ensure the URL is absolute
-    if (originalUrl.startsWith('http')) {
-      return originalUrl;
-    }
-    // Handle relative URLs from WordPress
-    if (originalUrl.startsWith('/')) {
-      return `https://backend.reportfocusnews.com${originalUrl}`;
-    }
-    return originalUrl;
-  }
-
-  // For browser context, use proxy for WordPress images
-  // This helps with CORS and potential hotlinking protection
-  if (context === 'browser' && originalUrl.includes('backend.reportfocusnews.com')) {
-    return `/api/image-proxy?url=${encodeURIComponent(originalUrl)}`;
-  }
-
-  // For other images (not from WordPress), return as-is
-  return originalUrl;
+  // Use CDN for all contexts - better for SEO and performance
+  // CDN URLs are accessible by Google crawlers and provide better loading times
+  return getCDNImageUrl(originalUrl);
 }
 
 /**

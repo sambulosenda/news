@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { getCDNImageUrl } from '@/lib/cdn';
 
 interface ProxyImageProps {
   src: string;
@@ -14,8 +15,8 @@ interface ProxyImageProps {
 const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2U1ZTdlYiIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjIwMCIgeT0iMTUwIiBzdHlsZT0iZmlsbDojOWNhM2FmO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjIwcHg7Zm9udC1mYW1pbHk6QXJpYWwsc2Fucy1zZXJpZiI+SW1hZ2UgTm90IEF2YWlsYWJsZTwvdGV4dD48L3N2Zz4=';
 
 /**
- * ProxyImage component that loads images through our API proxy
- * This bypasses hotlink protection and CORS issues
+ * ProxyImage component that loads images through Bunny CDN
+ * This provides fast, cached image delivery with global distribution
  */
 export default function ProxyImage({
   src,
@@ -25,22 +26,19 @@ export default function ProxyImage({
   height,
   fill = false,
 }: ProxyImageProps) {
-  // Initialize with actual URL, not fallback - prevents Google from indexing fallback
-  const getProxiedUrl = (originalSrc: string) => {
+  // Use CDN URL instead of proxy
+  const getOptimizedUrl = (originalSrc: string) => {
     if (!originalSrc) return FALLBACK_IMAGE;
-    if (originalSrc.includes('backend.reportfocusnews.com')) {
-      return `/api/image-proxy?url=${encodeURIComponent(originalSrc)}`;
-    }
-    return originalSrc;
+    return getCDNImageUrl(originalSrc);
   };
   
-  const initialSrc = getProxiedUrl(src);
+  const initialSrc = getOptimizedUrl(src);
   const [imgSrc, setImgSrc] = useState<string>(initialSrc);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    const newSrc = getProxiedUrl(src);
+    const newSrc = getOptimizedUrl(src);
     if (newSrc !== imgSrc) {
       setImgSrc(newSrc);
       setIsLoading(true);
