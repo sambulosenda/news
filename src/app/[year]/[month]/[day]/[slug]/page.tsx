@@ -10,6 +10,7 @@ import HeaderWrapper from '@/components/layout/HeaderWrapper';
 import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/common/BackToTop';
 import NewsArticleSchema from '@/components/seo/NewsArticleSchema';
+import ArticleTimestamp from '@/components/common/ArticleTimestamp';
 import dynamic from 'next/dynamic';
 import { InArticleAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
@@ -253,9 +254,13 @@ export default async function FastArticlePage({ params }: PostPageProps) {
 
           {/* Meta Information Bar */}
           <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 pb-6 border-b border-gray-200">
-            <time dateTime={post.date} className="font-medium">
-              {format(new Date(post.date), 'MMMM d, yyyy')}
-            </time>
+            <ArticleTimestamp 
+              publishDate={post.date} 
+              modifiedDate={post.modified}
+              showBreaking={true}
+              showUpdate={true}
+              className="font-medium"
+            />
             <span className="text-gray-300">•</span>
             <span className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,14 +268,6 @@ export default async function FastArticlePage({ params }: PostPageProps) {
               </svg>
               {readingTime} min read
             </span>
-            {post.modified && post.modified !== post.date && (
-              <>
-                <span className="text-gray-300">•</span>
-                <span className="italic">
-                  Updated {format(new Date(post.modified), 'MMM d, yyyy')}
-                </span>
-              </>
-            )}
           </div>
 
           {/* Author section - Simplified */}
