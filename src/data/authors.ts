@@ -9,11 +9,33 @@ import { AuthorCredentials } from '@/types/author';
 export const AUTHORS: Record<string, AuthorCredentials> = {
   'admin': {
     id: 'admin',
-    name: 'Report Focus News Staff',
+    name: 'Report Focus News',
     slug: 'admin',
     title: 'Editorial Team',
     bio: 'The Report Focus News editorial team brings you breaking news and in-depth analysis from South Africa and Zimbabwe.',
     expertise: ['Breaking News', 'Politics', 'Business', 'Current Affairs'],
+    yearsOfExperience: 5,
+    verified: true,
+    joinedDate: '2024-01-01',
+  },
+  'newsroom': {
+    id: 'newsroom',
+    name: 'Newsroom',
+    slug: 'newsroom',
+    title: 'Report Focus News Newsroom',
+    bio: 'Breaking news and updates from the Report Focus News newsroom. Our team of journalists brings you the latest developments from South Africa and Zimbabwe.',
+    expertise: ['Breaking News', 'Politics', 'Business', 'Current Affairs', 'Crime', 'Sports'],
+    yearsOfExperience: 5,
+    verified: true,
+    joinedDate: '2024-01-01',
+  },
+  'staff-reporter': {
+    id: 'staff-reporter',
+    name: 'Staff Reporter',
+    slug: 'staff-reporter',
+    title: 'Report Focus News',
+    bio: 'News reporting from Report Focus News staff journalists covering stories across South Africa and Zimbabwe.',
+    expertise: ['General News', 'Breaking News', 'Current Affairs'],
     yearsOfExperience: 5,
     verified: true,
     joinedDate: '2024-01-01',
@@ -96,6 +118,26 @@ export const AUTHORS: Record<string, AuthorCredentials> = {
     avatar: {
       url: '/authors/mary-johnson.jpg',
       alt: 'Mary Johnson'
+    }
+  },
+  'tatenda': {
+    id: 'tatenda',
+    name: 'Tatenda Chirimuta',
+    slug: 'tatenda',
+    email: 'tatenda@reportfocusnews.com',
+    title: 'Senior Reporter',
+    bio: 'Tatenda Chirimuta is an experienced journalist covering Zimbabwe news, politics, and current affairs. With deep insights into local issues and regional dynamics, Tatenda brings authoritative reporting on developments across Zimbabwe.',
+    expertise: ['Zimbabwe Politics', 'Current Affairs', 'Economic Development', 'Social Issues', 'Regional News'],
+    yearsOfExperience: 7,
+    education: 'BA Media Studies, University of Zimbabwe',
+    twitter: '@tatenda_news',
+    linkedin: 'tatenda-chirimuta',
+    verified: true,
+    articleCount: 410,
+    joinedDate: '2024-01-20',
+    avatar: {
+      url: '/authors/tatenda.jpg',
+      alt: 'Tatenda Chirimuta'
     }
   }
 };

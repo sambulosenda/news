@@ -256,6 +256,78 @@ export const GET_AUTHOR_POSTS = gql`
   }
 `;
 
+export const GET_POSTS_BY_AUTHOR_NAME = gql`
+  ${POST_FIELDS}
+  query GetPostsByAuthorName($authorName: String!, $first: Int!) {
+    posts(
+      where: { 
+        authorName: $authorName
+      }
+      first: $first
+    ) {
+      edges {
+        node {
+          ...PostFields
+        }
+      }
+    }
+  }
+`;
+
+export const GET_POSTS_BY_AUTHOR_SLUG = gql`
+  ${POST_FIELDS}
+  query GetPostsByAuthorSlug($authorSlug: ID!, $first: Int!) {
+    user(id: $authorSlug, idType: SLUG) {
+      databaseId
+      name
+      slug
+      description
+      avatar {
+        url
+      }
+      posts(first: $first) {
+        edges {
+          node {
+            ...PostFields
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_USER_BY_SLUG = gql`
+  query GetUserBySlug($slug: String!) {
+    user(id: $slug, idType: SLUG) {
+      databaseId
+      name
+      slug
+      description
+      avatar {
+        url
+      }
+    }
+  }
+`;
+
+export const GET_POSTS_BY_AUTHOR_ID = gql`
+  ${POST_FIELDS}
+  query GetPostsByAuthorId($authorId: [ID]!, $first: Int!) {
+    posts(
+      where: { 
+        authorIn: $authorId
+      }
+      first: $first
+    ) {
+      edges {
+        node {
+          ...PostFields
+        }
+      }
+    }
+  }
+`;
+
 export const GET_POST_WITH_RELATED = gql`
   ${POST_FIELDS}
   query GetPostWithRelated($slug: String!) {

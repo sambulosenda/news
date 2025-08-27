@@ -59,11 +59,6 @@ export default function AuthorByline({
                 src={authorData.avatar.url} 
                 alt={authorData.avatar.alt || authorData.name}
                 className="w-10 h-10 rounded-full object-cover"
-                onError={(e) => {
-                  // Fallback to initials if image fails
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }}
               />
             </Link>
           )}
