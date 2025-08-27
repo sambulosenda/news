@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { fetchGraphQL } from '@/lib/api/fetch-graphql';
 import { GET_POSTS_BY_AUTHOR_SLUG } from '@/lib/queries/posts';
 import HeaderWrapper from '@/components/layout/HeaderWrapper';
@@ -159,7 +160,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             "name": author.name,
             "url": `https://reportfocusnews.com/author/${slug}/`,
             "image": author.avatar || `https://reportfocusnews.com/images/authors/${slug}.jpg`,
-            "jobTitle": author.title || author.role || "Journalist",
+            "jobTitle": author.title || "Journalist",
             "worksFor": {
               "@type": "NewsMediaOrganization",
               "@id": "https://reportfocusnews.com/#organization",
@@ -199,9 +200,9 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         {/* Breadcrumbs for SEO */}
         <nav aria-label="Breadcrumb" className="container-wide pt-4">
           <ol className="flex items-center space-x-2 text-sm text-gray-600">
-            <li><a href="/" className="hover:text-blue-600">Home</a></li>
+            <li><Link href="/" className="hover:text-blue-600">Home</Link></li>
             <li><span className="mx-2">/</span></li>
-            <li><a href="/authors" className="hover:text-blue-600">Authors</a></li>
+            <li><Link href="/authors" className="hover:text-blue-600">Authors</Link></li>
             <li><span className="mx-2">/</span></li>
             <li className="text-gray-900 font-semibold">{author.name}</li>
           </ol>
@@ -239,7 +240,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                       </span>
                     )}
                   </h1>
-                  <p className="text-lg text-gray-600 mb-4">{author.title || author.role || 'Reporter'}</p>
+                  <p className="text-lg text-gray-600 mb-4">{author.title || 'Reporter'}</p>
                   <p className="text-gray-700 mb-4 leading-relaxed">{author.bio}</p>
                   
                   {/* Credentials for E-E-A-T */}
