@@ -1,4 +1,3 @@
-import '@/lib/polyfills/stream-fix';
 import type { Metadata } from "next";
 import React from "react";
 import { Inter, Roboto } from "next/font/google";
