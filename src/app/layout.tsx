@@ -9,6 +9,7 @@ import SiteNavigationSchema from "@/components/seo/SiteNavigationSchema";
 import OrganizationSchema from "@/components/seo/OrganizationSchema";
 import NewsPerformanceOptimizer from "@/components/performance/NewsPerformanceOptimizer";
 import WebSiteSchema from "@/components/seo/WebSiteSchema";
+import WebVitalsClient from "@/components/performance/WebVitalsClient";
 import { GoogleAdsenseScript } from "@/components/ads/GoogleAdsense";
 import { ADSENSE_CONFIG, shouldShowAds } from "@/config/adsense";
 import "@/styles/globals.css";
@@ -16,7 +17,7 @@ import "@/styles/globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "swap", // Better for Core Web Vitals - shows text immediately with fallback
+  display: "optional", // Best for CLS - uses fallback if font doesn't load quickly
   preload: true,
   adjustFontFallback: true, // Better fallback matching
   fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
@@ -26,7 +27,7 @@ const roboto = Roboto({
   weight: ['400', '500', '700'],
   subsets: ["latin"],
   variable: "--font-roboto",
-  display: "swap", // Better for Core Web Vitals
+  display: "optional", // Best for CLS - prevents layout shift
   preload: true,
   adjustFontFallback: true,
   fallback: ['Georgia', 'Times New Roman', 'serif'],
@@ -145,6 +146,7 @@ export default function RootLayout({
         <ApolloWrapper>{children}</ApolloWrapper>
         {shouldShowAds() && <GoogleAdsenseScript pId={ADSENSE_CONFIG.publisherId} />}
         <SpeedInsights />
+        <WebVitalsClient />
       </body>
     </html>
   );
