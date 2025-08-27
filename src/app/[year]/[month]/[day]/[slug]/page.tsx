@@ -13,6 +13,10 @@ import NewsArticleSchema from '@/components/seo/NewsArticleSchema';
 import ArticleTimestamp from '@/components/common/ArticleTimestamp';
 import AuthorByline from '@/components/author/AuthorByline';
 import AuthorSchema from '@/components/seo/AuthorSchema';
+import UpdateTracker from '@/components/article/UpdateTracker';
+import DevelopingStoryBanner from '@/components/article/DevelopingStoryBanner';
+import CorrectionNotice from '@/components/article/CorrectionNotice';
+import { isBreakingNews } from '@/lib/utils/time-utils';
 import dynamic from 'next/dynamic';
 import { InArticleAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
@@ -291,6 +295,25 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             )}
             <ShareButtons url={canonicalUrl} title={post.title} />
           </div>
+
+          {/* Breaking News / Developing Story Banner */}
+          <DevelopingStoryBanner 
+            isBreaking={isBreakingNews(post.date)}
+            lastUpdate={post.modified || post.date}
+            updateCount={post.modified && post.modified !== post.date ? 1 : 0}
+          />
+          
+          {/* Article Update Tracker */}
+          <UpdateTracker 
+            publishDate={post.date}
+            modifiedDate={post.modified}
+            updates={[]} // You can populate this from custom fields if available
+          />
+          
+          {/* Corrections Notice */}
+          <CorrectionNotice 
+            corrections={[]} // You can populate this from custom fields if available
+          />
 
           {/* Featured Image - Server-rendered for Google indexing */}
           <figure className="mb-8">
