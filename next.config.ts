@@ -130,17 +130,18 @@ const nextConfig: NextConfig = {
   // Redirects for domain consolidation
   async redirects() {
     return [
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'backend.reportfocusnews.com',
-          },
-        ],
-        destination: 'https://reportfocusnews.com/:path*',
-        permanent: true,
-      },
+      // Temporarily disabled to fix redirect loop
+      // {
+      //   source: '/:path*',
+      //   has: [
+      //     {
+      //       type: 'host',
+      //       value: 'backend.reportfocusnews.com',
+      //     },
+      //   ],
+      //   destination: 'https://reportfocusnews.com/:path*',
+      //   permanent: true,
+      // },
     ];
   },
 
