@@ -17,11 +17,17 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
       : article.title);
 
   // Helper to get SEO-friendly image URLs for structured data
+  // Force minimum 1200px width for Google Discover
   const getSeoImageUrl = (url: string | undefined) => {
-    return getImageUrl(url, { context: 'seo' });
+    return getImageUrl(url, { 
+      context: 'seo',
+      width: 1200,  // Google Discover minimum
+      height: 675   // 16:9 aspect ratio
+    });
   };
   
   // Use Yoast OpenGraph image if available, otherwise featured image
+  // Ensure minimum 1200px width for Google Discover
   const imageUrl = article.seo?.opengraphImage?.sourceUrl || article.featuredImage?.node?.sourceUrl;
   
   // Only include image if we have a real article image
@@ -45,6 +51,9 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
     ...yoastKeywords,
     ...(article.tags?.edges?.map(tag => tag.node.name) || [])
   ].filter(Boolean);
+
+  // Calculate word count for schema
+  const wordCount = article.content?.replace(/<[^>]*>/g, '').split(/\s+/).length || 0;
 
   const schema = {
     "@context": "https://schema.org",
@@ -87,7 +96,13 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
       "@type": "WebPage",
       "@id": article.seo?.canonical || url
     },
+    // Critical for Google Discover and paywall detection
     "isAccessibleForFree": true,
+    "hasPart": {
+      "@type": "WebPageElement",
+      "isAccessibleForFree": true,
+      "cssSelector": ".article-content"
+    },
     "speakable": {
       "@type": "SpeakableSpecification",
       "cssSelector": [".article-content"]
@@ -95,6 +110,7 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
     // News-specific fields
     "dateline": `${article.categories?.edges?.[0]?.node?.name || "SOUTH AFRICA"}, ${new Date(article.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`,
     "articleBody": article.content?.replace(/<[^>]*>/g, '').substring(0, 1000) || "",
+    "wordCount": wordCount,
     // Geographic relevance
     "spatialCoverage": [
       {

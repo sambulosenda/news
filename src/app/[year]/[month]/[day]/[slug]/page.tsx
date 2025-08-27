@@ -109,8 +109,13 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     .replace(/^Report Focus News [\|\-–—] /i, ''); // Remove site name at beginning
   
   // Use Yoast OpenGraph image if available, otherwise featured image
+  // Ensure image is at least 1200px wide for Google Discover
   const ogImageUrl = article.seo?.opengraphImage?.sourceUrl || article.featuredImage?.node?.sourceUrl;
-  const ogImage = getImageUrl(ogImageUrl, { context: 'seo' });
+  const ogImage = getImageUrl(ogImageUrl, { 
+    context: 'seo',
+    width: 1200,  // Google Discover requires 1200px minimum
+    height: 675   // 16:9 aspect ratio
+  });
   
   // Build canonical URL - use Yoast canonical if available
   const canonicalUrl = 
@@ -178,6 +183,20 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     },
     alternates: {
       canonical: canonicalUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large', // Critical for Google Discover
+      'max-snippet': -1,
+      'max-video-preview': -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
     },
     other: {
       // Add geo-targeting meta tags for regional SEO
