@@ -147,5 +147,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...postPages, ...categoryPages];
+  // Add tags index page
+  const tagPages = [
+    {
+      url: `${baseUrl}/tags/`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.6,
+    }
+  ];
+
+  return [...staticPages, ...postPages, ...categoryPages, ...tagPages];
 }

@@ -176,23 +176,40 @@ async function fetchRelatedPosts(currentPost: WPPost): Promise<WPPost[]> {
       // Filter posts to get ones from same category
       const allPosts = data.posts.edges.map((e: any) => e.node);
       
-      // If we have a category, prioritize posts from same category
-      if (categorySlug) {
-        const sameCategoryPosts = allPosts.filter((p: WPPost) => 
-          p.categories?.edges?.some(e => e.node.slug === categorySlug) &&
-          p.id !== currentPost.id
-        );
-        
-        const otherPosts = allPosts.filter((p: WPPost) => 
-          !p.categories?.edges?.some(e => e.node.slug === categorySlug) &&
-          p.id !== currentPost.id
-        );
-        
-        return [...sameCategoryPosts, ...otherPosts];
-      }
+      // Extract current post's tags for matching
+      const currentTags = currentPost.tags?.edges?.map(e => e.node.slug) || [];
       
-      // Otherwise just return all posts except current
-      return allPosts.filter((p: WPPost) => p.id !== currentPost.id);
+      // Score each post based on relevance
+      const scoredPosts = allPosts
+        .filter((p: WPPost) => p.id !== currentPost.id)
+        .map((p: WPPost) => {
+          let score = 0;
+          
+          // Category match (highest weight)
+          if (categorySlug && p.categories?.edges?.some(e => e.node.slug === categorySlug)) {
+            score += 10;
+          }
+          
+          // Tag matches (medium weight - 3 points per matching tag)
+          if (currentTags.length > 0 && p.tags?.edges) {
+            const postTags = p.tags.edges.map(e => e.node.slug);
+            const matchingTags = currentTags.filter(tag => postTags.includes(tag));
+            score += matchingTags.length * 3;
+          }
+          
+          // Recency bonus (1 point for posts within last 7 days)
+          const postDate = new Date(p.date);
+          const daysSincePublished = (Date.now() - postDate.getTime()) / (1000 * 60 * 60 * 24);
+          if (daysSincePublished <= 7) {
+            score += 1;
+          }
+          
+          return { post: p, score };
+        })
+        .sort((a, b) => b.score - a.score)
+        .map(item => item.post);
+      
+      return scoredPosts;
     }
     
     return [];
