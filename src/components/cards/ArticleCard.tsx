@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import ServerCDNImage from '@/components/common/ServerCDNImage';
+import ArticleTimestamp from '@/components/common/ArticleTimestamp';
 import { format } from 'date-fns';
 import { WPPost } from '@/types/wordpress';
 
@@ -64,10 +65,16 @@ export default function ArticleCard({
               dangerouslySetInnerHTML={{ __html: article.excerpt }}
             />
           )}
-          {showAuthor && article.author?.node && (
-            <p className="text-xs text-gray-600">
-              By {article.author.node.name} • {format(new Date(article.date), 'MMM d, yyyy')}
-            </p>
+          {showAuthor && (
+            <div className="flex items-center text-xs text-gray-600">
+              {article.author?.node && <span>By {article.author.node.name} • </span>}
+              <ArticleTimestamp 
+                publishDate={article.date} 
+                modifiedDate={article.modified}
+                showBreaking={true}
+                className="text-xs"
+              />
+            </div>
           )}
         </div>
       </article>
@@ -167,9 +174,11 @@ export default function ArticleCard({
             </p>
           )}
           <div className="mt-auto pt-3">
-            <p className="text-xs text-gray-500">
-              {format(new Date(article.date), 'MMMM d, yyyy')}
-            </p>
+            <ArticleTimestamp 
+              publishDate={article.date} 
+              modifiedDate={article.modified}
+              className="text-xs text-gray-500"
+            />
           </div>
         </div>
       </article>
@@ -212,10 +221,14 @@ export default function ArticleCard({
           />
         )}
         {showAuthor && (
-          <p className="text-xs text-gray-500 font-medium">
-            {article.author?.node && `By ${article.author.node.name} • `}
-            {format(new Date(article.date), 'MMM d, yyyy')}
-          </p>
+          <div className="flex items-center text-xs text-gray-500 font-medium">
+            {article.author?.node && <span>By {article.author.node.name} • </span>}
+            <ArticleTimestamp 
+              publishDate={article.date} 
+              modifiedDate={article.modified}
+              className="text-xs"
+            />
+          </div>
         )}
       </div>
     </article>
