@@ -22,28 +22,8 @@ import { InArticleAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
 import { getImageUrl } from '@/lib/utils/image-url-helper';
 
-// Lazy load non-critical components
-const RelatedPostsSection = dynamic(() => import('@/components/sections/RelatedPostsSection'), {
-  loading: () => (
-    <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-12 border-t-2 border-gray-200">
-      <div className="mb-8">
-        <h2 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-2">
-          More from Report Focus News
-        </h2>
-        <div className="w-20 h-1 bg-red-700"></div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="animate-pulse">
-            <div className="bg-gray-200 aspect-[16/9] rounded-lg mb-3"></div>
-            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div className="h-3 bg-gray-200 rounded w-full"></div>
-          </div>
-        ))}
-      </div>
-    </section>
-  ),
-});
+// Import server-side smart related articles
+import ServerSmartRelated from '@/components/sections/ServerSmartRelated';
 
 // Dynamic rendering with aggressive caching for news
 export const revalidate = 60; // 1 minute revalidation for breaking news
@@ -372,8 +352,30 @@ export default async function FastArticlePage({ params }: PostPageProps) {
           </section>
         )}
         
-        {/* Lazy-loaded Related Posts */}
-        <RelatedPostsSection slug={slug} />
+        {/* Smart Related Articles with improved algorithm */}
+        <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Suspense fallback={
+            <div className="mt-12 pt-12 border-t-2 border-gray-200">
+              <div className="mb-8">
+                <h2 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-2">
+                  Related Articles
+                </h2>
+                <div className="w-20 h-1 bg-red-700"></div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="bg-gray-200 aspect-[16/9] rounded-lg mb-3"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-full"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          }>
+            <ServerSmartRelated currentPost={post} variant="mixed" />
+          </Suspense>
+        </section>
       </main>
       
       <Suspense fallback={<div className="h-96 bg-gray-50" />}>

@@ -41,7 +41,7 @@ const getTimeForCity = (timeZone: string): string => {
 
 export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [formattedDate, setFormattedDate] = useState('');
+  const [formattedDate, setFormattedDate] = useState<string | null>(null);
   const [johannesburgTime, setJohannesburgTime] = useState<string | null>(null);
   const [harareTime, setHarareTime] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -197,26 +197,26 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
             <div className="flex justify-between items-center py-2.5">
               <div className="flex items-center gap-3 text-xs text-gray-600">
                 {formattedDate && (
-                  <time className="font-medium" dateTime={new Date().toISOString()}>
+                  <time className="font-medium" suppressHydrationWarning>
                     {formattedDate}
                   </time>
                 )}
-                <span className="hidden sm:inline text-gray-400">|</span>
-                {typeof window !== 'undefined' && johannesburgTime ? (
-                  <span className="hidden sm:inline">
+                {formattedDate && <span className="hidden sm:inline text-gray-400">|</span>}
+                {johannesburgTime && (
+                  <span className="hidden sm:inline" suppressHydrationWarning>
                     <span className="text-gray-400 mx-1">•</span>
                     <span className="font-medium">JHB</span> {johannesburgTime}
                   </span>
-                ) : null}
-                {typeof window !== 'undefined' && harareTime ? (
-                  <span className="hidden md:inline">
+                )}
+                {harareTime && (
+                  <span className="hidden md:inline" suppressHydrationWarning>
                     <span className="text-gray-400 mx-1">•</span>
                     <span className="font-medium">HRE</span> {harareTime}
                   </span>
-                ) : null}
+                )}
               </div>
               <div className="flex items-center gap-4">
-                {typeof window !== 'undefined' && marketData && (
+                {marketData && (
                   <div className="hidden lg:flex items-center gap-3 text-xs text-gray-600">
                     <span className="font-medium">JSE</span>
                     <span className={marketData.jse.color}>

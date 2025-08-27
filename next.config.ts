@@ -49,6 +49,11 @@ const nextConfig: NextConfig = {
         hostname: 'openweathermap.org',
         pathname: '/img/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'newsreportfocus.b-cdn.net',
+        pathname: '/**',
+      },
     ],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
