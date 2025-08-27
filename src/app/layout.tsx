@@ -11,6 +11,7 @@ import WebSiteSchema from "@/components/seo/WebSiteSchema";
 import WebVitalsClient from "@/components/performance/WebVitalsClient";
 import { GoogleAdsenseScript } from "@/components/ads/GoogleAdsense";
 import { ADSENSE_CONFIG, shouldShowAds } from "@/config/adsense";
+import ErrorBoundary from "@/components/error/ErrorBoundary";
 import "@/styles/globals.css";
 
 const inter = Inter({
@@ -142,7 +143,9 @@ export default function RootLayout({
         <OrganizationSchema />
         <WebSiteSchema />
         <NewsPerformanceOptimizer />
-        <ApolloWrapper>{children}</ApolloWrapper>
+        <ErrorBoundary>
+          <ApolloWrapper>{children}</ApolloWrapper>
+        </ErrorBoundary>
         {shouldShowAds() && <GoogleAdsenseScript pId={ADSENSE_CONFIG.publisherId} />}
         <SpeedInsights />
         <WebVitalsClient />

@@ -1,8 +1,19 @@
+'use client';
+
 import HeaderClient from '@/components/layout/HeaderClient';
 import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
+import * as Sentry from '@sentry/nextjs';
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function NotFound() {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // Track 404 errors in Sentry
+    Sentry.captureMessage(`404 - Page not found: ${pathname}`, 'warning');
+  }, [pathname]);
   return (
     <>
       <HeaderClient />
