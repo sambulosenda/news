@@ -32,7 +32,7 @@ export default function ArticleDates({
   
   // Calculate time differences
   const hoursSinceUpdate = modified ? differenceInHours(new Date(), modified) : 0;
-  const daysSincePublish = differenceInDays(new Date(), published);
+  const _daysSincePublish = differenceInDays(new Date(), published);
   
   // Determine if this is a significant update
   const isSignificantUpdate = hasUpdate && modified && 

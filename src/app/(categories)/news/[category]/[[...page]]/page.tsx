@@ -248,7 +248,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               "itemListElement": posts.map((post: WPPost, index: number) => ({
                 "@type": "ListItem",
                 "position": (pageNum - 1) * POSTS_PER_PAGE + index + 1,
-                "url": `https://reportfocusnews.com${post.uri || `/post/${post.slug}`}`
+                "url": `https://reportfocusnews.com/${post.date.substring(0, 4)}/${post.date.substring(5, 7)}/${post.date.substring(8, 10)}/${post.slug}/`
               }))
             }
           })

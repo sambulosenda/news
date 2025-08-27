@@ -26,7 +26,7 @@ export default function TagSchema({ tag, url, posts = [] }: TagSchemaProps) {
         item: {
           '@type': 'NewsArticle',
           headline: post.title,
-          url: `https://reportfocusnews.com${post.uri}`,
+          url: `https://reportfocusnews.com/${post.date.substring(0, 4)}/${post.date.substring(5, 7)}/${post.date.substring(8, 10)}/${post.slug}/`,
           datePublished: post.date,
           dateModified: post.modified || post.date,
           author: {

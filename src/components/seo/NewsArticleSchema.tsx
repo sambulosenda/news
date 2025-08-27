@@ -20,9 +20,7 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
   // Force minimum 1200px width for Google Discover
   const getSeoImageUrl = (url: string | undefined) => {
     return getImageUrl(url, { 
-      context: 'seo',
-      width: 1200,  // Google Discover minimum
-      height: 675   // 16:9 aspect ratio
+      context: 'seo'
     });
   };
   

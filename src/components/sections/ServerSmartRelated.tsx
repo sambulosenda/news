@@ -206,8 +206,8 @@ async function fetchRelatedPosts(currentPost: WPPost): Promise<WPPost[]> {
           
           return { post: p, score };
         })
-        .sort((a, b) => b.score - a.score)
-        .map(item => item.post);
+        .sort((a: any, b: any) => b.score - a.score)
+        .map((item: any) => item.post);
       
       return scoredPosts;
     }

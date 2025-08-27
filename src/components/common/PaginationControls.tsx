@@ -29,7 +29,7 @@ export default function PaginationControls({
   // Generate page numbers to display
   const getPageNumbers = () => {
     const pages = [];
-    const maxVisible = 5;
+    const _maxVisible = 5;
     
     if (totalPages) {
       // If we know total pages

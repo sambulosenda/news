@@ -202,10 +202,9 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                   <ArticleCard 
                     key={edge.node.id}
                     article={edge.node}
-                    variant="standard"
+                    variant="default"
                     showCategory
                     showAuthor
-                    showDate
                   />
                 ))}
               </div>
@@ -216,7 +215,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                   <PaginationControls
                     currentPage={currentPage}
                     totalPages={totalPages}
-                    baseUrl={`/tag/${slug}`}
+                    basePath={`/tag/${slug}`}
                     hasNextPage={hasNextPage}
                     hasPreviousPage={hasPreviousPage}
                   />

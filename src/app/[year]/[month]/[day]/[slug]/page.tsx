@@ -117,9 +117,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   // Ensure image is at least 1200px wide for Google Discover
   const ogImageUrl = article.seo?.opengraphImage?.sourceUrl || article.featuredImage?.node?.sourceUrl;
   const ogImage = getImageUrl(ogImageUrl, { 
-    context: 'seo',
-    width: 1200,  // Google Discover requires 1200px minimum
-    height: 675   // 16:9 aspect ratio
+    context: 'seo'
   });
   
   // Build canonical URL - use Yoast canonical if available

@@ -85,7 +85,7 @@ export default function UpdateTracker({
     }
   };
   
-  const getUpdateColor = (type: ArticleUpdate['type']) => {
+  const _getUpdateColor = (type: ArticleUpdate['type']) => {
     switch (type) {
       case 'correction':
         return 'bg-red-50 border-red-400 text-red-900';
