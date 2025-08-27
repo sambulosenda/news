@@ -11,6 +11,8 @@ import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/common/BackToTop';
 import NewsArticleSchema from '@/components/seo/NewsArticleSchema';
 import ArticleTimestamp from '@/components/common/ArticleTimestamp';
+import AuthorByline from '@/components/author/AuthorByline';
+import AuthorSchema from '@/components/seo/AuthorSchema';
 import dynamic from 'next/dynamic';
 import { InArticleAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
@@ -229,6 +231,12 @@ export default async function FastArticlePage({ params }: PostPageProps) {
   return (
     <>
       <NewsArticleSchema article={post} url={canonicalUrl} />
+      {post.author?.node && (
+        <AuthorSchema 
+          authorName={post.author.node.name} 
+          authorSlug={post.author.node.slug}
+        />
+      )}
       
       <HeaderWrapper />
       <ReadingProgress />
@@ -270,18 +278,16 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             </span>
           </div>
 
-          {/* Author section - Simplified */}
+          {/* Enhanced Author section with credentials */}
           <div className="flex flex-wrap items-center justify-between gap-4 py-6">
             {post.author?.node && (
-              <div>
-                <span className="text-sm text-gray-500">By </span>
-                <Link 
-                  href={`/author/${post.author.node.slug}`}
-                  className="font-bold text-gray-900 hover:text-red-600 transition-colors"
-                >
-                  {post.author.node.name}
-                </Link>
-              </div>
+              <AuthorByline 
+                authorName={post.author.node.name}
+                authorSlug={post.author.node.slug}
+                variant="full"
+                showAvatar={true}
+                className="text-sm"
+              />
             )}
             <ShareButtons url={canonicalUrl} title={post.title} />
           </div>
@@ -331,6 +337,18 @@ export default async function FastArticlePage({ params }: PostPageProps) {
           </div>
         )}
 
+        {/* Author Card - Enhanced credibility section */}
+        {post.author?.node && (
+          <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+            <AuthorByline 
+              authorName={post.author.node.name}
+              authorSlug={post.author.node.slug}
+              variant="detailed"
+              showAvatar={true}
+            />
+          </section>
+        )}
+        
         {/* Lazy-loaded Related Posts */}
         <RelatedPostsSection slug={slug} />
       </main>
