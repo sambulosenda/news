@@ -23,6 +23,9 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
   
   // Use Yoast OpenGraph image if available, otherwise featured image
   const imageUrl = article.seo?.opengraphImage?.sourceUrl || article.featuredImage?.node?.sourceUrl;
+  
+  // Only include image if we have a real article image
+  // Don't use fallback images that Google might index incorrectly
   const images = imageUrl ? [
     {
       "@type": "ImageObject",
@@ -31,15 +34,7 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
       "height": article.featuredImage?.node?.mediaDetails?.height || 630,
       "caption": article.featuredImage?.node?.caption || article.featuredImage?.node?.altText || article.title
     }
-  ] : [
-    {
-      "@type": "ImageObject",
-      "url": "https://reportfocusnews.com/og-image.jpg",
-      "width": 1200,
-      "height": 630,
-      "caption": "Report Focus News"
-    }
-  ];
+  ] : undefined;
 
   // Build keywords from Yoast focus keywords and tags
   const focusKeyword = article.seo?.focuskw || '';
@@ -56,8 +51,8 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
     "@type": "NewsArticle",
     "headline": article.seo?.title || article.title,
     "description": description,
-    "image": images,
-    "thumbnailUrl": getSeoImageUrl(imageUrl),
+    ...(images && { "image": images }),
+    ...(imageUrl && { "thumbnailUrl": getSeoImageUrl(imageUrl) }),
     "datePublished": publishDate,
     "dateModified": modifiedDate,
     "author": {

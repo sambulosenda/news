@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import ProxyImage from '@/components/common/ProxyImage';
+import ServerCDNImage from '@/components/common/ServerCDNImage';
 import { format } from 'date-fns';
 import { WPPost } from '@/types/wordpress';
 
@@ -35,7 +35,7 @@ export default function ArticleCard({
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl}>
             <div className="relative aspect-[16/9] mb-4">
-              <ProxyImage
+              <ServerCDNImage
                 src={article.featuredImage.node.sourceUrl}
                 alt={article.featuredImage.node.altText || article.title}
                 fill
@@ -80,7 +80,7 @@ export default function ArticleCard({
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl} className="flex-shrink-0">
             <div className="relative w-32 h-32 lg:w-40 lg:h-40">
-              <ProxyImage
+              <ServerCDNImage
                 src={article.featuredImage.node.sourceUrl}
                 alt={article.featuredImage.node.altText || article.title}
                 fill
@@ -132,7 +132,7 @@ export default function ArticleCard({
         {showImage && article.featuredImage?.node && (
           <Link href={postUrl}>
             <div className="relative aspect-[3/2] mb-4">
-              <ProxyImage
+              <ServerCDNImage
                 src={article.featuredImage.node.sourceUrl}
                 alt={article.featuredImage.node.altText || article.title}
                 fill
@@ -182,7 +182,7 @@ export default function ArticleCard({
       {showImage && article.featuredImage?.node && (
         <Link href={postUrl} className="group">
           <div className="relative aspect-[16/10] mb-3 overflow-hidden bg-gray-100">
-            <ProxyImage
+            <ServerCDNImage
               src={article.featuredImage.node.sourceUrl}
               alt={article.featuredImage.node.altText || article.title}
               fill
