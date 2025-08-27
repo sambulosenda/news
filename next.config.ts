@@ -38,6 +38,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'newsreportfocus.b-cdn.net',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: '*.gravatar.com',
       },
       {
