@@ -13,8 +13,8 @@ import { WPPost, WPCategory } from '@/types/wordpress';
 import { BannerAd, SidebarAd, AdUnit } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
 
-// Aggressive revalidation for news homepage - 30 seconds
-export const revalidate = 30;
+// Aggressive revalidation for news homepage - 10 seconds for breaking news
+export const revalidate = 10;
 
 export const metadata: Metadata = {
   title: {
@@ -140,8 +140,8 @@ async function getHomePageData() {
 
 
 // Dynamic rendering for breaking news
-export const dynamic = 'force-static';
-export const fetchCache = 'default-cache';
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
 export default async function HomePage() {
   const { 

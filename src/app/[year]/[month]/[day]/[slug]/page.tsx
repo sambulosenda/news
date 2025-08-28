@@ -29,7 +29,7 @@ import PrintButton from '@/components/article/PrintButton';
 import PrintableArticle from '@/components/article/PrintableArticle';
 
 // Dynamic rendering with aggressive caching for news
-export const revalidate = 60; // 1 minute revalidation for breaking news
+export const revalidate = 10; // 10 seconds revalidation for breaking news
 export const dynamicParams = true; // Allow dynamic params for new articles
 // Removed edge runtime - causing client-side errors
 
@@ -54,7 +54,7 @@ async function getArticleData(slug: string) {
     const articleData = await fetchGraphQLCached(
       GET_POST_BY_SLUG, 
       { slug }, 
-      { ttl: 60 } // 1 minute cache for breaking news
+      { ttl: 10 } // 10 seconds cache for breaking news
     );
     
     const article = articleData?.postBy || null;

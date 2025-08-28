@@ -9,7 +9,7 @@ export async function fetchGraphQLDirect(query: string, tags?: string[]) {
       },
       body: JSON.stringify({ query }),
       next: { 
-        revalidate: 60, // Revalidate every minute for fresh news
+        revalidate: 10, // Revalidate every 10 seconds for breaking news
         tags: tags || ['posts'] // Add cache tags for on-demand revalidation
       }
     });
