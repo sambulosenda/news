@@ -1,5 +1,4 @@
 import { WPPost } from '@/types/wordpress';
-import { getImageUrl } from '@/lib/utils/image-url-helper';
 
 interface NewsArticleSchemaProps {
   article: WPPost;
