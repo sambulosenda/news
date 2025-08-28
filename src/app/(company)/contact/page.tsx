@@ -42,11 +42,11 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-semibold">WhatsApp:</p>
-                  <p className="text-gray-700">+27 XX XXX XXXX</p>
+                  <p className="text-gray-700">+44 78 6144 8433</p>
                 </div>
                 <div>
                   <p className="font-semibold">Signal:</p>
-                  <p className="text-gray-700">+27 XX XXX XXXX</p>
+                  <p className="text-gray-700">+44 78 6144 8433</p>
                 </div>
               </div>
               <p className="text-sm text-gray-600 mt-4">
@@ -75,7 +75,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-semibold">Phone:</p>
-                  <p className="text-gray-700">+27 XX XXX XXXX</p>
+                  <p className="text-gray-700">+44 78 6144 8433</p>
                 </div>
               </div>
             </div>
@@ -132,11 +132,11 @@ export default function ContactPage() {
                 <div className="space-y-2 text-gray-700">
                   <p><strong>Johannesburg Office</strong></p>
                   <p>Email: jhb@reportfocusnews.com</p>
-                  <p>Phone: +27 11 XXX XXXX</p>
+                  <p>Phone: +44 78 6144 8433</p>
                   <div className="mt-3">
                     <p><strong>Cape Town Office</strong></p>
                     <p>Email: cpt@reportfocusnews.com</p>
-                    <p>Phone: +27 21 XXX XXXX</p>
+                    <p>Phone: +44 78 6144 8433</p>
                   </div>
                 </div>
               </div>
@@ -146,11 +146,11 @@ export default function ContactPage() {
                 <div className="space-y-2 text-gray-700">
                   <p><strong>Harare Office</strong></p>
                   <p>Email: harare@reportfocusnews.com</p>
-                  <p>Phone: +263 4 XXX XXX</p>
+                  <p>Phone: +44 78 6144 8433</p>
                   <div className="mt-3">
                     <p><strong>Bulawayo Office</strong></p>
                     <p>Email: bulawayo@reportfocusnews.com</p>
-                    <p>Phone: +263 9 XXX XXX</p>
+                    <p>Phone: +44 78 6144 8433</p>
                   </div>
                 </div>
               </div>
