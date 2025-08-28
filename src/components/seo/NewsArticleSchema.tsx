@@ -17,19 +17,21 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
       : article.title);
 
   // Helper to get SEO-friendly image URLs for structured data
-  // Force minimum 1200px width for Google Discover
+  // Use original WordPress URLs for Google crawlers
+  // Google needs to be able to crawl and verify images
   const getSeoImageUrl = (url: string | undefined) => {
-    return getImageUrl(url, { 
-      context: 'seo'
-    });
+    if (!url) return '';
+    // Return original WordPress URL for schema - Google can crawl these directly
+    // CDN URLs might not be crawlable by Google
+    return url;
   };
   
   // Use Yoast OpenGraph image if available, otherwise featured image
   // Ensure minimum 1200px width for Google Discover
   const imageUrl = article.seo?.opengraphImage?.sourceUrl || article.featuredImage?.node?.sourceUrl;
   
-  // Only include image if we have a real article image
-  // Don't use fallback images that Google might index incorrectly
+  // Google News requires multiple image sizes for different contexts
+  // Provide original URL plus different aspect ratios
   const images = imageUrl ? [
     {
       "@type": "ImageObject",
@@ -37,6 +39,20 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
       "width": article.featuredImage?.node?.mediaDetails?.width || 1200,
       "height": article.featuredImage?.node?.mediaDetails?.height || 630,
       "caption": article.featuredImage?.node?.caption || article.featuredImage?.node?.altText || article.title
+    },
+    // Add 16:9 aspect ratio for Google Discover
+    {
+      "@type": "ImageObject", 
+      "url": getSeoImageUrl(imageUrl),
+      "width": 1920,
+      "height": 1080
+    },
+    // Add 1:1 aspect ratio for Google News thumbnails
+    {
+      "@type": "ImageObject",
+      "url": getSeoImageUrl(imageUrl),
+      "width": 1200,
+      "height": 1200
     }
   ] : undefined;
 
