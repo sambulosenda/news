@@ -281,7 +281,7 @@ export default async function HomePage() {
             </div>
 
             {/* Sidebar - 1/3 width */}
-            <aside className="space-y-6">
+            <aside className="space-y-8">
               {/* Sidebar Ad - Top */}
               {shouldShowAds() && (
                 <SidebarAd 
@@ -292,19 +292,19 @@ export default async function HomePage() {
               
               {/* Most Popular Section */}
               {popularPosts.length > 0 && (
-                <section>
-                  <h3 className="text-base font-bold text-gray-900 pb-2 mb-3 border-b border-gray-900">
+                <section className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-lg font-bold text-gray-900 pb-3 mb-5 border-b-2 border-[#0F6B75]">
                     Most Popular
                   </h3>
-                  <ol className="space-y-3">
+                  <ol className="space-y-4">
                     {popularPosts.slice(0, 5).map((post: WPPost, index: number) => (
-                      <li key={post.id} className="flex items-start">
-                        <span className="text-gray-400 font-light text-xl mr-3 mt-0.5">
-                          {index + 1}.
+                      <li key={post.id} className="flex items-start group">
+                        <span className="flex-shrink-0 w-8 h-8 bg-[#0F6B75] text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                          {index + 1}
                         </span>
                         <a 
                           href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
-                          className="text-sm leading-snug hover:text-gray-600 transition-colors font-medium"
+                          className="text-sm leading-relaxed hover:text-[#0F6B75] transition-colors font-medium group-hover:underline pt-1"
                         >
                           {post.title}
                         </a>
@@ -316,24 +316,24 @@ export default async function HomePage() {
 
               {/* Opinion Section */}
               {recentPosts.length > 0 && (
-                <section>
-                  <h3 className="text-base font-bold text-gray-900 pb-2 mb-3 border-b border-gray-900">
+                <section className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                  <h3 className="text-lg font-bold text-gray-900 pb-3 mb-5 border-b-2 border-gray-200">
                     Opinion & Analysis
                   </h3>
-                  <div className="space-y-3">
+                  <div className="space-y-5">
                     {recentPosts.slice(0, 4).map((post: WPPost) => (
-                      <article key={post.id}>
-                        <h4 className="text-sm font-semibold mb-1 leading-snug">
+                      <article key={post.id} className="pb-5 border-b border-gray-100 last:border-0 last:pb-0">
+                        <h4 className="text-sm font-semibold mb-2 leading-relaxed">
                           <a 
                             href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
-                            className="hover:text-gray-600 transition-colors"
+                            className="hover:text-[#0F6B75] transition-colors text-gray-900"
                           >
                             {post.title}
                           </a>
                         </h4>
                         {post.author?.node && (
-                          <p className="text-xs text-gray-500">
-                            {post.author.node.name}
+                          <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                            By {post.author.node.name}
                           </p>
                         )}
                       </article>
