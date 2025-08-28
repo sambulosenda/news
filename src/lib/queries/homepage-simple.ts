@@ -1,7 +1,7 @@
 // Simplified homepage query without fragments for debugging
 export const GET_HOMEPAGE_DATA_SIMPLE = `
   query GetHomepageData {
-    heroPost: posts(first: 1, where: { orderby: { field: DATE, order: DESC } }) {
+    heroPost: posts(first: 1, where: { categoryName: "Featured", orderby: { field: DATE, order: DESC } }) {
       edges {
         node {
           id

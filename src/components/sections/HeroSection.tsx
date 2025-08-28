@@ -46,7 +46,7 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
                           <path d="M8 5v14l11-7z"/>
                         </svg>
                         <span className="text-xs font-bold">
-                          {mainArticle.categories?.edges?.[0]?.node?.name || 'Watch'}
+                          Featured
                         </span>
                       </div>
                     </div>
