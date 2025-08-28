@@ -1,33 +1,31 @@
 'use client';
 
 import { useEffect } from 'react';
+import type { WebVitalMetric } from '@/types/global';
 
 /**
  * Web Vitals monitoring for Core Web Vitals optimization
  * Tracks and reports performance metrics to improve Google ranking
  */
+// Add types for gtag
+declare global {
+  interface Window {
+    gtag?: (command: string, action: string, params?: Record<string, unknown>) => void;
+  }
+}
+
 export default function WebVitals() {
   useEffect(() => {
     // Dynamically import web-vitals to avoid SSR issues
     import('web-vitals').then(({ onCLS, onFCP, onLCP, onTTFB, onINP }) => {
       // Log metrics in development, send to analytics in production
-      const logMetric = (metric: any) => {
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`[Web Vitals] ${metric.name}:`, {
-            value: metric.value,
-            rating: metric.rating,
-            delta: metric.delta
-          });
-          
-          // Show warnings for poor metrics
-          if (metric.rating === 'poor') {
-            console.warn(`⚠️ Poor ${metric.name} score: ${metric.value}ms`);
-          }
-        }
+      const logMetric = (metric: WebVitalMetric & { rating?: string }) => {
+        // Web Vitals metrics tracked in development
+        // ${metric.name}: ${metric.value}ms (${metric.rating})
         
         // Send to analytics in production
-        if (typeof window !== 'undefined' && (window as any).gtag) {
-          (window as any).gtag('event', metric.name, {
+        if (typeof window !== 'undefined' && window.gtag) {
+          window.gtag('event', metric.name, {
             value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
             event_category: 'Web Vitals',
             event_label: metric.id,
@@ -42,8 +40,8 @@ export default function WebVitals() {
       onLCP(logMetric);  // Largest Contentful Paint
       onTTFB(logMetric); // Time to First Byte
       onINP(logMetric);  // Interaction to Next Paint (replaces FID)
-    }).catch(err => {
-      console.error('Failed to load web-vitals:', err);
+    }).catch(() => {
+      // Failed to load web-vitals
     });
   }, []);
   

@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import { fetchGraphQLCached } from '@/lib/api/graphql-cache';
 import { GET_ALL_TAGS } from '@/lib/queries/tags';
+import { WPTag } from '@/types/wordpress';
 
 export const revalidate = 3600; // Revalidate every hour
 
 export async function GET() {
   try {
-    let allTags: any[] = [];
+    let allTags: { node: WPTag }[] = [];
     let hasNextPage = true;
     let after = null;
 
@@ -32,7 +33,7 @@ export async function GET() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   ${allTags
-    .filter(edge => edge.node.count > 0) // Only include tags with posts
+    .filter(edge => edge.node.count && edge.node.count > 0) // Only include tags with posts
     .map(edge => {
       const tag = edge.node;
       const url = `https://reportfocusnews.com/tag/${tag.slug}/`;

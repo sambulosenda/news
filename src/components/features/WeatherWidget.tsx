@@ -68,7 +68,7 @@ export default function WeatherWidget({
           url = `/api/weather?city=Johannesburg`;
         }
         
-        console.log('Fetching weather from:', url);
+        // Fetching weather data
         const res = await fetch(url);
         
         if (!res.ok) {
@@ -76,11 +76,11 @@ export default function WeatherWidget({
         }
         
         const data = await res.json();
-        console.log('Weather data received:', data);
+        // Weather data received successfully
         setWeather(data);
         setLoading(false);
-      } catch (err) {
-        console.error('Weather fetch error:', err);
+      } catch {
+        // Weather fetch error occurred
         setError('Failed to load weather data');
         setLoading(false);
       }

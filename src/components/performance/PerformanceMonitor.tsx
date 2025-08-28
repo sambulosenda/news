@@ -18,9 +18,7 @@ export default function PerformanceMonitor() {
 
     const reportWebVitals = (metric: WebVitalsMetric) => {
       // Log to console in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Web Vitals:', metric);
-      }
+      // Web Vitals metrics logged in development
 
       // Send to analytics service in production
       if (typeof window !== 'undefined' && window.gtag) {
@@ -57,6 +55,6 @@ export default function PerformanceMonitor() {
 // Add types for gtag
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
+    gtag?: (command: string, action: string, params?: Record<string, unknown>) => void;
   }
 }

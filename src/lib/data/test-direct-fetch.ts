@@ -26,14 +26,10 @@ export async function testDirectFetch() {
     });
 
     const data = await response.json();
-    console.log('Direct fetch result:', {
-      hasData: !!data.data,
-      postsCount: data.data?.posts?.edges?.length || 0,
-      firstPostTitle: data.data?.posts?.edges?.[0]?.node?.title || 'No title',
-    });
+    // Direct fetch result logged
     return data.data;
-  } catch (error) {
-    console.error('Direct fetch error:', error);
+  } catch {
+    // Direct fetch error occurred
     return null;
   }
 }

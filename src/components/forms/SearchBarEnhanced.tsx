@@ -129,7 +129,6 @@ export default function SearchBarEnhanced() {
           aria-label="Search news articles"
           aria-autocomplete="list"
           aria-controls="search-results"
-          aria-expanded={isOpen}
         />
         <button
           type="submit"
@@ -169,7 +168,7 @@ export default function SearchBarEnhanced() {
                   const category = post.categories?.edges?.[0]?.node;
 
                   return (
-                    <li key={post.id} role="option">
+                    <li key={post.id} role="option" aria-selected="false">
                       <Link
                         href={postUrl}
                         onClick={handleResultClick}

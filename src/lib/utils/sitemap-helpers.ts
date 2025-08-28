@@ -1,12 +1,13 @@
 import { fetchGraphQL } from '@/lib/api/fetch-graphql';
 import { gql } from '@apollo/client';
 
-// Query to get total post count
+// Query to get post count (not used - WordPress GraphQL doesn't support total field)
 const _GET_POST_COUNT = gql`
   query GetPostCount {
     posts {
       pageInfo {
-        total
+        hasNextPage
+        endCursor
       }
     }
   }
@@ -19,7 +20,6 @@ const GET_POSTS_PAGINATED = gql`
       pageInfo {
         hasNextPage
         endCursor
-        total
       }
       edges {
         node {

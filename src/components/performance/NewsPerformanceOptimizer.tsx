@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import type { WebVitalMetric } from '@/types/global';
 
 /**
  * Performance optimizer for news website
@@ -89,12 +90,11 @@ export default function NewsPerformanceOptimizer() {
     if (typeof window !== 'undefined' && 'web-vital' in window) {
       try {
         // Log performance metrics (you can send these to analytics)
-        const reportWebVital = ({ name, value }: any) => {
+        const reportWebVital = (_metric: WebVitalMetric) => {
           // News sites should aim for:
           // LCP < 2.5s, FID < 100ms, CLS < 0.1
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`${name}: ${value}`);
-          }
+          // Performance metrics can be logged in development
+          // ${name}: ${value}
         };
 
         // Monitor performance

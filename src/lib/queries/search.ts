@@ -67,7 +67,6 @@ export const SEARCH_WITH_FILTERS = `
       pageInfo {
         hasNextPage
         endCursor
-        total
       }
       edges {
         node {

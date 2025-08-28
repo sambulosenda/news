@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getAuthorBySlug } from '@/data/authors';
 
 interface AuthorBylineProps {
@@ -54,11 +55,13 @@ export default function AuthorByline({
       <div className={`author-byline-full ${className}`}>
         <div className="flex items-center gap-3">
           {showAvatar && authorData.avatar && (
-            <Link href={authorUrl}>
-              <img 
+            <Link href={authorUrl} className="relative w-10 h-10">
+              <Image 
                 src={authorData.avatar.url} 
                 alt={authorData.avatar.alt || authorData.name}
-                className="w-10 h-10 rounded-full object-cover"
+                width={40}
+                height={40}
+                className="rounded-full object-cover"
               />
             </Link>
           )}
@@ -93,11 +96,13 @@ export default function AuthorByline({
       <div className={`author-card bg-gray-50 p-4 rounded-lg ${className}`}>
         <div className="flex items-start gap-4">
           {showAvatar && authorData.avatar && (
-            <Link href={authorUrl}>
-              <img 
+            <Link href={authorUrl} className="relative w-16 h-16">
+              <Image 
                 src={authorData.avatar.url} 
                 alt={authorData.avatar.alt || authorData.name}
-                className="w-16 h-16 rounded-full object-cover"
+                width={64}
+                height={64}
+                className="rounded-full object-cover"
               />
             </Link>
           )}

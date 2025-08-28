@@ -44,7 +44,7 @@ export default function ProxyImage({
       setIsLoading(true);
       setHasError(false);
     }
-  }, [src]);
+  }, [src, imgSrc]);
 
   const handleError = () => {
     setImgSrc(FALLBACK_IMAGE);

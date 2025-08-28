@@ -3,6 +3,13 @@
 import React, { useEffect } from 'react';
 import Script from 'next/script';
 
+// Define the global adsbygoogle type
+declare global {
+  interface Window {
+    adsbygoogle: unknown[];
+  }
+}
+
 interface GoogleAdsenseProps {
   pId: string; // Publisher ID (e.g., "ca-pub-xxxxxxxxxx")
 }
@@ -88,7 +95,7 @@ export function AdUnit({
     if (!isTestMode) {
       try {
         // Push the ad to AdSense
-        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
       } catch (error) {
         console.error('AdSense error:', error);
       }
@@ -106,7 +113,7 @@ export function AdUnit({
     );
   }
 
-  const insProps: any = {
+  const insProps: React.InsHTMLAttributes<HTMLElement> & { [key: string]: unknown } = {
     className: `adsbygoogle ${className}`,
     style,
     'data-ad-client': dataAdClient,
@@ -125,7 +132,7 @@ export function AdUnit({
 
 // Pre-configured ad components for different placements
 export function InArticleAd({ dataAdClient, dataAdSlot }: Pick<AdUnitProps, 'dataAdClient' | 'dataAdSlot'>) {
-  const insProps: any = {
+  const insProps: React.InsHTMLAttributes<HTMLElement> & { [key: string]: unknown } = {
     className: 'adsbygoogle',
     style: { display: 'block', textAlign: 'center' },
     'data-ad-layout': 'in-article',
