@@ -12,6 +12,8 @@ import OrganizationSchema from '@/components/seo/OrganizationSchema';
 import { WPPost, WPCategory } from '@/types/wordpress';
 import { BannerAd, SidebarAd, AdUnit } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
+import ServerProxyImage from '@/components/common/ServerProxyImage';
+import { formatDistanceToNow } from 'date-fns';
 
 // Aggressive revalidation for news homepage - 10 seconds for breaking news
 export const revalidate = 10;
@@ -290,52 +292,80 @@ export default async function HomePage() {
                 />
               )}
               
-              {/* Most Popular Section */}
+              {/* Popular Reads Section */}
               {popularPosts.length > 0 && (
-                <section className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-lg font-bold text-gray-900 pb-3 mb-5 border-b-2 border-[#0F6B75]">
-                    Most Popular
-                  </h3>
-                  <ol className="space-y-4">
-                    {popularPosts.slice(0, 5).map((post: WPPost, index: number) => (
-                      <li key={post.id} className="flex items-start group">
-                        <span className="flex-shrink-0 w-8 h-8 bg-[#0F6B75] text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
-                          {index + 1}
-                        </span>
+                <section className="bg-white">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                    Popular Reads
+                  </h2>
+                  <div className="space-y-6">
+                    {popularPosts.slice(0, 4).map((post: WPPost) => (
+                      <article key={post.id} className="group">
                         <a 
                           href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
-                          className="text-sm leading-relaxed hover:text-[#0F6B75] transition-colors font-medium group-hover:underline pt-1"
+                          className="flex gap-4"
                         >
-                          {post.title}
+                          {/* Thumbnail Image */}
+                          <div className="flex-shrink-0 w-20 h-20 overflow-hidden rounded-lg bg-gray-100">
+                            {post.featuredImage?.node?.sourceUrl ? (
+                              <ServerProxyImage
+                                src={post.featuredImage.node.sourceUrl}
+                                alt={post.featuredImage.node.altText || post.title}
+                                width={80}
+                                height={80}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-[#0F6B75] to-[#0a4a52] flex items-center justify-center">
+                                <span className="text-white text-xs font-bold">{post.title.charAt(0)}</span>
+                              </div>
+                            )}
+                          </div>
+                          
+                          {/* Article Content */}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-base font-bold text-gray-900 leading-tight mb-2 group-hover:text-[#0F6B75] transition-colors line-clamp-3">
+                              {post.title}
+                            </h3>
+                            <time className="text-sm text-gray-500">
+                              {formatDistanceToNow(new Date(post.date), { addSuffix: true })}
+                            </time>
+                          </div>
                         </a>
-                      </li>
+                      </article>
                     ))}
-                  </ol>
+                  </div>
                 </section>
               )}
 
-              {/* Opinion Section */}
+              {/* Latest Updates Section */}
               {recentPosts.length > 0 && (
-                <section className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-                  <h3 className="text-lg font-bold text-gray-900 pb-3 mb-5 border-b-2 border-gray-200">
-                    Opinion & Analysis
-                  </h3>
-                  <div className="space-y-5">
-                    {recentPosts.slice(0, 4).map((post: WPPost) => (
-                      <article key={post.id} className="pb-5 border-b border-gray-100 last:border-0 last:pb-0">
-                        <h4 className="text-sm font-semibold mb-2 leading-relaxed">
-                          <a 
-                            href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
-                            className="hover:text-[#0F6B75] transition-colors text-gray-900"
-                          >
+                <section className="bg-white mt-8">
+                  <h2 className="text-xl font-bold text-gray-900 mb-5 pb-3 border-b border-gray-200">
+                    Latest Updates
+                  </h2>
+                  <div className="space-y-4">
+                    {recentPosts.slice(4, 8).map((post: WPPost) => (
+                      <article key={post.id} className="group">
+                        <a 
+                          href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
+                          className="block"
+                        >
+                          <h3 className="text-sm font-semibold text-gray-900 leading-tight mb-1 group-hover:text-[#0F6B75] transition-colors">
                             {post.title}
-                          </a>
-                        </h4>
-                        {post.author?.node && (
-                          <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
-                            By {post.author.node.name}
-                          </p>
-                        )}
+                          </h3>
+                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <time>
+                              {formatDistanceToNow(new Date(post.date), { addSuffix: true })}
+                            </time>
+                            {post.author?.node && (
+                              <>
+                                <span>•</span>
+                                <span>{post.author.node.name}</span>
+                              </>
+                            )}
+                          </div>
+                        </a>
                       </article>
                     ))}
                   </div>
