@@ -303,7 +303,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
           </div>
 
           {/* Enhanced Author section with credentials */}
-          <div className="flex flex-wrap items-center justify-between gap-4 py-6">
+          <div className="flex flex-col gap-4 py-6">
             {post.author?.node && (
               <AuthorByline 
                 authorName={post.author.node.name}
@@ -313,9 +313,11 @@ export default async function FastArticlePage({ params }: PostPageProps) {
                 className="text-sm"
               />
             )}
-            <div className="flex items-center gap-2 no-print">
-              <ShareButtons url={canonicalUrl} title={post.title} />
-              <PrintButton articleTitle={post.title} />
+            <div className="flex items-center justify-between gap-2 no-print">
+              <div className="overflow-x-auto flex-1">
+                <ShareButtons url={canonicalUrl} title={post.title} />
+              </div>
+              <PrintButton articleTitle={post.title} className="flex-shrink-0" />
             </div>
           </div>
 

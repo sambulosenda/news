@@ -23,14 +23,14 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
   };
 
   return (
-    <div className="flex items-center gap-4">
-      <span className="font-medium text-gray-700">Share:</span>
+    <div className="flex items-center gap-2 sm:gap-4">
+      <span className="font-medium text-gray-700 hidden sm:inline">Share:</span>
       <div className="flex gap-2">
         <a
           href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+          className="p-1.5 sm:p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
           aria-label="Share on Twitter"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -42,7 +42,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
           href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+          className="p-1.5 sm:p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
           aria-label="Share on Facebook"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
           href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+          className="p-1.5 sm:p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
           aria-label="Share on LinkedIn"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -66,7 +66,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
           href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+          className="p-1.5 sm:p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
           aria-label="Share on WhatsApp"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
         
         <a
           href={`mailto:?subject=${encodedTitle}&body=${encodedUrl}`}
-          className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+          className="p-1.5 sm:p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
           aria-label="Share via Email"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -86,15 +86,15 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
         
         <button
           onClick={handleCopy}
-          className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors relative"
+          className="p-1.5 sm:p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors relative"
           aria-label="Copy link"
         >
           {copied ? (
-            <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           ) : (
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
             </svg>
           )}

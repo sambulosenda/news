@@ -47,6 +47,7 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [marketData, setMarketData] = useState<ReturnType<typeof formatMarketData> | null>(null);
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchModalRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -420,87 +421,177 @@ export default function HeaderNYT({ categories = [], breakingNews }: HeaderProps
           </div>
         )}
 
-        {/* Mobile menu */}
+        {/* Mobile menu - Professional & Compact */}
         {mobileMenuOpen && (
           <>
             <div 
-              className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden animate-fade-in"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden animate-fade-in"
               onClick={() => setMobileMenuOpen(false)}
               aria-hidden="true"
             />
             
-            <div className="fixed left-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white z-50 lg:hidden overflow-y-auto animate-slide-in-left">
-              <div className="sticky top-0 bg-white border-b border-gray-200 p-4">
-                <div className="flex items-center justify-between">
-                  <h2 className="font-serif text-xl font-bold">Report Focus News</h2>
+            <div className="fixed left-0 top-0 bottom-0 w-72 max-w-[75vw] bg-white z-50 lg:hidden shadow-2xl animate-slide-in-left">
+              {/* Header - Compact & Professional */}
+              <div className="sticky top-0 bg-white border-b border-gray-200 backdrop-blur-lg bg-white/95 z-10">
+                <div className="flex items-center justify-between p-4">
+                  <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+                    <h2 className="font-serif text-lg font-bold tracking-tight">Report Focus News</h2>
+                  </Link>
                   <button
                     onClick={() => setMobileMenuOpen(false)}
-                    className="p-3 hover:bg-gray-100 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                     aria-label="Close menu"
                   >
-                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
               </div>
               
-              <nav className="p-6" aria-label="Mobile navigation">
-                <div className="space-y-2">
-                  <Link
-                    href="/"
-                    className="block px-6 py-4 text-base font-semibold text-gray-900 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 min-h-[48px] flex items-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Home
-                  </Link>
-                  
-                  {navigation.map((section) => {
-                    const hasChildren = section.children && section.children.length > 0;
-                    
-                    return (
-                      <div key={section.slug} className="space-y-1">
-                        <Link
-                          href={`/news/${section.slug}/`}
-                          className={`block px-6 py-4 text-base font-medium hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 min-h-[48px] flex items-center ${section.featured && section.slug !== 'breaking-news' ? 'text-gray-900' : 'text-gray-600'}`}
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {section.name}
-                        </Link>
-                        {hasChildren && (
-                          <div className="ml-4 space-y-1 border-l-2 border-gray-100 pl-4">
-                            {section.children?.map((child) => (
-                              <Link
-                                key={child.slug}
-                                href={`/news/${child.slug}/`}
-                                className="block px-5 py-3 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg transition-all duration-200 min-h-[44px] flex items-center"
-                                onClick={() => setMobileMenuOpen(false)}
-                              >
-                                {child.name}
-                              </Link>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+              {/* Navigation - Compact with Accordion Style */}
+              <nav className="overflow-y-auto h-[calc(100vh-72px)]" aria-label="Mobile navigation">
+                {/* Quick Links - Compact Grid */}
+                <div className="p-4 border-b border-gray-100">
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link
+                      href="/"
+                      className="flex items-center justify-center px-3 py-2.5 bg-gray-50 hover:bg-red-50 hover:text-red-700 rounded-lg text-sm font-semibold transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                      </svg>
+                      Home
+                    </Link>
+                    <Link
+                      href="/search"
+                      className="flex items-center justify-center px-3 py-2.5 bg-gray-50 hover:bg-red-50 hover:text-red-700 rounded-lg text-sm font-semibold transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                      Search
+                    </Link>
+                  </div>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-gray-200 space-y-2">
-                  <Link
-                    href="/weather"
-                    className="block px-6 py-4 text-base font-medium text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 min-h-[48px] flex items-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Weather
-                  </Link>
-                  <Link
-                    href="/search"
-                    className="block px-6 py-4 text-base font-medium text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 min-h-[48px] flex items-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Search
-                  </Link>
+                {/* Main Navigation - Compact Accordion */}
+                <div className="px-4 py-3">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Categories</h3>
+                  <div className="space-y-0.5">
+                    {navigation.map((section) => {
+                      const hasChildren = section.children && section.children.length > 0;
+                      const isExpanded = expandedSections.has(section.slug);
+                      
+                      return (
+                        <div key={section.slug}>
+                          <div className="flex items-stretch">
+                            <Link
+                              href={`/news/${section.slug}/`}
+                              className={`flex-1 px-3 py-2.5 text-sm font-medium hover:bg-gray-50 rounded-l-lg transition-colors flex items-center ${
+                                section.featured && section.slug !== 'breaking-news' 
+                                  ? 'text-gray-900 font-semibold' 
+                                  : 'text-gray-700'
+                              }`}
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              {section.name}
+                            </Link>
+                            {hasChildren && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setExpandedSections(prev => {
+                                    const newSet = new Set(prev);
+                                    if (newSet.has(section.slug)) {
+                                      newSet.delete(section.slug);
+                                    } else {
+                                      newSet.add(section.slug);
+                                    }
+                                    return newSet;
+                                  });
+                                }}
+                                className="px-3 py-2.5 hover:bg-gray-50 rounded-r-lg border-l border-gray-200 transition-colors"
+                                aria-label={`Toggle ${section.name} submenu`}
+                                aria-expanded={isExpanded}
+                              >
+                                <svg 
+                                  className={`w-3.5 h-3.5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} 
+                                  fill="none" 
+                                  viewBox="0 0 24 24" 
+                                  stroke="currentColor"
+                                >
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                              </button>
+                            )}
+                          </div>
+                          
+                          {/* Collapsible Children */}
+                          {hasChildren && isExpanded && (
+                            <div className="ml-6 mt-1 space-y-0.5 animate-accordion-down">
+                              {section.children?.map((child) => (
+                                <Link
+                                  key={child.slug}
+                                  href={`/news/${child.slug}/`}
+                                  className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-red-700 rounded-md transition-colors"
+                                  onClick={() => setMobileMenuOpen(false)}
+                                >
+                                  {child.name}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Additional Links - Compact */}
+                <div className="p-4 border-t border-gray-100">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">More</h3>
+                  <div className="space-y-1">
+                    <Link
+                      href="/weather"
+                      className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-700 rounded-lg transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <svg className="w-4 h-4 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                      </svg>
+                      Weather
+                    </Link>
+                    {marketData && (
+                      <div className="px-3 py-2 text-sm text-gray-600">
+                        <div className="flex justify-between items-center">
+                          <span className="font-medium">Markets</span>
+                          <span className="text-xs">
+                            JSE <span className={marketData.jse.color}>{marketData.jse.percent}</span>
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Footer Info - Ultra Compact */}
+                <div className="p-4 bg-gray-50 border-t border-gray-200">
+                  <div className="text-xs text-gray-500 space-y-1">
+                    {formattedDate && (
+                      <div suppressHydrationWarning>{formattedDate}</div>
+                    )}
+                    <div className="flex gap-3">
+                      {johannesburgTime && (
+                        <span suppressHydrationWarning>JHB {johannesburgTime}</span>
+                      )}
+                      {harareTime && (
+                        <span suppressHydrationWarning>HRE {harareTime}</span>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </nav>
             </div>
