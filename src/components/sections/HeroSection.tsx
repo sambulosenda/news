@@ -38,6 +38,7 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
                       alt={mainArticle.featuredImage.node.altText || mainArticle.title}
                       fill
                       className="object-cover"
+                      priority
                     />
                     {/* Play button overlay */}
                     <div className="absolute bottom-4 left-4">

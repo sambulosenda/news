@@ -10,6 +10,7 @@ interface ProxyImageProps {
   width?: number;
   height?: number;
   fill?: boolean;
+  priority?: boolean;
 }
 
 const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2U1ZTdlYiIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjIwMCIgeT0iMTUwIiBzdHlsZT0iZmlsbDojOWNhM2FmO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjIwcHg7Zm9udC1mYW1pbHk6QXJpYWwsc2Fucy1zZXJpZiI+SW1hZ2UgTm90IEF2YWlsYWJsZTwvdGV4dD48L3N2Zz4=';
@@ -25,6 +26,7 @@ export default function ProxyImage({
   width,
   height,
   fill = false,
+  priority = false,
 }: ProxyImageProps) {
   // Use CDN URL instead of proxy
   const getOptimizedUrl = (originalSrc: string) => {
@@ -71,7 +73,7 @@ export default function ProxyImage({
           } transition-opacity duration-300`}
           onError={handleError}
           onLoad={handleLoad}
-          loading="lazy"
+          loading={priority ? "eager" : "lazy"}
         />
         {hasError && (
           <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
@@ -100,7 +102,7 @@ export default function ProxyImage({
         } transition-opacity duration-300`}
         onError={handleError}
         onLoad={handleLoad}
-        loading="lazy"
+        loading={priority ? "eager" : "lazy"}
       />
       {hasError && (
         <div

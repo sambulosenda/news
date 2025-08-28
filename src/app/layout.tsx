@@ -102,6 +102,8 @@ export default function RootLayout({
         {/* Critical resource preloading for better performance */}
         <link rel="preconnect" href="https://backend.reportfocusnews.com" />
         <link rel="dns-prefetch" href="https://backend.reportfocusnews.com" />
+        <link rel="preconnect" href="https://newsreportfocus.b-cdn.net" />
+        <link rel="dns-prefetch" href="https://newsreportfocus.b-cdn.net" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
