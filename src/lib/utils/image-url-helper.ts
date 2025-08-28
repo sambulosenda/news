@@ -30,7 +30,7 @@ export function getImageUrl(
     return fallback;
   }
 
-  // Use CDN for all contexts - better for SEO and performance
+  // Use CDN for all contexts - CDN is now properly configured
   // CDN URLs are accessible by Google crawlers and provide better loading times
   return getCDNImageUrl(originalUrl);
 }
