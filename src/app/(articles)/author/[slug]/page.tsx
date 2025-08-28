@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { fetchGraphQL } from '@/lib/api/fetch-graphql';
 import { GET_POSTS_BY_AUTHOR_SLUG } from '@/lib/queries/posts';
 import HeaderWrapper from '@/components/layout/HeaderWrapper';
@@ -216,11 +217,15 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                 {/* Avatar */}
                 <div className="flex-shrink-0">
                   {author.avatar ? (
-                    <img 
-                      src={author.avatar} 
-                      alt={author.name}
-                      className="w-32 h-32 rounded-full object-cover"
-                    />
+                    <div className="relative w-32 h-32">
+                      <Image 
+                        src={author.avatar} 
+                        alt={author.name}
+                        width={128}
+                        height={128}
+                        className="rounded-full object-cover"
+                      />
+                    </div>
                   ) : (
                     <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
                       <span className="text-4xl font-bold text-white">
