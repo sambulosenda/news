@@ -51,6 +51,7 @@ module.exports = {
         'slide-up': 'slideUp 0.3s ease-out',
         'slide-down': 'slideDown 0.3s ease-out',
         'slide-in-left': 'slideInLeft 0.3s ease-out',
+        'accordion-down': 'accordionDown 0.2s ease-out',
       },
       keyframes: {
         fadeIn: {
@@ -72,6 +73,10 @@ module.exports = {
         slideInLeft: {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0)' },
+        },
+        accordionDown: {
+          '0%': { height: '0', opacity: '0' },
+          '100%': { height: 'auto', opacity: '1' },
         },
       },
     },
