@@ -9,7 +9,8 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync:algolia": "tsx scripts/sync-algolia.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.13.9",
@@ -19,6 +20,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@types/lodash": "^4.17.20",
     "@vercel/speed-insights": "^1.2.0",
+    "algoliasearch": "^5.36.0",
     "critters": "^0.0.23",
     "date-fns": "^4.1.0",
     "graphql": "^16.11.0",
@@ -28,6 +30,8 @@
     "next": "15.4.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-instantsearch": "^7.16.2",
+    "react-instantsearch-hooks-web": "^6.47.3",
     "reading-time": "^1.5.0",
     "web-vitals": "^5.1.0"
   },
@@ -38,10 +42,12 @@
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
     "cross-fetch": "^4.1.0",
+    "dotenv": "^17.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.20.5",
     "typescript": "^5"
   }
 }

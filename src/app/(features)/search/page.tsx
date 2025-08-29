@@ -1,11 +1,7 @@
-import { fetchGraphQL } from '@/lib/api/fetch-graphql';
-import { SEARCH_POSTS } from '@/lib/queries/posts';
 import HeaderWrapper from '@/components/layout/HeaderWrapper';
 import Footer from '@/components/layout/Footer';
-import ArticleCard from '@/components/cards/ArticleCard';
-import SearchBar from '@/components/forms/SearchBar';
+import SearchResults from '@/components/search/SearchResults';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
-import { WPPost } from '@/types/wordpress';
 import { Metadata } from 'next';
 
 interface SearchPageProps {
@@ -14,23 +10,9 @@ interface SearchPageProps {
   }>;
 }
 
-async function searchPosts(query: string) {
-  if (!query || query.trim().length < 2) {
-    return [];
-  }
-
-  const data = await fetchGraphQL(SEARCH_POSTS, { 
-    search: query,
-    first: 30 
-  });
-
-  return data?.posts?.edges?.map((e: { node: WPPost }) => e.node) || [];
-}
-
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
   const query = params.q || '';
-  const posts = await searchPosts(query);
 
   const breadcrumbItems = [
     { name: 'Home', url: 'https://reportfocusnews.com' },
@@ -42,67 +24,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <BreadcrumbSchema items={breadcrumbItems} />
       <HeaderWrapper />
       
-      <main className="container-wide py-8 min-h-screen">
-        {/* Search Header */}
-        <div className="mb-8">
-          <h1 className="font-serif text-3xl md:text-4xl font-bold mb-6">
+      <main className="bg-gray-50 min-h-screen">
+        <div className="container-wide py-8">
+          <h1 className="font-serif text-3xl md:text-4xl font-bold mb-2">
             Search Report Focus News
           </h1>
-          <SearchBar initialQuery={query} />
+          <p className="text-gray-600 mb-6">
+            Find the latest news from South Africa, Zimbabwe, and around the world
+          </p>
         </div>
-
-        {/* Search Results */}
-        {query && (
-          <div className="mb-4">
-            <p className="text-gray-600">
-              {posts.length > 0 
-                ? `Found ${posts.length} result${posts.length === 1 ? '' : 's'} for "${query}"`
-                : `No results found for "${query}"`
-              }
-            </p>
-          </div>
-        )}
-
-        {/* Results Grid */}
-        {posts.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 border-t border-gray-200 pt-6">
-            {posts.map((post: WPPost) => (
-              <div key={post.id} className="pb-6 border-b border-gray-200">
-                <ArticleCard
-                  article={post}
-                  variant="horizontal"
-                  showImage={true}
-                  showExcerpt={true}
-                  showAuthor={true}
-                  showCategory={true}
-                />
-              </div>
-            ))}
-          </div>
-        ) : query ? (
-          <div className="text-center py-12">
-            <p className="text-gray-600 mb-4">
-              Try adjusting your search terms or browse our categories:
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {['Politics', 'Business', 'Technology', 'World', 'Sports'].map((cat) => (
-                <a
-                  key={cat}
-                  href={`/category/${cat.toLowerCase()}`}
-                  className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
-                >
-                  {cat}
-                </a>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-600">
-              Enter a search term to find articles
-            </p>
-          </div>
-        )}
+        
+        <SearchResults initialQuery={query} />
       </main>
 
       <Footer />
