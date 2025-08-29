@@ -7,6 +7,7 @@ import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import SearchResultsSchema from '@/components/seo/SearchResultsSchema';
 import { WPPost } from '@/types/wordpress';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 interface SearchPageProps {
   searchParams: Promise<{
@@ -20,14 +21,25 @@ async function searchPosts(query: string) {
     return [];
   }
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
   try {
     const data = await fetchGraphQL(SEARCH_POSTS, { 
       search: query,
       first: 50  // Get up to 50 results
-    });
+    }, {}, controller.signal);
 
+    clearTimeout(timeoutId);
     return data?.posts?.edges?.map((e: { node: WPPost }) => e.node) || [];
   } catch (error) {
+    clearTimeout(timeoutId);
+    
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.error('Search request timed out');
+      return [];
+    }
+    
     console.error('Search error:', error);
     return [];
   }
@@ -36,7 +48,7 @@ async function searchPosts(query: string) {
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
   const query = params.q || '';
-  const currentPage = params.page || '1';
+  const _currentPage = params.page || '1'; // Prefix with _ to indicate intentionally unused
   const posts = await searchPosts(query);
 
   const breadcrumbItems = [
@@ -124,13 +136,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   'Entertainment',
                   'Breaking News'
                 ].map((topic) => (
-                  <a 
+                  <Link
                     key={topic}
                     href={`/search?q=${encodeURIComponent(topic)}`}
                     className="text-primary hover:underline"
                   >
                     {topic}
-                  </a>
+                  </Link>
                 ))}
               </div>
               

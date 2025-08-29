@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 import { Search, Loader2, Calendar, User, Clock, AlertCircle } from 'lucide-react';
 import { WPPost } from '@/types/wordpress';
+import { useRouter } from 'next/navigation';
 
 interface SimpleSearchProps {
   initialQuery?: string;
@@ -20,6 +21,7 @@ export default function SimpleSearch({
 }: SimpleSearchProps) {
   const [query, setQuery] = useState(initialQuery);
   const [localLoading, setLocalLoading] = useState(false);
+  const router = useRouter();
 
   // Calculate reading time
   const calculateReadingTime = (content: string) => {
@@ -42,21 +44,29 @@ export default function SimpleSearch({
     if (!searchQuery || !text) return text;
     
     const terms = searchQuery.split(' ').filter(term => term.length > 2);
-    let highlightedText = text;
+    if (terms.length === 0) return text;
     
-    terms.forEach(term => {
-      const regex = new RegExp(`(${term})`, 'gi');
-      highlightedText = highlightedText.replace(regex, '<mark class="bg-yellow-200">$1</mark>');
+    // Create regex for all terms
+    const regex = new RegExp(`(${terms.map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+    
+    // Split text and wrap matches
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) => {
+      const isMatch = terms.some(term => part.toLowerCase() === term.toLowerCase());
+      return isMatch ? (
+        <mark key={index} className="bg-yellow-200">{part}</mark>
+      ) : (
+        <span key={index}>{part}</span>
+      );
     });
-    
-    return highlightedText;
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
       setLocalLoading(true);
-      window.location.href = `/search?q=${encodeURIComponent(query.trim())}`;
+      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     }
   };
 
@@ -148,23 +158,17 @@ export default function SimpleSearch({
                   
                   {/* Article Content */}
                   <div className="flex-1">
-                    <h2 
-                      className="text-xl font-bold text-gray-900 group-hover:text-primary mb-2 line-clamp-2"
-                      dangerouslySetInnerHTML={{ 
-                        __html: highlightSearchTerms(post.title, initialQuery) 
-                      }}
-                    />
+                    <h2 className="text-xl font-bold text-gray-900 group-hover:text-primary mb-2 line-clamp-2">
+                      {highlightSearchTerms(post.title, initialQuery)}
+                    </h2>
                     
                     {post.excerpt && (
-                      <p 
-                        className="text-gray-600 line-clamp-2 mb-3"
-                        dangerouslySetInnerHTML={{ 
-                          __html: highlightSearchTerms(
-                            post.excerpt.replace(/<[^>]*>/g, ''), 
-                            initialQuery
-                          ) 
-                        }}
-                      />
+                      <p className="text-gray-600 line-clamp-2 mb-3">
+                        {highlightSearchTerms(
+                          post.excerpt.replace(/<[^>]*>/g, ''), 
+                          initialQuery
+                        )}
+                      </p>
                     )}
                     
                     {/* Article Metadata */}
@@ -250,7 +254,7 @@ export default function SimpleSearch({
                   key={term}
                   onClick={() => {
                     setQuery(term);
-                    window.location.href = `/search?q=${encodeURIComponent(term)}`;
+                    router.push(`/search?q=${encodeURIComponent(term)}`);
                   }}
                   className="px-4 py-2 bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors"
                 >

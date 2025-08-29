@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import ArticleCard from '@/components/cards/ArticleCard';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { WPPost } from '@/types/wordpress';
+import { notFound } from 'next/navigation';
 
 // Define popular topics that deserve their own pages
 const POPULAR_TOPICS = {
@@ -48,16 +49,44 @@ interface TopicPageProps {
 }
 
 async function getTopicPosts(query: string) {
-  try {
-    const data = await fetchGraphQL(SEARCH_POSTS, { 
-      search: query,
-      first: 30
-    });
-    return data?.posts?.edges?.map((e: { node: WPPost }) => e.node) || [];
-  } catch (error) {
-    console.error('Error fetching topic posts:', error);
-    return [];
+  const TIMEOUT_MS = 5000;
+  const MAX_RETRIES = 2;
+  
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+    try {
+      const data = await fetchGraphQL(SEARCH_POSTS, { 
+        search: query,
+        first: 30
+      }, {}, controller.signal);
+      
+      clearTimeout(timeoutId);
+      return data?.posts?.edges?.map((e: { node: WPPost }) => e.node) || [];
+    } catch (error) {
+      clearTimeout(timeoutId);
+      
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.error(`Topic posts request timed out (attempt ${attempt + 1}/${MAX_RETRIES + 1})`);
+      } else {
+        console.error(`Error fetching topic posts (attempt ${attempt + 1}/${MAX_RETRIES + 1}):`, error);
+      }
+      
+      // If this was the last attempt, return empty array
+      if (attempt === MAX_RETRIES) {
+        console.error('All retry attempts failed for topic posts');
+        return [];
+      }
+      
+      // Exponential backoff: wait 1s, 2s, 4s, etc.
+      const backoffMs = Math.pow(2, attempt) * 1000;
+      console.error(`Retrying topic posts fetch in ${backoffMs}ms...`);
+      await new Promise(resolve => setTimeout(resolve, backoffMs));
+    }
   }
+  
+  return [];
 }
 
 export default async function TopicPage({ params }: TopicPageProps) {
@@ -65,7 +94,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
   const topicData = POPULAR_TOPICS[topic as keyof typeof POPULAR_TOPICS];
   
   if (!topicData) {
-    return <div>Topic not found</div>;
+    notFound();
   }
   
   const posts = await getTopicPosts(topicData.query);

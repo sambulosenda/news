@@ -29,20 +29,11 @@ export default function SearchResultsSchema({
       "name": `Search results for "${query}"`,
       "description": `Found ${resultsCount} news articles for "${query}" on Report Focus News`,
       "numberOfItems": resultsCount,
-      "itemListElement": results.map((result, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": {
+    "itemListElement": results.map((result, index) => {
+        const article: Record<string, unknown> = {
           "@type": "NewsArticle",
           "headline": result.title,
           "url": result.url,
-          "description": result.description,
-          "datePublished": result.datePublished,
-          "author": result.author ? {
-            "@type": "Person",
-            "name": result.author
-          } : undefined,
-          "image": result.image,
           "publisher": {
             "@type": "Organization",
             "name": "Report Focus News",
@@ -51,8 +42,31 @@ export default function SearchResultsSchema({
               "url": "https://reportfocusnews.com/logo.png"
             }
           }
+        };
+
+        // Conditionally add properties only if they exist
+        if (result.description) {
+          article.description = result.description;
         }
-      }))
+        if (result.datePublished) {
+          article.datePublished = result.datePublished;
+        }
+        if (result.image) {
+          article.image = result.image;
+        }
+        if (result.author) {
+          article.author = {
+            "@type": "Person",
+            "name": result.author
+          };
+        }
+
+        return {
+          "@type": "ListItem",
+          "position": index + 1,
+          "item": article
+        };
+      }).filter(item => item.item), // Filter out any null/undefined entries
     },
     "breadcrumb": {
       "@type": "BreadcrumbList",
