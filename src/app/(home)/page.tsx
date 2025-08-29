@@ -295,39 +295,41 @@ export default async function HomePage() {
               {/* Popular Reads Section */}
               {popularPosts.length > 0 && (
                 <section className="bg-white">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-5 pb-3 border-b-2 border-teal-600">
                     Popular Reads
                   </h2>
-                  <div className="space-y-6">
+                  <div className="space-y-5">
                     {popularPosts.slice(0, 4).map((post: WPPost) => (
-                      <article key={post.id} className="group">
-                        <a 
-                          href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
-                          className="flex gap-4"
-                        >
-                          {/* Thumbnail Image */}
-                          <div className="flex-shrink-0 w-20 h-20 overflow-hidden rounded-lg bg-gray-100">
-                            {post.featuredImage?.node?.sourceUrl ? (
-                              <ServerProxyImage
-                                src={post.featuredImage.node.sourceUrl}
-                                alt={post.featuredImage.node.altText || post.title}
-                                width={80}
-                                height={80}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-[#0F6B75] to-[#0a4a52] flex items-center justify-center">
-                                <span className="text-white text-xs font-bold">{post.title.charAt(0)}</span>
-                              </div>
-                            )}
-                          </div>
+                        <article key={post.id} className="group">
+                          <a 
+                            href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
+                            className="flex gap-4 items-center"
+                          >
+                            {/* Thumbnail Image */}
+                            <div className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
+                              {post.featuredImage?.node?.sourceUrl ? (
+                                <ServerProxyImage
+                                  src={post.featuredImage.node.sourceUrl}
+                                  alt={post.featuredImage.node.altText || post.title}
+                                  width={96}
+                                  height={96}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                  <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                  </svg>
+                                </div>
+                              )}
+                            </div>
                           
                           {/* Article Content */}
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-base font-bold text-gray-900 leading-tight mb-2 group-hover:text-[#0F6B75] transition-colors line-clamp-3">
+                            <h3 className="text-sm font-semibold text-gray-900 leading-tight mb-2 group-hover:text-teal-700 transition-colors line-clamp-2">
                               {post.title}
                             </h3>
-                            <time className="text-sm text-gray-500">
+                            <time className="text-xs text-gray-500 font-normal">
                               {formatDistanceToNow(new Date(post.date), { addSuffix: true })}
                             </time>
                           </div>
@@ -340,18 +342,18 @@ export default async function HomePage() {
 
               {/* Latest Updates Section */}
               {recentPosts.length > 0 && (
-                <section className="bg-white mt-8">
-                  <h2 className="text-xl font-bold text-gray-900 mb-5 pb-3 border-b border-gray-200">
+                <section className="bg-white">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-300">
                     Latest Updates
                   </h2>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {recentPosts.slice(4, 8).map((post: WPPost) => (
-                      <article key={post.id} className="group">
+                      <article key={post.id} className="group pb-3 border-b border-gray-100 last:border-0 last:pb-0">
                         <a 
                           href={`/${new Date(post.date).getFullYear()}/${String(new Date(post.date).getMonth() + 1).padStart(2, '0')}/${String(new Date(post.date).getDate()).padStart(2, '0')}/${post.slug}/`}
                           className="block"
                         >
-                          <h3 className="text-sm font-semibold text-gray-900 leading-tight mb-1 group-hover:text-[#0F6B75] transition-colors">
+                          <h3 className="text-sm font-medium text-gray-900 leading-snug mb-1 group-hover:text-gray-600 transition-colors">
                             {post.title}
                           </h3>
                           <div className="flex items-center gap-2 text-xs text-gray-500">

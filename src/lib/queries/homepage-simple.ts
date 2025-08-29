@@ -198,6 +198,13 @@ export const GET_HOMEPAGE_DATA_SIMPLE = `
           slug
           title
           date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
         }
       }
     }
