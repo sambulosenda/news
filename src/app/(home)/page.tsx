@@ -113,8 +113,16 @@ async function getHomePageData() {
   const categories = homepageData?.categories?.edges?.map((e: CategoryEdge) => e.node) || [];
   const popularPosts = homepageData?.popularPosts?.edges?.map((e: PostEdge) => e.node) || [];
   
-  // Category sections
+  // Category sections - expanded to include all main categories
   const categorySections = [
+    {
+      category: { name: 'World', slug: 'world', id: 'world' },
+      posts: homepageData?.worldPosts?.edges?.map((e: PostEdge) => e.node) || [],
+    },
+    {
+      category: { name: 'Africa', slug: 'africa', id: 'africa' },
+      posts: homepageData?.africaPosts?.edges?.map((e: PostEdge) => e.node) || [],
+    },
     {
       category: { name: 'Politics', slug: 'politics', id: 'politics' },
       posts: homepageData?.politicsPosts?.edges?.map((e: PostEdge) => e.node) || [],
@@ -126,6 +134,14 @@ async function getHomePageData() {
     {
       category: { name: 'Sports', slug: 'sports', id: 'sports' },
       posts: homepageData?.sportsPosts?.edges?.map((e: PostEdge) => e.node) || [],
+    },
+    {
+      category: { name: 'Entertainment', slug: 'entertainment', id: 'entertainment' },
+      posts: homepageData?.entertainmentPosts?.edges?.map((e: PostEdge) => e.node) || [],
+    },
+    {
+      category: { name: 'Opinion', slug: 'opinion', id: 'opinion' },
+      posts: homepageData?.opinionPosts?.edges?.map((e: PostEdge) => e.node) || [],
     },
   ];
 

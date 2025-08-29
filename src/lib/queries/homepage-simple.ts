@@ -191,6 +191,114 @@ export const GET_HOMEPAGE_DATA_SIMPLE = `
       }
     }
     
+    worldPosts: posts(first: 6, where: { categoryName: "World", orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+          categories {
+            edges {
+              node {
+                id
+                name
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    africaPosts: posts(first: 6, where: { categoryName: "Africa", orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+          categories {
+            edges {
+              node {
+                id
+                name
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    entertainmentPosts: posts(first: 6, where: { categoryName: "Entertainment", orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+          categories {
+            edges {
+              node {
+                id
+                name
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    opinionPosts: posts(first: 6, where: { categoryName: "Opinion", orderby: { field: DATE, order: DESC } }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          date
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+          categories {
+            edges {
+              node {
+                id
+                name
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+    
     popularPosts: posts(first: 5, where: { orderby: { field: COMMENT_COUNT, order: DESC } }) {
       edges {
         node {
