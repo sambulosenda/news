@@ -10,7 +10,6 @@ export default function robots(): MetadataRoute.Robots {
           '/api/',
           '/admin/',
           '/wp-admin/',
-          '/search?*',
           '/*?utm_*',
           '/*?ref=*',
           '/tag/*',

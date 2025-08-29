@@ -8,7 +8,7 @@ const graphqlEndpoint = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://ba
  * Fetch GraphQL data using native fetch API
  * More reliable than Apollo Client in server-side environments
  */
-export async function fetchGraphQL(query: DocumentNode, variables = {}, _options = {}) {
+export async function fetchGraphQL(query: DocumentNode, variables = {}, _options = {}, signal?: AbortSignal) {
   try {
     // Extract the query string from DocumentNode
     const queryString = query.loc?.source.body;
@@ -26,6 +26,7 @@ export async function fetchGraphQL(query: DocumentNode, variables = {}, _options
         query: queryString,
         variables,
       }),
+      signal, // Add AbortSignal support
     });
 
     if (!response.ok) {
@@ -42,7 +43,13 @@ export async function fetchGraphQL(query: DocumentNode, variables = {}, _options
     }
     
     return result.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
+    // Handle AbortError specifically
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.error('GraphQL request was aborted');
+      return null;
+    }
+    
     console.error('GraphQL Error Details:', {
       endpoint: graphqlEndpoint,
       error: error instanceof Error ? error.message : 'Unknown error',
