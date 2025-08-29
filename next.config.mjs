@@ -102,7 +102,21 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.googleapis.com https://*.gstatic.com https://*.googletagmanager.com https://*.google-analytics.com https://*.doubleclick.net https://pagead2.googlesyndication.com https://adservice.google.com https://*.googleadservices.com https://tpc.googlesyndication.com https://*.sentry.io https://*.sentry-cdn.com; style-src 'self' 'unsafe-inline' https://*.googleapis.com https://fonts.googleapis.com; img-src 'self' data: blob: https: http:; font-src 'self' data: https://*.gstatic.com https://fonts.gstatic.com; connect-src 'self' https://*.google.com https://*.googleapis.com https://*.google-analytics.com https://*.googletagmanager.com https://*.doubleclick.net https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.sentry.io https://backend.reportfocusnews.com https://newsreportfocus.b-cdn.net https://api.openweathermap.org https://*.algolia.net https://*.algolianet.com https://www.alphavantage.co https://api.exchangerate-api.com wss://*.sentry.io; frame-src 'self' https://*.google.com https://*.doubleclick.net https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.googleapis.com https://*.gstatic.com https://*.googletagmanager.com https://*.google-analytics.com https://*.doubleclick.net https://pagead2.googlesyndication.com https://adservice.google.com https://*.googleadservices.com https://tpc.googlesyndication.com https://*.sentry.io https://*.sentry-cdn.com",
+              "style-src 'self' 'unsafe-inline' https://*.googleapis.com https://fonts.googleapis.com",
+              "img-src 'self' data: blob: https: http:",
+              "font-src 'self' data: https://*.gstatic.com https://fonts.gstatic.com",
+              "connect-src 'self' https://*.google.com https://*.googleapis.com https://*.google-analytics.com https://*.googletagmanager.com https://*.doubleclick.net https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.sentry.io https://backend.reportfocusnews.com https://newsreportfocus.b-cdn.net https://api.openweathermap.org https://*.algolia.net https://*.algolianet.com https://www.alphavantage.co https://api.exchangerate-api.com wss://*.sentry.io",
+              "frame-src 'self' https://*.google.com https://*.doubleclick.net https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com",
+              "media-src 'self' blob: data:",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'self'",
+              "upgrade-insecure-requests"
+            ].join('; ') + ';'
           },
           {
             key: 'X-Permitted-Cross-Domain-Policies',

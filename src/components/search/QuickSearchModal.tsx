@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Search, X, Loader2, TrendingUp, Clock } from 'lucide-react';
+import { X, TrendingUp, Clock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SearchBox from './SearchBox';
 
