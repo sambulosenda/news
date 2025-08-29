@@ -18,10 +18,10 @@ const ALGOLIA_APP_ID = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '';
 const ALGOLIA_ADMIN_API_KEY = process.env.ALGOLIA_ADMIN_API_KEY || '';
 const ALGOLIA_INDEX_NAME = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME || 'reportfocus_articles';
 
-// GraphQL query to fetch all posts
-const GET_ALL_POSTS = `
-  query GetAllPosts($cursor: String) {
-    posts(first: 50, after: $cursor) {
+// GraphQL query to fetch all posts - function to handle cursor
+const GET_ALL_POSTS = (cursor: string | null = null) => `
+  query GetAllPosts {
+    posts(first: 50${cursor ? `, after: "${cursor}"` : ''}) {
       pageInfo {
         hasNextPage
         endCursor
@@ -127,7 +127,7 @@ async function syncToAlgolia() {
   console.log('📚 Fetching posts from WordPress (limiting to 500 for initial sync)...');
   while (hasNextPage && totalPosts < 500) {
     try {
-      const data = await fetchGraphQLDirect(GET_ALL_POSTS, { cursor });
+      const data = await fetchGraphQLDirect(GET_ALL_POSTS(cursor));
       
       if (!data?.posts?.edges) {
         console.error('❌ Failed to fetch posts');

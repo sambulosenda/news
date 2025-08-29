@@ -43,11 +43,11 @@ function Hit({ hit }: HitProps) {
           )}
           <div className="flex-1">
             <h2 className="text-xl font-bold text-gray-900 group-hover:text-primary mb-2 line-clamp-2">
-              <Highlight attribute="title" hit={hit} />
+              <Highlight attribute="title" hit={hit as any} />
             </h2>
             
             <p className="text-gray-600 line-clamp-2 mb-3">
-              <Highlight attribute="excerpt" hit={hit} />
+              <Highlight attribute="excerpt" hit={hit as any} />
             </p>
             
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
@@ -96,13 +96,7 @@ interface SearchResultsProps {
   initialQuery?: string;
 }
 
-export default function SearchResults({ initialQuery = '' }: SearchResultsProps) {
-  // Debug logging
-  console.log('Algolia Config:', {
-    appId: ALGOLIA_APP_ID,
-    apiKey: ALGOLIA_SEARCH_API_KEY ? 'Set' : 'Missing',
-    indexName: ALGOLIA_INDEX_NAME
-  });
+export default function SearchResults({ initialQuery: _initialQuery = '' }: SearchResultsProps) {
 
   // Create search client directly here to ensure it's initialized properly
   const searchClient = ALGOLIA_APP_ID && ALGOLIA_SEARCH_API_KEY 
@@ -191,19 +185,12 @@ export default function SearchResults({ initialQuery = '' }: SearchResultsProps)
                     reset: 'absolute right-4 top-1/2 transform -translate-y-1/2',
                     resetIcon: 'w-5 h-5 text-gray-400 hover:text-gray-600 cursor-pointer',
                   }}
-                  defaultRefinement={initialQuery}
                 />
                 
                 <div className="mt-4">
                   <Stats
                     classNames={{
-                      root: 'text-sm text-gray-600',
-                      text: 'font-medium'
-                    }}
-                    translations={{
-                      stats(nbHits, processingTimeMS) {
-                        return `${nbHits.toLocaleString()} results found in ${processingTimeMS}ms`;
-                      },
+                      root: 'text-sm text-gray-600'
                     }}
                   />
                 </div>
