@@ -4,6 +4,33 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   
+  // Check for malformed search URLs patterns
+  if (pathname.startsWith('/search/')) {
+    // Pattern: /search/term/page/number/www. or /search/term/anything-else
+    const searchPathMatch = pathname.match(/^\/search\/(.+?)(?:\/page\/\d+)?(?:\/www\.?)?(?:\/.*)?$/);
+    
+    if (searchPathMatch) {
+      const searchTerm = decodeURIComponent(searchPathMatch[1]);
+      // Clean the search term (remove + signs, extra chars)
+      const cleanTerm = searchTerm.replace(/\+/g, ' ').replace(/[^\w\s\-]/g, '').trim();
+      
+      if (cleanTerm && cleanTerm.length >= 2) {
+        // Redirect to proper search URL with query parameter
+        const redirectUrl = new URL('/search', request.url);
+        redirectUrl.searchParams.set('q', cleanTerm);
+        return NextResponse.redirect(redirectUrl, 301);
+      }
+    }
+    
+    // Block any other malformed search URLs
+    return NextResponse.redirect(new URL('/search', request.url), 301);
+  }
+  
+  // Block specific malformed patterns
+  if (pathname.includes('/page/') && /\/page\/\d+\/www\.?(?:\/|$)/.test(pathname)) {
+    return NextResponse.redirect(new URL('/search', request.url), 301);
+  }
+  
   // Check for malformed URLs containing social media domains
   if (pathname.includes('facebook.com') || 
       pathname.includes('twitter.com') || 

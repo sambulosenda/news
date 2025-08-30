@@ -169,7 +169,7 @@ const nextConfig = {
     ];
   },
 
-  // Redirects for SEO
+  // Redirects for SEO and malformed URLs
   async redirects() {
     return [
       // Redirect www to non-www
@@ -182,6 +182,28 @@ const nextConfig = {
           },
         ],
         destination: 'https://reportfocusnews.com/:path*',
+        permanent: true,
+      },
+      // Handle malformed search URLs - specific patterns
+      {
+        source: '/search/:term/page/:page/www.:extension*',
+        destination: '/search?q=:term',
+        permanent: true,
+      },
+      {
+        source: '/search/:term/page/:page/www',
+        destination: '/search?q=:term',
+        permanent: true,
+      },
+      {
+        source: '/search/:term/page/:page*',
+        destination: '/search?q=:term',
+        permanent: true,
+      },
+      // Generic malformed search URL cleanup
+      {
+        source: '/search/:term/:path*',
+        destination: '/search?q=:term',
         permanent: true,
       },
     ];

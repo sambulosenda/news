@@ -8,7 +8,6 @@ Allow: /
 Allow: /news/
 Allow: /category/
 Allow: /20*/  # Allow date-based URLs (articles)
-Allow: /search
 Allow: /weather
 
 # Block non-essential paths
@@ -18,6 +17,8 @@ Disallow: /admin/
 Disallow: /*.json$
 Disallow: /*?*utm_
 Disallow: /*?*ref=
+# Block all search pages (like BBC, CNN, Guardian)
+Disallow: /search
 
 # Sitemaps
 Sitemap: https://reportfocusnews.com/sitemap-index.xml
@@ -27,6 +28,7 @@ Sitemap: https://reportfocusnews.com/news-sitemap.xml
 # Google crawlers - Priority access
 User-agent: Googlebot
 Allow: /
+Disallow: /search
 Crawl-delay: 0
 
 # Google News - Optimized for news content

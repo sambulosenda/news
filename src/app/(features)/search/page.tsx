@@ -187,12 +187,16 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
         index: false,  // Don't index search result pages
         follow: true,  // But do follow links to articles
         noarchive: true,
+        nosnippet: false,
         'max-snippet': -1,
         'max-image-preview': 'large',
         'max-video-preview': -1,
       },
       alternates: {
         canonical: `https://reportfocusnews.com/search?q=${encodeURIComponent(query)}`,
+      },
+      other: {
+        'X-Robots-Tag': 'noindex, follow, noarchive',
       },
     };
   }

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1756503849022",
+    "email": "sambulosendas@gmail.com",
+    "firstName": "",
+    "categories": [
+      "general"
+    ],
+    "frequency": "daily",
+    "source": "sidebar",
+    "status": "confirmed",
+    "subscribedAt": "2025-08-29T21:44:09.022Z",
+    "updatedAt": "2025-08-29T23:05:53.872Z",
+    "confirmationToken": "ysp7y82t3omexd1fzy"
+  },
+  {
+    "id": "1756508574582",
+    "email": "dasdasd@gmail.com",
+    "firstName": "",
+    "categories": [
+      "general"
+    ],
+    "frequency": "daily",
+    "source": "sidebar",
+    "status": "pending",
+    "subscribedAt": "2025-08-29T23:02:54.582Z",
+    "updatedAt": "2025-08-29T23:02:54.582Z",
+    "confirmationToken": "mo7my6madfomexfuq9i"
+  },
+  {
+    "id": "1756508795708",
+    "email": "dsada@gmail.copm",
+    "firstName": "",
+    "categories": [
+      "general"
+    ],
+    "frequency": "daily",
+    "source": "sidebar",
+    "status": "pending",
+    "subscribedAt": "2025-08-29T23:06:35.708Z",
+    "updatedAt": "2025-08-29T23:06:35.708Z",
+    "confirmationToken": "dsfip8ml068mexfzgvw"
+  }
+]
