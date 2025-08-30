@@ -102,6 +102,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google Search Console Verification */}
+        <meta name="google-site-verification" content="Ht1qagqS6RXNU4R7Z9y4Q0IGeht5_Nj0VlQY1g73pfE" />
+        
         {/* Critical resource preloading for better performance */}
         <link rel="preconnect" href="https://backend.reportfocusnews.com" />
         <link rel="dns-prefetch" href="https://backend.reportfocusnews.com" />
