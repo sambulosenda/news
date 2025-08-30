@@ -76,6 +76,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  verification: {
+    google: 'Ht1qagqS6RXNU4R7Z9y4Q0IGeht5_Nj0VlQY1g73pfE',
+  },
   other: {
     'geo.region': 'ZA-GP;ZW-HA',
     'geo.placename': 'Johannesburg;Harare',
