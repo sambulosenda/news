@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Report Focus News - SA & Zimbabwe Breaking News",
     description: "Live breaking news, load shedding updates, politics and business from South Africa and Zimbabwe",
-    images: ["/og-image.jpg"],
+    images: ["https://reportfocusnews.com/og-image.jpg"],
     site: "@ReportFocus",
     creator: "@ReportFocus",
   },

@@ -182,7 +182,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       card: 'summary_large_image',
       title: article.seo?.twitterTitle?.replace(/ [\|\-–—] Report Focus News$/i, '').replace(/^Report Focus News [\|\-–—] /i, '') || seoTitle,
       description: article.seo?.twitterDescription || description,
-      images: [article.seo?.twitterImage?.sourceUrl ? getImageUrl(article.seo.twitterImage.sourceUrl, { context: 'seo' }) : ogImage],
+      images: [article.seo?.twitterImage?.sourceUrl ? getImageUrl(article.seo.twitterImage.sourceUrl, { context: 'twitter' }) : getImageUrl(ogImageUrl, { context: 'twitter' })],
     },
     alternates: {
       canonical: canonicalUrl,
