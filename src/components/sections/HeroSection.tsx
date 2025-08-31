@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import ProxyImage from '@/components/common/ProxyImage';
+import ServerCDNImage from '@/components/common/ServerCDNImage';
 import { format } from 'date-fns';
 import { WPPost } from '@/types/wordpress';
 
@@ -33,7 +33,7 @@ export default function HeroSection({ mainArticle, sideArticles = [] }: HeroSect
               {mainArticle.featuredImage?.node && (
                 <Link href={mainPostUrl} className="block relative group">
                   <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
-                    <ProxyImage
+                    <ServerCDNImage
                       src={mainArticle.featuredImage.node.sourceUrl}
                       alt={mainArticle.featuredImage.node.altText || mainArticle.title}
                       fill

@@ -41,6 +41,7 @@ export default function ServerCDNImage({
         alt={alt}
         className={`absolute inset-0 w-full h-full object-cover ${className}`}
         loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
         decoding="async"
       />
     );
@@ -55,6 +56,7 @@ export default function ServerCDNImage({
       height={height || 675}
       className={className}
       loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : 'auto'}
       decoding="async"
     />
   );
