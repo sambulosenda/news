@@ -20,16 +20,16 @@ export const revalidate = 10;
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'Report Focus News - South Africa & Zimbabwe Breaking News'
+    absolute: 'SA & Zimbabwe Breaking News - Report Focus News'
   },
-  description: 'Breaking news from South Africa and Zimbabwe. Latest updates on politics, business, economy, sports, and entertainment. Your trusted source for Southern African news coverage.',
+  description: 'Breaking news from South Africa & Zimbabwe. Live updates on load shedding, politics, crime, business & sports. Trusted by millions for accurate Southern African news.',
   keywords: 'South Africa news, Zimbabwe news, breaking news, SA politics, Zimbabwe politics, JSE news, business news Africa, Johannesburg news, Harare news, Southern Africa, SADC news, ANC, ZANU-PF, Springboks, Proteas, Report Focus News',
   alternates: {
     canonical: 'https://reportfocusnews.com',
   },
   openGraph: {
-    title: 'Report Focus News - Breaking News from South Africa & Zimbabwe',
-    description: 'Your trusted source for South African and Zimbabwe news. Politics, business, sports, entertainment, and more.',
+    title: 'SA & Zimbabwe Breaking News - Report Focus News',
+    description: 'Breaking news from South Africa & Zimbabwe. Live updates on load shedding, politics, crime & business. Get the facts first.',
     type: 'website',
     url: 'https://reportfocusnews.com',
     siteName: 'Report Focus News',
@@ -46,8 +46,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     site: '@reportfocusnews',
-    title: 'Report Focus News - SA & Zimbabwe Breaking News',
-    description: 'Latest news from South Africa and Zimbabwe. Politics, business, sports, and more.',
+    title: 'SA & Zimbabwe Breaking News - Report Focus News',
+    description: 'Breaking news from SA & Zimbabwe. Live updates on load shedding, politics, crime & business.',
     images: ['/og-image.jpg'],
   },
   robots: {

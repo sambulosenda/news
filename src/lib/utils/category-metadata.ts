@@ -5,13 +5,13 @@ export const categoryMetadata: Record<string, {
   keywords: string[];
 }> = {
   politics: {
-    title: 'Politics News - South Africa & Zimbabwe Political Coverage',
-    description: 'Latest political news, elections, government policy, and parliamentary updates from South Africa and Zimbabwe. In-depth analysis of ANC, EFF, ZANU-PF, and opposition parties.',
+    title: 'SA & Zimbabwe Politics News - Elections & Government',
+    description: 'Breaking political news from South Africa & Zimbabwe. Live election updates, ANC, ZANU-PF, EFF coverage. Parliamentary debates & government policy analysis.',
     keywords: ['South Africa politics', 'Zimbabwe politics', 'ANC news', 'ZANU-PF', 'elections SA', 'Zimbabwe elections', 'parliament news', 'government policy', 'political analysis'],
   },
   business: {
-    title: 'Business News - SA & Zimbabwe Economy, Markets, Companies',
-    description: 'Breaking business news from South Africa and Zimbabwe. JSE updates, ZSE stock market, rand exchange rates, company news, mining sector, and economic analysis.',
+    title: 'SA & Zimbabwe Business News - JSE, Mining & Economy',
+    description: 'Live business news from SA & Zimbabwe. JSE market updates, ZSE stock prices, rand exchange rates, mining sector news. Economic analysis & company earnings.',
     keywords: ['South Africa business', 'Zimbabwe economy', 'JSE news', 'ZSE stock market', 'rand dollar', 'mining news', 'company earnings', 'economic growth', 'investment Africa'],
   },
   world: {
@@ -55,13 +55,13 @@ export const categoryMetadata: Record<string, {
     keywords: ['opinion pieces', 'analysis SA', 'Zimbabwe commentary', 'thought leadership', 'editorial', 'expert opinion', 'current affairs', 'political analysis'],
   },
   'breaking-news': {
-    title: 'Breaking News - Latest Updates from South Africa & Zimbabwe',
-    description: 'Breaking news as it happens from South Africa and Zimbabwe. Live updates on developing stories, urgent news alerts, and real-time coverage.',
+    title: 'Breaking News SA & Zimbabwe - Live Updates Now',
+    description: 'BREAKING: Live news from South Africa & Zimbabwe happening now. Urgent updates on developing stories, alerts & real-time coverage. Get the facts first.',
     keywords: ['breaking news', 'latest news', 'urgent news', 'developing story', 'news alerts', 'live updates', 'South Africa breaking', 'Zimbabwe breaking'],
   },
   crime: {
-    title: 'Crime News - Crime Reports from South Africa & Zimbabwe',
-    description: 'Crime news and safety updates from South Africa and Zimbabwe. Police reports, court cases, crime statistics, and public safety information.',
+    title: 'SA & Zimbabwe Crime News - Safety Updates & Reports',
+    description: 'Latest crime news from South Africa & Zimbabwe. SAPS reports, court cases, safety alerts & crime statistics. Stay informed on public safety.',
     keywords: ['SA crime', 'Zimbabwe crime', 'police news', 'court cases', 'crime statistics', 'safety news', 'SAPS', 'law enforcement'],
   },
 };

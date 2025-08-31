@@ -4,15 +4,15 @@ import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'About Report Focus News - Independent Journalism for Southern Africa',
-  description: 'Report Focus News delivers independent, trustworthy journalism covering South Africa and Zimbabwe. Learn about our mission, values, and commitment to truth.',
+  title: 'About Us - Trusted SA & Zimbabwe News Since 2024',
+  description: 'Report Focus News: Southern Africa\'s trusted independent news source. Award-winning journalism covering SA & Zimbabwe since 2024. Meet our editorial team.',
   keywords: 'Report Focus News, South African news, Zimbabwe news, independent journalism, about us, news organization, media company',
   alternates: {
     canonical: 'https://reportfocusnews.com/about',
   },
   openGraph: {
-    title: 'About Report Focus News',
-    description: 'Independent journalism serving South Africa and Zimbabwe since 2024',
+    title: 'About Us - Trusted SA & Zimbabwe News Since 2024',
+    description: 'Report Focus News: Southern Africa\'s trusted independent news source. Award-winning journalism covering SA & Zimbabwe.',
     type: 'website',
   },
 };

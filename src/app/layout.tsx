@@ -36,14 +36,14 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   metadataBase: new URL('https://reportfocusnews.com'),
   title: {
-    default: "Report Focus News - South Africa & Zimbabwe Breaking News",
+    default: "SA & Zimbabwe Breaking News - Report Focus News",
     template: "%s | Report Focus News"
   },
-  description: "Your trusted source for breaking news from South Africa and Zimbabwe. Live updates on load shedding, politics, business, crime and current affairs across Southern Africa.",
+  description: "Breaking news from South Africa & Zimbabwe. Live updates on load shedding, politics, crime, business & sports. Trusted by millions for accurate Southern African news.",
   keywords: "South Africa news, Zimbabwe news, load shedding today, Eskom, SASSA grants, petrol price, breaking news SA, Johannesburg news, Harare news, ZAR USD exchange rate",
   openGraph: {
-    title: "Report Focus News - SA & Zimbabwe Breaking News",
-    description: "Live breaking news, load shedding updates, politics and business from South Africa and Zimbabwe",
+    title: "SA & Zimbabwe Breaking News - Report Focus News",
+    description: "Breaking news from SA & Zimbabwe. Live updates on load shedding, politics, crime & business. Get the facts first.",
     url: "https://reportfocusnews.com",
     siteName: "Report Focus News",
     images: [
@@ -59,8 +59,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Report Focus News - SA & Zimbabwe Breaking News",
-    description: "Live breaking news, load shedding updates, politics and business from South Africa and Zimbabwe",
+    title: "SA & Zimbabwe Breaking News - Report Focus News",
+    description: "Breaking news from SA & Zimbabwe. Live updates on load shedding, politics, crime & business.",
     images: ["https://reportfocusnews.com/og-image.jpg"],
     site: "@ReportFocus",
     creator: "@ReportFocus",
