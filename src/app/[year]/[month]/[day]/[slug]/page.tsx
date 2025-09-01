@@ -31,7 +31,7 @@ import PrintableArticle from '@/components/article/PrintableArticle';
 // Optimized caching for article pages
 export const revalidate = 300; // 5 minutes for article pages (they don't change often)
 export const dynamicParams = true; // Allow dynamic params for new articles
-export const fetchCache = 'default'; // Use default caching
+export const fetchCache = 'default-cache'; // Use default caching
 
 // Import components directly for server components
 import ShareButtons from '@/components/features/ShareButtons';
