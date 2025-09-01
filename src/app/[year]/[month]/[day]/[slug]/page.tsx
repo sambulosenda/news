@@ -28,10 +28,10 @@ import ServerSmartRelated from '@/components/sections/ServerSmartRelated';
 import PrintButton from '@/components/article/PrintButton';
 import PrintableArticle from '@/components/article/PrintableArticle';
 
-// Dynamic rendering with aggressive caching for news
-export const revalidate = 10; // 10 seconds revalidation for breaking news
+// Optimized caching for article pages
+export const revalidate = 300; // 5 minutes for article pages (they don't change often)
 export const dynamicParams = true; // Allow dynamic params for new articles
-// Removed edge runtime - causing client-side errors
+export const fetchCache = 'default'; // Use default caching
 
 // Import components directly for server components
 import ShareButtons from '@/components/features/ShareButtons';
@@ -54,7 +54,7 @@ async function getArticleData(slug: string) {
     const articleData = await fetchGraphQLCached(
       GET_POST_BY_SLUG, 
       { slug }, 
-      { ttl: 10 } // 10 seconds cache for breaking news
+      { ttl: 300 } // 5 minutes cache for articles
     );
     
     const article = articleData?.postBy || null;

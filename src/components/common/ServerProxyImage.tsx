@@ -54,7 +54,9 @@ export default function ServerProxyImage({
         alt={alt}
         className={`absolute inset-0 w-full h-full object-cover ${className}`}
         loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
         decoding="async"
+        style={{ aspectRatio: '16/9' }}
       />
     );
   }
@@ -68,6 +70,7 @@ export default function ServerProxyImage({
       height={height || 450}
       className={className}
       loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : 'auto'}
       decoding="async"
     />
   );

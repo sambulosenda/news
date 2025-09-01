@@ -17,16 +17,25 @@ export async function fetchGraphQL(query: DocumentNode, variables = {}, _options
       throw new Error('Invalid GraphQL query - could not extract query string');
     }
 
+    // Create timeout signal if not provided
+    const timeoutSignal = signal || AbortSignal.timeout(5000); // 5 second timeout
+    
     const response = await fetch(graphqlEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Accept-Encoding': 'gzip, deflate, br',
       },
       body: JSON.stringify({
         query: queryString,
         variables,
       }),
-      signal, // Add AbortSignal support
+      signal: timeoutSignal,
+      // Add Next.js cache options
+      next: {
+        revalidate: 60, // Cache for 1 minute by default
+      }
     });
 
     if (!response.ok) {
