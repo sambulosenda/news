@@ -157,9 +157,9 @@ async function getHomePageData() {
 }
 
 
-// Dynamic rendering for breaking news
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
+// Remove force-dynamic to allow caching
+// export const dynamic = 'force-dynamic';
+// export const fetchCache = 'force-no-store';
 
 export default async function HomePage() {
   const { 

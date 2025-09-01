@@ -43,6 +43,7 @@ export default function ServerCDNImage({
         loading={priority ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : 'auto'}
         decoding="async"
+        style={{ aspectRatio: '16/9' }}
       />
     );
   }

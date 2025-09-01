@@ -3,12 +3,18 @@ import { withSentryConfig } from '@sentry/nextjs';
 const nextConfig = {
   output: 'standalone', // For Docker deployment
   
+  // Performance optimizations
+  compress: true,
+  poweredByHeader: false,
+  
   // Aggressive caching for news site performance
   staticPageGenerationTimeout: 180, // 3 minutes for complex pages
   
   // Enable partial prerendering for breaking news
   experimental: {
     webpackBuildWorker: true, // Faster builds
+    optimizeCss: true,
+    scrollRestoration: true,
   },
   eslint: {
     // Run ESLint during builds to catch errors early
@@ -61,9 +67,11 @@ const nextConfig = {
       },
     ],
     formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    deviceSizes: [320, 420, 768, 1024, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
     minimumCacheTTL: 31536000, // 1 year for immutable images
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment'
   },
   
   // Security headers

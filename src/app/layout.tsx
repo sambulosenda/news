@@ -17,7 +17,7 @@ import "@/styles/globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "optional", // Best for CLS - uses fallback if font doesn't load quickly
+  display: "swap", // Better for LCP - shows text immediately with fallback
   preload: true,
   adjustFontFallback: true, // Better fallback matching
   fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
@@ -27,7 +27,7 @@ const roboto = Roboto({
   weight: ['400', '500', '700'],
   subsets: ["latin"],
   variable: "--font-roboto",
-  display: "optional", // Best for CLS - prevents layout shift
+  display: "swap", // Better for LCP - shows text immediately
   preload: true,
   adjustFontFallback: true,
   fallback: ['Georgia', 'Times New Roman', 'serif'],
@@ -142,6 +142,26 @@ export default function RootLayout({
         {/* Additional SEO */}
         {/* Google Search Console - Site already verified through domain verification */}
         <link rel="alternate" type="application/rss+xml" title="Report Focus News RSS Feed" href="/rss.xml" />
+        
+        {/* Critical inline CSS for faster FCP */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            /* Critical above-the-fold CSS */
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            html { -webkit-text-size-adjust: 100%; }
+            body { min-height: 100vh; font-family: var(--font-inter), system-ui, sans-serif; }
+            img { max-width: 100%; height: auto; display: block; }
+            a { color: inherit; text-decoration: none; }
+            .container-wide { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 1rem; }
+            @media (min-width: 1024px) { .container-wide { padding: 0 2rem; } }
+            /* Prevent layout shift */
+            img[loading="lazy"] { background: #f3f4f6; }
+            .aspect-\\[16\\/9\\] { aspect-ratio: 16/9; }
+            /* Skeleton loading */
+            .skeleton { background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%); background-size: 200% 100%; animation: skeleton 1.5s infinite; }
+            @keyframes skeleton { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+          `
+        }} />
       </head>
       <body
         className={`${inter.variable} ${roboto.variable} font-sans antialiased bg-white text-gray-900`}

@@ -6,12 +6,16 @@ export async function fetchGraphQLDirect(query: string, tags?: string[]) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Accept-Encoding': 'gzip, deflate, br',
       },
       body: JSON.stringify({ query }),
       next: { 
-        revalidate: 10, // Revalidate every 10 seconds for breaking news
+        revalidate: 30, // Increase to 30 seconds for better caching
         tags: tags || ['posts'] // Add cache tags for on-demand revalidation
-      }
+      },
+      // Add signal for timeout
+      signal: AbortSignal.timeout(5000) // 5 second timeout
     });
 
     const result = await response.json();
