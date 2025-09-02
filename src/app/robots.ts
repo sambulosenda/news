@@ -45,6 +45,39 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: 'Twitterbot',
         allow: '/',
       },
+      // Block AI bots from scraping content for training
+      {
+        userAgent: 'anthropic-ai',
+        disallow: '/',
+      },
+      {
+        userAgent: 'ChatGPT-User',
+        disallow: '/',
+      },
+      {
+        userAgent: 'ClaudeBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'Claude-Web',
+        disallow: '/',
+      },
+      {
+        userAgent: 'cohere-ai',
+        disallow: '/',
+      },
+      {
+        userAgent: 'GPTBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'PerplexityBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'Bytespider',
+        disallow: '/',
+      },
     ],
     sitemap: 'https://reportfocusnews.com/sitemap-index.xml',
     host: 'https://reportfocusnews.com',

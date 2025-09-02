@@ -210,43 +210,6 @@ export default function OrganizationSchema() {
     },
   };
 
-  // Breadcrumb schema for navigation
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://reportfocusnews.com',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'South Africa News',
-        item: 'https://reportfocusnews.com/news/south-africa',
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: 'Zimbabwe News',
-        item: 'https://reportfocusnews.com/news/zimbabwe',
-      },
-      {
-        '@type': 'ListItem',
-        position: 4,
-        name: 'Politics',
-        item: 'https://reportfocusnews.com/news/politics',
-      },
-      {
-        '@type': 'ListItem',
-        position: 5,
-        name: 'Business',
-        item: 'https://reportfocusnews.com/news/business',
-      },
-    ],
-  };
 
   return (
     <>
@@ -257,10 +220,6 @@ export default function OrganizationSchema() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
     </>
   );

@@ -115,7 +115,7 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
     ].join(', '),
     authors: [{ name: author.name }],
     robots: {
-      index: true,
+      index: true,  // Index author pages for E-E-A-T signals (following Guardian/Al Jazeera standard)
       follow: true,
       'max-snippet': -1,
       'max-image-preview': 'large',
