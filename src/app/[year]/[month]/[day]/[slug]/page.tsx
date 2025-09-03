@@ -249,6 +249,8 @@ export default async function FastArticlePage({ params }: PostPageProps) {
         <AuthorSchema 
           authorName={post.author.node.name} 
           authorSlug={post.author.node.slug}
+          authorDescription={post.author.node.description}
+          authorAvatar={post.author.node.avatar?.url}
         />
       )}
       <RevisionHistorySchema 
@@ -308,8 +310,10 @@ export default async function FastArticlePage({ params }: PostPageProps) {
               <AuthorByline 
                 authorName={post.author.node.name}
                 authorSlug={post.author.node.slug}
+                authorDescription={post.author.node.description}
+                authorAvatar={post.author.node.avatar?.url}
                 variant="full"
-                showAvatar={false}
+                showAvatar={true}
                 className="text-sm"
               />
             )}
@@ -417,8 +421,10 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             <AuthorByline 
               authorName={post.author.node.name}
               authorSlug={post.author.node.slug}
+              authorDescription={post.author.node.description}
+              authorAvatar={post.author.node.avatar?.url}
               variant="detailed"
-              showAvatar={false}
+              showAvatar={true}
             />
           </section>
         )}
