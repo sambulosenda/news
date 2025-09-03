@@ -78,8 +78,8 @@ ${recentPosts.map((post) => {
   // Get keywords from tags
   const keywords = post.tags?.edges?.map(tag => tag.node.name).slice(0, 10).join(', ') || '';
   
-  // Get genre/section
-  const genre = post.categories?.edges?.[0]?.node?.name || 'General';
+  // Get genre/section (unused but keeping for future use)
+  // const genre = post.categories?.edges?.[0]?.node?.name || 'General';
   
   return `  <url>
     <loc>${url}</loc>

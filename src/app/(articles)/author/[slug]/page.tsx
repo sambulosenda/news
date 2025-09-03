@@ -65,7 +65,6 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
   }
   
   const { author } = data;
-  const posts = data.posts;
 
   const title = author.isNewsAgency 
     ? `${author.name} - News Agency`
@@ -134,8 +133,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     );
   }
 
-  const { author } = data;
-  const posts = data.posts;
+  const { author, posts } = data;
 
   return (
     <>
@@ -159,6 +157,20 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             },
             "description": author.bio,
             "numberOfArticles": posts.length,
+            "knowsAbout": author.expertise || [
+              "South African Politics",
+              "Zimbabwe Politics", 
+              "Southern African Business",
+              "Regional Economics",
+              "African News"
+            ],
+            "hasCredential": author.credentials || [
+              {
+                "@type": "EducationalOccupationalCredential",
+                "name": "Journalism Degree",
+                "credentialCategory": "Professional Certification"
+              }
+            ],
             "mainEntityOfPage": {
               "@type": "ProfilePage",
               "@id": `https://reportfocusnews.com/author/${slug}/`,

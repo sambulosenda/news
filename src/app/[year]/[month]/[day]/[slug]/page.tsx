@@ -16,6 +16,8 @@ import UpdateTracker from '@/components/article/UpdateTracker';
 import DevelopingStoryBanner from '@/components/article/DevelopingStoryBanner';
 import CorrectionNotice from '@/components/article/CorrectionNotice';
 import ArticleDates from '@/components/article/ArticleDates';
+import BreakingNewsSchema from '@/components/seo/BreakingNewsSchema';
+import GoogleNewsPublisherSchema from '@/components/seo/GoogleNewsPublisherSchema';
 import { isBreakingNews } from '@/lib/utils/time-utils';
 import { InArticleAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
@@ -186,6 +188,12 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     },
     alternates: {
       canonical: canonicalUrl,
+      languages: {
+        'en': canonicalUrl,
+        'en-ZA': canonicalUrl,
+        'en-ZW': canonicalUrl,
+        'x-default': canonicalUrl,
+      },
     },
     robots: {
       index: true,
@@ -214,6 +222,26 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       }),
       'target_audience': location?.country || 'South Africa, Zimbabwe',
       'content_location': location ? `${location.city || location.country}` : 'Southern Africa',
+      // Google News specific meta tags
+      'news_keywords': [focusKeyword, ...metaKeywords, ...tags.slice(0, 3)].filter(Boolean).join(', '),
+      'article:author': article.author?.node?.name || 'Report Focus News',
+      'article:published_time': article.date,
+      'article:modified_time': article.modified || article.date,
+      'article:section': article.categories?.edges?.[0]?.node?.name || 'News',
+      'article:tag': article.tags?.edges?.map((tag: { node: { name: string } }) => tag.node.name).slice(0, 5).join(', '),
+      'syndication-source': 'https://reportfocusnews.com',
+      'original-source': canonicalUrl,
+      // AMP page reference (implement when AMP is available)
+      // 'amphtml': `${canonicalUrl}amp/`,
+      // Google News specific meta tags
+      'news_keywords': [focusKeyword, ...metaKeywords, ...tags.slice(0, 3)].filter(Boolean).join(', '),
+      'standout': isBreakingNews(article.date) ? 'https://reportfocusnews.com' : undefined,
+      'publication_date': article.date,
+      'op:markup_version': 'v1.0', // Facebook Instant Articles
+      'twitter:label1': 'Reading time',
+      'twitter:data1': `${Math.ceil((article.content?.split(' ').length || 0) / 200)} min read`,
+      'twitter:label2': 'Category',
+      'twitter:data2': article.categories?.edges?.[0]?.node?.name || 'News',
     },
   };
 }
@@ -244,7 +272,18 @@ export default async function FastArticlePage({ params }: PostPageProps) {
 
   return (
     <>
+      <GoogleNewsPublisherSchema />
       <NewsArticleSchema article={post} url={canonicalUrl} />
+      <BreakingNewsSchema 
+        article={{
+          title: post.title,
+          date: post.date,
+          modified: post.modified,
+          url: canonicalUrl,
+          excerpt: post.excerpt,
+          author: post.author
+        }} 
+      />
       {post.author?.node && (
         <AuthorSchema 
           authorName={post.author.node.name} 

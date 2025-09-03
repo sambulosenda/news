@@ -117,8 +117,12 @@ export default function RootLayout({
         {/* Preload critical images for LCP optimization */}
         <link rel="preload" as="image" href="/og-image.jpg" fetchPriority="high" />
         
-        {/* Preload critical CSS (if using external stylesheets) */}
-        <link rel="preload" as="style" href="/_next/static/css/app.css" />
+        {/* Preload critical resources for better performance */}
+        <link rel="preload" as="fetch" href="https://backend.reportfocusnews.com/graphql" crossOrigin="anonymous" />
+        
+        {/* Preconnect to critical third-party domains */}
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
         
         {/* Resource hints for third-party services */}
         {shouldShowAds() && (
