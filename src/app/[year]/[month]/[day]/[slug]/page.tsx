@@ -452,19 +452,6 @@ export default async function FastArticlePage({ params }: PostPageProps) {
           </div>
         )}
 
-        {/* Author Card - Enhanced credibility section */}
-        {post.author?.node && (
-          <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 no-print">
-            <AuthorByline 
-              authorName={post.author.node.name}
-              authorSlug={post.author.node.slug}
-              authorDescription={post.author.node.description}
-              authorAvatar={post.author.node.avatar?.url}
-              variant="detailed"
-              showAvatar={true}
-            />
-          </section>
-        )}
         
         {/* Smart Related Articles with improved algorithm */}
         <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 no-print">
