@@ -207,11 +207,6 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
               <div className="flex-1">
                 <h1 className="text-3xl font-bold text-gray-900 mb-3">
                   {formatAuthorName(author)}
-                  {author.verified && !author.isNewsAgency && (
-                    <span className="ml-2 inline-flex items-center px-2 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full">
-                      ✓ Verified
-                    </span>
-                  )}
                 </h1>
                 
                 {/* Show expertise if available */}
