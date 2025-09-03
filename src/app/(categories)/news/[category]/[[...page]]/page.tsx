@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import Link from 'next/link';
 import { fetchGraphQL } from '@/lib/api/fetch-graphql';
 import { GET_POSTS_BY_CATEGORY } from '@/lib/queries/posts';
 import { GET_CATEGORY_BY_SLUG } from '@/lib/queries/categories';
@@ -258,27 +257,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <HeaderWrapper />
       
       <main className="bg-white">
-        {/* Breadcrumb Navigation */}
-        <nav aria-label="Breadcrumb" className="container-wide py-4">
-          <ol className="flex items-center space-x-2 text-sm text-gray-600">
-            <li><Link href="/" className="hover:text-blue-600">Home</Link></li>
-            <li><span className="mx-2">/</span></li>
-            <li><Link href="/news" className="hover:text-blue-600">News</Link></li>
-            <li><span className="mx-2">/</span></li>
-            <li>
-              <Link href={`/news/${categorySlug}/`} className="hover:text-blue-600">
-                {category.name}
-              </Link>
-            </li>
-            {pageNum > 1 && (
-              <>
-                <li><span className="mx-2">/</span></li>
-                <li className="text-gray-900 font-semibold">Page {pageNum}</li>
-              </>
-            )}
-          </ol>
-        </nav>
-
         <div className="container-wide py-8">
           {/* Category Header */}
           <div className="mb-8 border-b border-gray-200 pb-6">
