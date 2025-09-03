@@ -16,7 +16,7 @@ export default function WebSiteSchema() {
         },
         "image": "https://reportfocusnews.com/og-image.jpg",
         "description": "Independent news coverage of South Africa and Zimbabwe",
-        "foundingDate": "2024",
+        "foundingDate": "2018-09-27",
         "address": {
           "@type": "PostalAddress",
           "addressCountry": "ZA"

@@ -60,7 +60,7 @@ export default function LocalNewsSchema({
         height: 200,
       },
       // Critical for Google News
-      foundingDate: '2024-01-01',
+      foundingDate: '2018-09-27',
       diversityPolicy: 'https://reportfocusnews.com/diversity-policy',
       ethicsPolicy: 'https://reportfocusnews.com/ethics-policy',
       masthead: 'https://reportfocusnews.com/masthead',
@@ -143,7 +143,7 @@ export default function LocalNewsSchema({
       'https://facebook.com/reportfocusnews',
       'https://linkedin.com/company/reportfocusnews',
     ],
-    foundingDate: '2024-01-01',
+    foundingDate: '2018-09-27',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'ZA',

@@ -83,7 +83,7 @@ export default function OrganizationSchema() {
     ],
 
     // Organization details
-    foundingDate: '2024-01-01',
+    foundingDate: '2018-09-27',
     
     // Editorial Information (Critical for Google News)
     diversityPolicy: 'https://reportfocusnews.com/diversity-policy',

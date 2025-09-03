@@ -4,14 +4,14 @@ import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'About Us - Trusted SA & Zimbabwe News Since 2024',
-  description: 'Report Focus News: Southern Africa\'s trusted independent news source. Award-winning journalism covering SA & Zimbabwe since 2024. Meet our editorial team.',
+  title: 'About Us - Trusted SA & Zimbabwe News Since 2018',
+  description: 'Report Focus News: Southern Africa\'s trusted independent news source. Award-winning journalism covering SA & Zimbabwe since 2018. Meet our editorial team.',
   keywords: 'Report Focus News, South African news, Zimbabwe news, independent journalism, about us, news organization, media company',
   alternates: {
     canonical: 'https://reportfocusnews.com/about',
   },
   openGraph: {
-    title: 'About Us - Trusted SA & Zimbabwe News Since 2024',
+    title: 'About Us - Trusted SA & Zimbabwe News Since 2018',
     description: 'Report Focus News: Southern Africa\'s trusted independent news source. Award-winning journalism covering SA & Zimbabwe.',
     type: 'website',
   },
@@ -113,7 +113,7 @@ export default function AboutPage() {
           <section className="mb-12">
             <h2 className="font-serif text-3xl font-bold mb-4">Our History</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Founded in 2024, Report Focus News emerged from a recognition that Southern Africa 
+              Founded in 2018, Report Focus News emerged from a recognition that Southern Africa 
               needed a dedicated news platform that could bridge the information gap between 
               South Africa and Zimbabwe while maintaining the highest standards of journalism.
             </p>

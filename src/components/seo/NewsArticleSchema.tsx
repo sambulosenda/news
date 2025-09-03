@@ -91,7 +91,7 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
         "width": 600,
         "height": 60
       },
-      "foundingDate": "2024",
+      "foundingDate": "2018-09-27",
       "address": {
         "@type": "PostalAddress",
         "addressCountry": "ZA"
@@ -144,7 +144,34 @@ export default function NewsArticleSchema({ article, url }: NewsArticleSchemaPro
           "longitude": 29.1549
         }
       }
-    ]
+    ],
+    // Critical Google News specific fields
+    "inLanguage": "en-ZA",
+    "genre": "news",
+    "copyrightYear": new Date(publishDate).getFullYear(),
+    "copyrightHolder": {
+      "@type": "NewsMediaOrganization",
+      "name": "Report Focus News"
+    },
+    // News credibility signals
+    "creditText": "Report Focus News",
+    "creator": {
+      "@type": "Person",
+      "name": article.author?.node?.name || "Report Focus News Staff"
+    },
+    // Publishing principles for E-E-A-T
+    "publishingPrinciples": "https://reportfocusnews.com/editorial-standards",
+    "ownershipFundingInfo": "https://reportfocusnews.com/about",
+    "actionableFeedbackPolicy": "https://reportfocusnews.com/corrections",
+    // Paywall and accessibility
+    "isPartOf": {
+      "@type": "CreativeWork",
+      "name": "Report Focus News",
+      "productionCompany": {
+        "@type": "NewsMediaOrganization", 
+        "name": "Report Focus News"
+      }
+    }
   };
 
   return (
