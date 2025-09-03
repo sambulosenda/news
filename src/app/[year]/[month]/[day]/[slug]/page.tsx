@@ -233,9 +233,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       'original-source': canonicalUrl,
       // AMP page reference (implement when AMP is available)
       // 'amphtml': `${canonicalUrl}amp/`,
-      // Google News specific meta tags
-      'news_keywords': [focusKeyword, ...metaKeywords, ...tags.slice(0, 3)].filter(Boolean).join(', '),
-      'standout': isBreakingNews(article.date) ? 'https://reportfocusnews.com' : undefined,
+      ...(isBreakingNews(article.date) && { 'standout': 'https://reportfocusnews.com' }),
       'publication_date': article.date,
       'op:markup_version': 'v1.0', // Facebook Instant Articles
       'twitter:label1': 'Reading time',
