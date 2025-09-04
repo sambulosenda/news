@@ -271,10 +271,10 @@ export default function AccessibilityStatement() {
             <div className="bg-gray-50 p-6 rounded mt-4">
               <h3 className="text-lg font-semibold mb-3">Contact Our Accessibility Team</h3>
               <p>
-                <strong>Accessibility Officer:</strong> <a href="mailto:accessibility@reportfocusnews.com" className="text-red-700 hover:underline">accessibility@reportfocusnews.com</a><br />
+                <strong>Accessibility Officer:</strong> <a href="mailto:support@reportfocusnews.com" className="text-red-700 hover:underline">support@reportfocusnews.com</a><br />
                 <strong>Phone:</strong> +27 XX XXX XXXX<br />
                 <strong>WhatsApp:</strong> +27 XX XXX XXXX<br />
-                <strong>General Inquiries:</strong> <a href="mailto:info@reportfocusnews.com" className="text-red-700 hover:underline">info@reportfocusnews.com</a>
+                <strong>General Inquiries:</strong> <a href="mailto:contact@reportfocusnews.com" className="text-red-700 hover:underline">contact@reportfocusnews.com</a>
               </p>
               <p className="mt-3 text-sm text-gray-600">
                 We aim to respond to accessibility feedback within 48 hours and resolve issues within 5 business days.

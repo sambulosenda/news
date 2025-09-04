@@ -240,7 +240,7 @@ export default function OwnershipPage() {
                 For questions about our ownership, funding, or business model:
               </p>
               <div className="space-y-2">
-                <p><strong>Email:</strong> transparency@reportfocusnews.com</p>
+                <p><strong>Email:</strong> contact@reportfocusnews.com</p>
                 <p><strong>Phone:</strong> +27 11 XXX XXXX</p>
                 <p><strong>Postal:</strong> PO Box 12345, Johannesburg, 2000</p>
               </div>

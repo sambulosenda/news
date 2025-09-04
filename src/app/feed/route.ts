@@ -19,7 +19,7 @@ export async function GET() {
     <language>en-ZA</language>
     <copyright>© ${new Date().getFullYear()} Report Focus News</copyright>
     <managingEditor>editorial@reportfocusnews.com (Report Focus Editorial Team)</managingEditor>
-    <webMaster>admin@reportfocusnews.com (Report Focus Admin)</webMaster>
+    <webMaster>support@reportfocusnews.com (Report Focus Support)</webMaster>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <category domain="https://reportfocusnews.com/news/">News</category>
     <generator>Next.js RSS Generator</generator>

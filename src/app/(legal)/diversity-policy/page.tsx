@@ -122,7 +122,7 @@ export default function DiversityPolicy() {
             <h2 className="font-serif text-2xl font-bold mb-4">Contact Us</h2>
             <p>
               For questions, suggestions, or concerns about our diversity efforts, please contact our 
-              Diversity and Inclusion team at: <a href="mailto:diversity@reportfocusnews.com" className="text-red-700 hover:underline">diversity@reportfocusnews.com</a>
+              Diversity and Inclusion team at: <a href="mailto:contact@reportfocusnews.com" className="text-red-700 hover:underline">contact@reportfocusnews.com</a>
             </p>
           </section>
 

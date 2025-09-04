@@ -19,7 +19,7 @@ const editorialTeam = {
       name: 'Sarah Mitchell',
       role: 'Editor-in-Chief',
       bio: 'Award-winning journalist with 20 years of experience covering Southern African politics and economics.',
-      email: 'editor@reportfocusnews.com',
+      email: 'editorial@reportfocusnews.com',
       twitter: '@sarahmitchell',
       image: '/team/sarah-mitchell.jpg',
     },
@@ -27,7 +27,7 @@ const editorialTeam = {
       name: 'Thomas Ndlovu',
       role: 'Managing Editor',
       bio: 'Former Reuters correspondent with expertise in African business and financial markets.',
-      email: 'managing@reportfocusnews.com',
+      email: 'editorial@reportfocusnews.com',
       twitter: '@thomasndlovu',
       image: '/team/thomas-ndlovu.jpg',
     },
@@ -35,7 +35,7 @@ const editorialTeam = {
       name: 'Rebecca Dube',
       role: 'Deputy Editor',
       bio: 'Specializes in investigative journalism and social justice reporting across Southern Africa.',
-      email: 'deputy@reportfocusnews.com',
+      email: 'editorial@reportfocusnews.com',
       twitter: '@rebeccadube',
       image: '/team/rebecca-dube.jpg',
     },
@@ -45,25 +45,25 @@ const editorialTeam = {
       name: 'James Mpofu',
       role: 'Politics Editor',
       bio: 'Covers parliamentary affairs, elections, and governance in SA and Zimbabwe.',
-      email: 'politics@reportfocusnews.com',
+      email: 'editorial@reportfocusnews.com',
     },
     {
       name: 'Priya Naidoo',
       role: 'Business Editor',
       bio: 'Financial journalist covering JSE, ZSE, and regional economic development.',
-      email: 'business@reportfocusnews.com',
+      email: 'editorial@reportfocusnews.com',
     },
     {
       name: 'David Moyo',
       role: 'Sports Editor',
       bio: 'Sports journalism veteran covering cricket, rugby, and football.',
-      email: 'sports@reportfocusnews.com',
+      email: 'editorial@reportfocusnews.com',
     },
     {
       name: 'Lisa van der Merwe',
       role: 'Digital Editor',
       bio: 'Leads our digital strategy and multimedia content production.',
-      email: 'digital@reportfocusnews.com',
+      email: 'editorial@reportfocusnews.com',
     },
   ],
   reporters: [
@@ -227,7 +227,7 @@ export default function EditorialTeam() {
               <div>
                 <h3 className="font-semibold mb-3">News Tips</h3>
                 <p className="text-sm text-gray-700">
-                  <strong>Email:</strong> tips@reportfocusnews.com<br />
+                  <strong>Email:</strong> editorial@reportfocusnews.com<br />
                   <strong>SecureDrop:</strong> Available for sensitive information<br />
                   <strong>Signal:</strong> +27 XX XXX XXXX
                 </p>

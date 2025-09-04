@@ -191,9 +191,9 @@ export default function EditorialStandards() {
             </p>
             <div className="bg-gray-50 p-4 rounded">
               <p>
-                <strong>Editor-in-Chief:</strong> <a href="mailto:editor@reportfocusnews.com" className="text-red-700 hover:underline">editor@reportfocusnews.com</a><br />
-                <strong>Editorial Standards:</strong> <a href="mailto:standards@reportfocusnews.com" className="text-red-700 hover:underline">standards@reportfocusnews.com</a><br />
-                <strong>Complaints:</strong> <a href="mailto:complaints@reportfocusnews.com" className="text-red-700 hover:underline">complaints@reportfocusnews.com</a>
+                <strong>Editor-in-Chief:</strong> <a href="mailto:editorial@reportfocusnews.com" className="text-red-700 hover:underline">editorial@reportfocusnews.com</a><br />
+                <strong>Editorial Standards:</strong> <a href="mailto:editorial@reportfocusnews.com" className="text-red-700 hover:underline">editorial@reportfocusnews.com</a><br />
+                <strong>Complaints:</strong> <a href="mailto:editorial@reportfocusnews.com" className="text-red-700 hover:underline">editorial@reportfocusnews.com</a>
               </p>
             </div>
           </section>

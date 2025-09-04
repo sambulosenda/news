@@ -136,7 +136,7 @@ export default function PrivacyPage() {
               <li><strong>Withdraw Consent:</strong> For consent-based processing</li>
             </ul>
             <p className="text-gray-700 mt-4">
-              To exercise these rights, contact us at privacy@reportfocusnews.com
+              To exercise these rights, contact us at legal@reportfocusnews.com
             </p>
           </section>
 
@@ -227,7 +227,7 @@ export default function PrivacyPage() {
             <div className="bg-gray-50 p-6 rounded-lg not-prose">
               <h3 className="font-bold mb-3">Data Protection Officer</h3>
               <p className="text-gray-700">Report Focus News</p>
-              <p className="text-gray-700">Email: privacy@reportfocusnews.com</p>
+              <p className="text-gray-700">Email: legal@reportfocusnews.com</p>
               <p className="text-gray-700">Phone: +27 XX XXX XXXX</p>
               
               <h3 className="font-bold mb-3 mt-4">Regulatory Authorities</h3>

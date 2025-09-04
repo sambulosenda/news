@@ -234,7 +234,7 @@ export default function TermsOfService() {
             <div className="bg-gray-50 p-4 rounded">
               <p>
                 <strong>Legal Inquiries:</strong> <a href="mailto:legal@reportfocusnews.com" className="text-red-700 hover:underline">legal@reportfocusnews.com</a><br />
-                <strong>General Questions:</strong> <a href="mailto:info@reportfocusnews.com" className="text-red-700 hover:underline">info@reportfocusnews.com</a><br />
+                <strong>General Questions:</strong> <a href="mailto:contact@reportfocusnews.com" className="text-red-700 hover:underline">contact@reportfocusnews.com</a><br />
                 <strong>Address:</strong> Report Focus News, Johannesburg, South Africa
               </p>
             </div>

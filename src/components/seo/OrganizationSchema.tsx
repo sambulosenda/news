@@ -41,7 +41,7 @@ export default function OrganizationSchema() {
       },
       {
         '@type': 'ContactPoint',
-        email: 'advertising@reportfocusnews.com',
+        email: 'partnerships@reportfocusnews.com',
         contactType: 'advertising',
         areaServed: ['ZA', 'ZW'],
       },

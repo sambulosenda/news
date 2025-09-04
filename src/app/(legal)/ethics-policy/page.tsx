@@ -97,7 +97,7 @@ export default function EthicsPolicy() {
             <h2 className="font-serif text-2xl font-bold mb-4">Complaints and Corrections</h2>
             <p>
               If you believe we have violated our ethics policy or made an error in our reporting, 
-              please contact us at: <a href="mailto:editor@reportfocusnews.com" className="text-red-700 hover:underline">editor@reportfocusnews.com</a>
+              please contact us at: <a href="mailto:editorial@reportfocusnews.com" className="text-red-700 hover:underline">editorial@reportfocusnews.com</a>
             </p>
             <p>
               We investigate all legitimate complaints and publish corrections prominently when warranted.

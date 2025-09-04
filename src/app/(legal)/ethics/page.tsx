@@ -181,7 +181,7 @@ export default function EthicsPage() {
                 <li>We notify affected parties of significant corrections</li>
               </ul>
               <p className="mt-4 text-gray-700">
-                Report corrections to: <a href="mailto:corrections@reportfocusnews.com" className="text-blue-600 hover:underline">corrections@reportfocusnews.com</a>
+                Report corrections to: <a href="mailto:editorial@reportfocusnews.com" className="text-blue-600 hover:underline">editorial@reportfocusnews.com</a>
               </p>
             </div>
           </section>
@@ -280,9 +280,9 @@ export default function EthicsPage() {
                 If you believe we have violated our ethical standards, please contact us:
               </p>
               <div className="space-y-2">
-                <p><strong>Standards Editor:</strong> standards@reportfocusnews.com</p>
-                <p><strong>Reader's Editor:</strong> readerseditor@reportfocusnews.com</p>
-                <p><strong>Corrections:</strong> corrections@reportfocusnews.com</p>
+                <p><strong>Standards Editor:</strong> editorial@reportfocusnews.com</p>
+                <p><strong>Reader's Editor:</strong> editorial@reportfocusnews.com</p>
+                <p><strong>Corrections:</strong> editorial@reportfocusnews.com</p>
               </div>
               <p className="mt-4 text-sm text-gray-300">
                 All concerns are taken seriously and investigated thoroughly.

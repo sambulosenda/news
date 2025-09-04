@@ -117,9 +117,9 @@ export default function CorrectionsAndClarifications() {
             <div className="bg-gray-50 p-6 rounded">
               <h3 className="text-lg font-semibold mb-3">Contact Information</h3>
               <p>
-                <strong>Corrections Email:</strong> <a href="mailto:corrections@reportfocusnews.com" className="text-red-700 hover:underline">corrections@reportfocusnews.com</a><br />
-                <strong>Newsroom:</strong> <a href="mailto:news@reportfocusnews.com" className="text-red-700 hover:underline">news@reportfocusnews.com</a><br />
-                <strong>Editor-in-Chief:</strong> <a href="mailto:editor@reportfocusnews.com" className="text-red-700 hover:underline">editor@reportfocusnews.com</a><br />
+                <strong>Corrections Email:</strong> <a href="mailto:editorial@reportfocusnews.com" className="text-red-700 hover:underline">editorial@reportfocusnews.com</a><br />
+                <strong>Newsroom:</strong> <a href="mailto:editorial@reportfocusnews.com" className="text-red-700 hover:underline">editorial@reportfocusnews.com</a><br />
+                <strong>Editor-in-Chief:</strong> <a href="mailto:editorial@reportfocusnews.com" className="text-red-700 hover:underline">editorial@reportfocusnews.com</a><br />
                 <strong>Phone:</strong> +44 78 6144 8433<br />
                 <strong>WhatsApp:</strong> +44 78 6144 8433
               </p>

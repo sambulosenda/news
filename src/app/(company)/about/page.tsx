@@ -218,7 +218,7 @@ export default function AboutPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">News Tips</h3>
-                  <p className="text-gray-300">tips@reportfocusnews.com</p>
+                  <p className="text-gray-300">editorial@reportfocusnews.com</p>
                 </div>
               </div>
               <Link href="/contact" className="inline-block mt-6 px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded transition-colors">

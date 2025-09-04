@@ -69,7 +69,7 @@ export default function GoogleNewsPublisherSchema() {
       {
         "@type": "ContactPoint", 
         "contactType": "News Tips",
-        "email": "tips@reportfocusnews.com",
+        "email": "editorial@reportfocusnews.com",
         "areaServed": ["ZA", "ZW"]
       }
     ],

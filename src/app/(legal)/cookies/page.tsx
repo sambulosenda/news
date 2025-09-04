@@ -279,9 +279,9 @@ export default function CookiePolicy() {
             </p>
             <div className="bg-gray-50 p-4 rounded">
               <p>
-                <strong>Privacy Officer:</strong> <a href="mailto:privacy@reportfocusnews.com" className="text-red-700 hover:underline">privacy@reportfocusnews.com</a><br />
-                <strong>Data Protection:</strong> <a href="mailto:dpo@reportfocusnews.com" className="text-red-700 hover:underline">dpo@reportfocusnews.com</a><br />
-                <strong>General Inquiries:</strong> <a href="mailto:info@reportfocusnews.com" className="text-red-700 hover:underline">info@reportfocusnews.com</a><br />
+                <strong>Privacy Officer:</strong> <a href="mailto:legal@reportfocusnews.com" className="text-red-700 hover:underline">legal@reportfocusnews.com</a><br />
+                <strong>Data Protection:</strong> <a href="mailto:legal@reportfocusnews.com" className="text-red-700 hover:underline">legal@reportfocusnews.com</a><br />
+                <strong>General Inquiries:</strong> <a href="mailto:contact@reportfocusnews.com" className="text-red-700 hover:underline">contact@reportfocusnews.com</a><br />
                 <strong>Address:</strong> Report Focus News, Johannesburg, South Africa
               </p>
             </div>

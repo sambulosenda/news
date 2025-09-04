@@ -158,7 +158,7 @@ export default function PublishingPrinciples() {
             <h2 className="font-serif text-2xl font-bold mb-4">Contact</h2>
             <p>
               Questions about our publishing principles can be directed to: 
-              <a href="mailto:editor@reportfocusnews.com" className="text-red-700 hover:underline">editor@reportfocusnews.com</a>
+              <a href="mailto:editorial@reportfocusnews.com" className="text-red-700 hover:underline">editorial@reportfocusnews.com</a>
             </p>
           </section>
 

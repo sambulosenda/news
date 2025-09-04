@@ -36,8 +36,8 @@ export default function ContactPage() {
               <div className="space-y-3">
                 <div>
                   <p className="font-semibold">Email:</p>
-                  <a href="mailto:tips@reportfocusnews.com" className="text-red-600 hover:underline">
-                    tips@reportfocusnews.com
+                  <a href="mailto:editorial@reportfocusnews.com" className="text-red-600 hover:underline">
+                    editorial@reportfocusnews.com
                   </a>
                 </div>
                 <div>
@@ -69,8 +69,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-semibold">Reader Services:</p>
-                  <a href="mailto:readers@reportfocusnews.com" className="text-blue-600 hover:underline">
-                    readers@reportfocusnews.com
+                  <a href="mailto:contact@reportfocusnews.com" className="text-blue-600 hover:underline">
+                    contact@reportfocusnews.com
                   </a>
                 </div>
                 <div>
@@ -88,36 +88,32 @@ export default function ContactPage() {
               <div className="bg-white p-6 border border-gray-200 rounded">
                 <h3 className="font-bold text-xl mb-3">Editorial</h3>
                 <div className="space-y-2 text-gray-700">
-                  <p><strong>Editor-in-Chief:</strong> editor@reportfocusnews.com</p>
-                  <p><strong>Managing Editor:</strong> managing@reportfocusnews.com</p>
-                  <p><strong>News Editor:</strong> news@reportfocusnews.com</p>
+                  <p><strong>Editorial Team:</strong> editorial@reportfocusnews.com</p>
+                  <p><strong>Newsroom:</strong> newsroom@reportfocusnews.com</p>
                 </div>
               </div>
 
               <div className="bg-white p-6 border border-gray-200 rounded">
-                <h3 className="font-bold text-xl mb-3">Specialized Desks</h3>
+                <h3 className="font-bold text-xl mb-3">News & Business</h3>
                 <div className="space-y-2 text-gray-700">
-                  <p><strong>Politics:</strong> politics@reportfocusnews.com</p>
-                  <p><strong>Business:</strong> business@reportfocusnews.com</p>
-                  <p><strong>Investigations:</strong> investigate@reportfocusnews.com</p>
+                  <p><strong>All News Inquiries:</strong> editorial@reportfocusnews.com</p>
+                  <p><strong>Business & Partnerships:</strong> partnerships@reportfocusnews.com</p>
                 </div>
               </div>
 
               <div className="bg-white p-6 border border-gray-200 rounded">
-                <h3 className="font-bold text-xl mb-3">Corrections & Standards</h3>
+                <h3 className="font-bold text-xl mb-3">Feedback & Legal</h3>
                 <div className="space-y-2 text-gray-700">
-                  <p><strong>Corrections:</strong> corrections@reportfocusnews.com</p>
-                  <p><strong>Standards Editor:</strong> standards@reportfocusnews.com</p>
-                  <p><strong>Reader's Editor:</strong> readerseditor@reportfocusnews.com</p>
+                  <p><strong>Corrections & Feedback:</strong> editorial@reportfocusnews.com</p>
+                  <p><strong>Legal & Privacy:</strong> legal@reportfocusnews.com</p>
                 </div>
               </div>
 
               <div className="bg-white p-6 border border-gray-200 rounded">
-                <h3 className="font-bold text-xl mb-3">Technical & Support</h3>
+                <h3 className="font-bold text-xl mb-3">Support</h3>
                 <div className="space-y-2 text-gray-700">
-                  <p><strong>Website Issues:</strong> webmaster@reportfocusnews.com</p>
-                  <p><strong>Subscription Support:</strong> support@reportfocusnews.com</p>
-                  <p><strong>Technical Help:</strong> tech@reportfocusnews.com</p>
+                  <p><strong>All Support Issues:</strong> support@reportfocusnews.com</p>
+                  <p><strong>General Contact:</strong> contact@reportfocusnews.com</p>
                 </div>
               </div>
             </div>
@@ -131,11 +127,11 @@ export default function ContactPage() {
                 <h3 className="font-bold text-xl mb-3">South Africa Bureau</h3>
                 <div className="space-y-2 text-gray-700">
                   <p><strong>Johannesburg Office</strong></p>
-                  <p>Email: jhb@reportfocusnews.com</p>
+                  <p>Email: newsroom@reportfocusnews.com</p>
                   <p>Phone: +44 78 6144 8433</p>
                   <div className="mt-3">
                     <p><strong>Cape Town Office</strong></p>
-                    <p>Email: cpt@reportfocusnews.com</p>
+                    <p>Email: newsroom@reportfocusnews.com</p>
                     <p>Phone: +44 78 6144 8433</p>
                   </div>
                 </div>
@@ -145,11 +141,11 @@ export default function ContactPage() {
                 <h3 className="font-bold text-xl mb-3">Zimbabwe Bureau</h3>
                 <div className="space-y-2 text-gray-700">
                   <p><strong>Harare Office</strong></p>
-                  <p>Email: harare@reportfocusnews.com</p>
+                  <p>Email: newsroom@reportfocusnews.com</p>
                   <p>Phone: +44 78 6144 8433</p>
                   <div className="mt-3">
                     <p><strong>Bulawayo Office</strong></p>
-                    <p>Email: bulawayo@reportfocusnews.com</p>
+                    <p>Email: newsroom@reportfocusnews.com</p>
                     <p>Phone: +44 78 6144 8433</p>
                   </div>
                 </div>
@@ -165,9 +161,7 @@ export default function ContactPage() {
                 For press releases, media partnerships, and journalist inquiries:
               </p>
               <div className="space-y-2">
-                <p><strong>Press Office:</strong> press@reportfocusnews.com</p>
-                <p><strong>Partnerships:</strong> partnerships@reportfocusnews.com</p>
-                <p><strong>Syndication:</strong> syndication@reportfocusnews.com</p>
+                <p><strong>All Business Inquiries:</strong> partnerships@reportfocusnews.com</p>
               </div>
             </div>
           </section>
@@ -209,7 +203,7 @@ export default function ContactPage() {
               </li>
               <li className="flex items-start">
                 <span className="text-yellow-600 mr-2">•</span>
-                <span><strong>Corrections:</strong> Report errors to corrections@reportfocusnews.com for prompt review.</span>
+                <span><strong>Corrections:</strong> Report errors to editorial@reportfocusnews.com for prompt review.</span>
               </li>
               <li className="flex items-start">
                 <span className="text-yellow-600 mr-2">•</span>

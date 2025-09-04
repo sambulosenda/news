@@ -95,7 +95,7 @@ export default function EditorialStandardsPage() {
             </p>
             <ul>
               <li>Email: <a href="mailto:editorial@reportfocusnews.com">editorial@reportfocusnews.com</a></li>
-              <li>Tips: <a href="mailto:tips@reportfocusnews.com">tips@reportfocusnews.com</a></li>
+              <li>Tips: <a href="mailto:editorial@reportfocusnews.com">editorial@reportfocusnews.com</a></li>
             </ul>
           </section>
         </article>

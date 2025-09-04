@@ -172,8 +172,8 @@ export default function FAQHub() {
                 <p className="text-sm text-gray-700 mb-2">
                   Have a news tip or story idea?
                 </p>
-                <a href="mailto:news@reportfocusnews.com" className="text-red-600 hover:underline">
-                  news@reportfocusnews.com
+                <a href="mailto:editorial@reportfocusnews.com" className="text-red-600 hover:underline">
+                  editorial@reportfocusnews.com
                 </a>
               </div>
               <div>
@@ -181,8 +181,8 @@ export default function FAQHub() {
                 <p className="text-sm text-gray-700 mb-2">
                   For other questions and feedback
                 </p>
-                <a href="mailto:info@reportfocusnews.com" className="text-red-600 hover:underline">
-                  info@reportfocusnews.com
+                <a href="mailto:contact@reportfocusnews.com" className="text-red-600 hover:underline">
+                  contact@reportfocusnews.com
                 </a>
               </div>
               <div>
