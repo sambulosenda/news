@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 const footerLinks = {
   news: [
+    { name: 'All Categories', href: '/news/' },
     { name: 'Breaking News', href: '/news/breaking-news/' },
     { name: 'Politics', href: '/news/politics/' },
     { name: 'Business', href: '/news/business/' },

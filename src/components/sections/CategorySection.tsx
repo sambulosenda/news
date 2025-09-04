@@ -25,7 +25,7 @@ export default function CategorySection({
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-serif text-2xl lg:text-3xl font-bold">{title}</h2>
           <Link
-            href={`/category/${slug}`}
+            href={`/news/${slug}/`}
             className="text-sm font-medium hover:underline"
           >
             See All →
@@ -55,7 +55,7 @@ export default function CategorySection({
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-serif text-xl lg:text-2xl font-bold">{title}</h2>
           <Link
-            href={`/category/${slug}`}
+            href={`/news/${slug}/`}
             className="text-sm font-medium hover:underline"
           >
             More →

@@ -224,7 +224,7 @@ export default function SimpleSearch({
             {['Politics', 'Business', 'Sports', 'World', 'Africa', 'Entertainment', 'Opinion', 'Technology'].map((category) => (
               <Link
                 key={category}
-                href={`/category/${category.toLowerCase()}`}
+                href={`/news/${category.toLowerCase()}/`}
                 className="px-4 py-3 text-center bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
               >
                 {category}

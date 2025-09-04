@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Metadata } from 'next';
 import { fetchGraphQLDirect } from '@/lib/api/fetch-direct';
 import { GET_HOMEPAGE_DATA_SIMPLE } from '@/lib/queries/homepage-simple';
@@ -296,6 +297,16 @@ export default async function HomePage() {
                   </div>
                 )
               ))}
+              
+              {/* Browse All Categories Button */}
+              <div className="mt-12 text-center">
+                <Link
+                  href="/news/"
+                  className="inline-block px-6 py-3 bg-red-600 text-white font-semibold rounded hover:bg-red-700 transition-colors"
+                >
+                  Browse All Sections →
+                </Link>
+              </div>
             </div>
 
             {/* Sidebar - 1/3 width */}
