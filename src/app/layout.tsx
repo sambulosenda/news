@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import React from "react";
 import { Inter, Roboto } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import { ApolloWrapper } from "@/lib/api/apollo-wrapper";
 import SearchActionSchema from "@/components/seo/SearchActionSchema";
 import SiteNavigationSchema from "@/components/seo/SiteNavigationSchema";
@@ -161,6 +162,7 @@ export default function RootLayout({
         </ErrorBoundary>
         {shouldShowAds() && <GoogleAdsenseScript pId={ADSENSE_CONFIG.publisherId} />}
         <SpeedInsights />
+        <Analytics />
         <WebVitalsClient />
       </body>
     </html>
