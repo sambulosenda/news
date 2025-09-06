@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { InArticleAd } from '@/components/ads/GoogleAdsense';
 import LazyAdUnit from '@/components/ads/LazyAdUnit';
-import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
+import { shouldShowAds } from '@/config/adsense';
 
 interface ArticleContentWithAdsProps {
   content: string;
