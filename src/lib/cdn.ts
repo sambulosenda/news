@@ -61,6 +61,7 @@ export function getOptimizedImageUrl(
     width?: number;
     height?: number;
     quality?: number;
+    format?: 'webp' | 'jpeg' | 'png' | 'auto';
   }
 ): string {
   const cdnUrl = getCDNImageUrl(url);
@@ -71,10 +72,30 @@ export function getOptimizedImageUrl(
     if (options.width) params.append('width', options.width.toString());
     if (options.height) params.append('height', options.height.toString());
     if (options.quality) params.append('quality', options.quality.toString());
+    if (options.format) params.append('format', options.format);
     
     const separator = cdnUrl.includes('?') ? '&' : '?';
     return params.toString() ? `${cdnUrl}${separator}${params.toString()}` : cdnUrl;
   }
   
   return cdnUrl;
+}
+
+/**
+ * Generate WebP version of image URL
+ * Bunny CDN can convert images to WebP on the fly with format parameter
+ */
+export function getWebPImageUrl(
+  url: string,
+  options?: {
+    width?: number;
+    height?: number;
+    quality?: number;
+  }
+): string {
+  return getOptimizedImageUrl(url, {
+    ...options,
+    format: 'webp',
+    quality: options?.quality || 85 // WebP typically needs less quality for same visual result
+  });
 }

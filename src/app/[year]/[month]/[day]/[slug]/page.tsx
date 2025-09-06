@@ -389,7 +389,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             />
           </div>
 
-          {/* Featured Image - Server-rendered for Google indexing */}
+          {/* Featured Image - Server-rendered with srcset for Google indexing */}
           <figure className="mb-8">
             <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
               <ServerProxyImage
@@ -398,6 +398,7 @@ export default async function FastArticlePage({ params }: PostPageProps) {
                 fill
                 className="object-cover"
                 priority // Featured image should load with priority
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, (max-width: 1536px) 80vw, 1200px"
               />
               </div>
               {post.featuredImage?.node?.caption && (
