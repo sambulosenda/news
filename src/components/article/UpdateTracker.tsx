@@ -101,55 +101,62 @@ export default function UpdateTracker({
   };
   
   return (
-    <div className="article-update-tracker bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-          </svg>
-          <span className="font-semibold text-blue-900">
-            Article Updated
-          </span>
+    <div className="article-update-tracker bg-blue-50 border-l-4 border-blue-400 p-3 sm:p-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-2">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+            </svg>
+            <span className="font-semibold text-sm sm:text-base text-blue-900">
+              Article Updated
+            </span>
+          </div>
           {modifiedDate && (
-            <time className="text-sm text-blue-700">
-              {format(new Date(modifiedDate), 'MMM d, yyyy h:mm a')}
+            <time className="text-xs sm:text-sm text-blue-700 pl-6 sm:pl-0">
+              {format(new Date(modifiedDate), 'MMM d')}
+              <span className="hidden sm:inline">, {format(new Date(modifiedDate), 'yyyy')}</span>
+              {' at '}
+              {format(new Date(modifiedDate), 'h:mm a')}
             </time>
           )}
         </div>
         {updates.length > 0 && (
           <button
             onClick={() => setShowUpdates(!showUpdates)}
-            className="text-sm text-blue-600 hover:text-blue-800 underline"
+            className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 underline self-start sm:self-auto"
           >
-            {showUpdates ? 'Hide' : 'Show'} update history
+            {showUpdates ? 'Hide' : 'Show'} history
           </button>
         )}
       </div>
       
       {/* Update history */}
       {showUpdates && updates.length > 0 && (
-        <div className="mt-4 space-y-3">
-          <h4 className="font-semibold text-sm text-blue-900">Update History:</h4>
+        <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
+          <h4 className="font-semibold text-xs sm:text-sm text-blue-900">Update History:</h4>
           {updates.map((update, index) => (
-            <div key={index} className="flex gap-3 text-sm">
-              <span className="text-lg" title={getUpdateLabel(update.type)}>
+            <div key={index} className="flex gap-2 sm:gap-3 text-xs sm:text-sm">
+              <span className="text-base sm:text-lg flex-shrink-0" title={getUpdateLabel(update.type)}>
                 {getUpdateIcon(update.type)}
               </span>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-semibold text-blue-900">
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
+                  <span className="font-semibold text-blue-900 text-xs sm:text-sm">
                     {getUpdateLabel(update.type)}
                   </span>
-                  <time className="text-xs text-blue-600">
-                    {format(new Date(update.date), 'MMM d, h:mm a')}
-                  </time>
-                  {update.author && (
-                    <span className="text-xs text-blue-600">
-                      by {update.author}
-                    </span>
-                  )}
+                  <div className="flex items-center gap-2 text-xs">
+                    <time className="text-blue-600">
+                      {format(new Date(update.date), 'MMM d, h:mm a')}
+                    </time>
+                    {update.author && (
+                      <span className="text-blue-600">
+                        by {update.author}
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <p className="text-gray-700">{update.description}</p>
+                <p className="text-gray-700 break-words">{update.description}</p>
               </div>
             </div>
           ))}

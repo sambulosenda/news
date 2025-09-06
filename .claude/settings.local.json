@@ -5,7 +5,10 @@
       "Bash(npm run build:*)",
       "Bash(mkdir:*)",
       "Bash(ls:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(grep:*)",
+      "Bash(npm run dev:*)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }

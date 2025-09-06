@@ -323,42 +323,48 @@ export default async function FastArticlePage({ params }: PostPageProps) {
             {post.title}
           </h1>
 
-          {/* Enhanced Date Display with Update Prominence */}
-          <div className="pb-6 border-b border-gray-200">
-            <ArticleDates 
-              publishDate={post.date} 
-              modifiedDate={post.modified}
-              variant="detailed"
-              showRelativeTime={true}
-            />
-            <div className="mt-3 flex items-center gap-2 text-sm text-gray-500">
-              <span className="flex items-center gap-1">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-                {readingTime} min read
-              </span>
+          {/* Enhanced Date Display with Responsive Layout */}
+          <div className="pb-4 md:pb-6 border-b border-gray-200">
+            {/* Responsive metadata container */}
+            <div className="flex flex-col gap-3">
+              {/* Date, reading time and author row */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                  <ArticleDates 
+                    publishDate={post.date} 
+                    modifiedDate={post.modified}
+                    variant="compact"
+                    showRelativeTime={true}
+                  />
+                  <div className="flex items-center gap-1 text-sm text-gray-500">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <span>{readingTime} min read</span>
+                  </div>
+                </div>
+                
+                {/* Author byline - aligned naturally on desktop */}
+                {post.author?.node && (
+                  <AuthorByline 
+                    authorName={post.author.node.name}
+                    authorSlug={post.author.node.slug}
+                    authorDescription={post.author.node.description}
+                    authorAvatar={post.author.node.avatar?.url}
+                    variant="compact"
+                    showAvatar={false}
+                    className="text-sm"
+                  />
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Enhanced Author section with credentials */}
-          <div className="flex flex-col gap-4 py-6">
-            {post.author?.node && (
-              <AuthorByline 
-                authorName={post.author.node.name}
-                authorSlug={post.author.node.slug}
-                authorDescription={post.author.node.description}
-                authorAvatar={post.author.node.avatar?.url}
-                variant="full"
-                showAvatar={true}
-                className="text-sm"
-              />
-            )}
-            <div className="flex items-center justify-between gap-2 no-print">
-              <div className="overflow-x-auto flex-1">
-                <ShareButtons url={canonicalUrl} title={post.title} />
-              </div>
-              <PrintButton articleTitle={post.title} className="flex-shrink-0" />
+          {/* Share buttons section - optimized for mobile */}
+          <div className="py-4 border-b border-gray-200 no-print">
+            <div className="flex items-center justify-between gap-2">
+              <ShareButtons url={canonicalUrl} title={post.title} />
+              <PrintButton articleTitle={post.title} className="ml-auto" />
             </div>
           </div>
 

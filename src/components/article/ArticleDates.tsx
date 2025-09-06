@@ -52,17 +52,17 @@ export default function ArticleDates({
   
   if (variant === 'compact') {
     return (
-      <div className="flex items-center gap-2 text-sm text-gray-600">
-        <time dateTime={publishDate}>
-          {mounted ? getRelativeTime(published) : format(published, 'MMM d, yyyy')}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm">
+        <time dateTime={publishDate} className="text-gray-600">
+          <span className="font-medium">Published:</span> {mounted ? getRelativeTime(published) : format(published, 'MMM d, yyyy')}
         </time>
         {isSignificantUpdate && modified && (
-          <>
-            <span className="text-gray-400">•</span>
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline text-gray-400">•</span>
             <span className="text-blue-600 font-medium">
               Updated {mounted ? getRelativeTime(modified) : format(modified, 'MMM d')}
             </span>
-          </>
+          </div>
         )}
       </div>
     );
