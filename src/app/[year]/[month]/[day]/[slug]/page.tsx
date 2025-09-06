@@ -19,7 +19,8 @@ import ArticleDates from '@/components/article/ArticleDates';
 import BreakingNewsSchema from '@/components/seo/BreakingNewsSchema';
 import GoogleNewsPublisherSchema from '@/components/seo/GoogleNewsPublisherSchema';
 import { isBreakingNews } from '@/lib/utils/time-utils';
-import { InArticleAd, ResponsiveAd } from '@/components/ads/GoogleAdsense';
+// Ads are now injected dynamically via ContentAdHydrator
+import LazyAdUnit from '@/components/ads/LazyAdUnit';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
 import { getImageUrl } from '@/lib/utils/image-url-helper';
 
@@ -39,6 +40,7 @@ export const fetchCache = 'default-cache'; // Use default caching
 import ShareButtons from '@/components/features/ShareButtons';
 import ReadingProgress from '@/components/features/ReadingProgress';
 import MobileShareBar from '@/components/features/MobileShareBar';
+import ArticleContentWithAds from '@/components/article/ArticleContentWithAds';
 
 interface PostPageProps {
   params: Promise<{
@@ -85,12 +87,7 @@ function FastContentRenderer({ content }: { content: string }) {
       '<p class="first-paragraph" style="font-size: 1.125rem; line-height: 1.75; margin-bottom: 1.5rem; color: #374151;"><span class="drop-cap">$1</span>'
     );
   
-  return (
-    <div 
-      className="article-content max-w-[720px] mx-auto font-serif text-gray-800"
-      dangerouslySetInnerHTML={{ __html: processedContent }}
-    />
-  );
+  return processedContent;
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
@@ -411,18 +408,19 @@ export default async function FastArticlePage({ params }: PostPageProps) {
               )}
             </figure>
             
-          {/* Ad after featured image */}
-          {shouldShowAds() && (
-            <div className="mb-8 no-print">
-              <InArticleAd 
-                dataAdClient={ADSENSE_CONFIG.publisherId}
-                dataAdSlot={ADSENSE_CONFIG.adSlots.articleInContent}
-              />
-            </div>
+          {/* Article Content with intelligent ad placement */}
+          {shouldShowAds() ? (
+            <ArticleContentWithAds 
+              content={FastContentRenderer({ content: post.content || '' })}
+              publisherId={ADSENSE_CONFIG.publisherId}
+              adSlot={ADSENSE_CONFIG.adSlots.articleInContent}
+            />
+          ) : (
+            <div 
+              className="article-content max-w-[720px] mx-auto font-serif text-gray-800"
+              dangerouslySetInnerHTML={{ __html: FastContentRenderer({ content: post.content || '' }) }}
+            />
           )}
-
-          {/* Article Content - The actual LCP element */}
-          <FastContentRenderer content={post.content || ''} />
           
           {/* Article Tags */}
           {post.tags?.edges?.length > 0 && (
@@ -449,12 +447,14 @@ export default async function FastArticlePage({ params }: PostPageProps) {
           </article>
         </PrintableArticle>
         
-        {/* Bottom Article Ad */}
+        {/* Bottom Article Ad - Lazy loaded */}
         {shouldShowAds() && (
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8 no-print">
-            <ResponsiveAd 
+            <LazyAdUnit
+              adType="ResponsiveAd"
               dataAdClient={ADSENSE_CONFIG.publisherId}
               dataAdSlot={ADSENSE_CONFIG.adSlots.articleBottom}
+              rootMargin="300px"
             />
           </div>
         )}
