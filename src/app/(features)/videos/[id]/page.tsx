@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer'
 import BunnyVideoPlayer from '@/components/video/BunnyVideoPlayer'
 import VideoSchema, { secondsToISO8601Duration } from '@/components/seo/VideoSchema'
 import Link from 'next/link'
+import { generateMetaDescription } from '@/lib/utils/meta-description'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -24,12 +25,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       }
     }
 
+    // Generate optimized meta description
+    const description = generateMetaDescription(
+      video.description,
+      video.title,
+      null
+    )
+
     return {
       title: `${video.title} | Report Focus News Video`,
-      description: video.description || `Watch ${video.title} on Report Focus News`,
+      description,
       openGraph: {
         title: video.title,
-        description: video.description || `Watch ${video.title}`,
+        description,
         type: 'video.other',
         videos: [{
           url: `https://reportfocusnews.com/videos/${video.guid}`,
@@ -41,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       twitter: {
         card: 'player',
         title: video.title,
-        description: video.description || `Watch ${video.title}`,
+        description,
         images: video.thumbnail ? [video.thumbnail] : undefined,
         players: [{
           playerUrl: `https://reportfocusnews.com/videos/player/${video.guid}`,

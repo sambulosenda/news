@@ -96,14 +96,19 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   
   if (!article) return { title: 'Article Not Found' };
 
-  // Import location detection
+  // Import location detection and meta description generator
   const { detectLocationFromContent } = await import('@/lib/utils/location-detector');
+  const { generateMetaDescription, optimizeMetaDescription } = await import('@/lib/utils/meta-description');
 
-  // Use Yoast meta description if available, otherwise fall back to excerpt
+  // Use Yoast meta description if available, otherwise generate from content
+  const yoastDescription = optimizeMetaDescription(article.seo?.metaDesc);
   const description = 
-    article.seo?.metaDesc ||
-    article.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || 
-    '';
+    yoastDescription ||
+    generateMetaDescription(
+      article.content,
+      article.title,
+      article.excerpt
+    );
   
   // Use Yoast SEO title if available, otherwise use article title
   // Remove any existing site name from Yoast title to prevent duplication with template
