@@ -139,9 +139,9 @@ export const navigationConfig: NavSection[] = [
   },
   {
     name: 'Videos',
-    slug: 'videos',
-    priority: 16,
-    featured: false,
+    slug: 'videos/all',
+    priority: 9,
+    featured: true,
   },
 ];
 
