@@ -15,6 +15,8 @@ import { BannerAd, SidebarAd, AdUnit } from '@/components/ads/GoogleAdsense';
 import { ADSENSE_CONFIG, shouldShowAds } from '@/config/adsense';
 import ServerProxyImage from '@/components/common/ServerProxyImage';
 import { formatDistanceToNow } from 'date-fns';
+import NewsVideoSection from '@/components/video/NewsVideoSection';
+import { bunnyStream } from '@/lib/api/bunny-stream';
 
 // Aggressive revalidation for news homepage - 10 seconds for breaking news
 export const revalidate = 10;
@@ -88,7 +90,10 @@ interface PostEdge {
 
 async function getHomePageData() {
   // Use direct fetch to bypass Apollo issues
-  const homepageData = await fetchGraphQLDirect(GET_HOMEPAGE_DATA_SIMPLE);
+  const [homepageData, videosData] = await Promise.all([
+    fetchGraphQLDirect(GET_HOMEPAGE_DATA_SIMPLE),
+    bunnyStream.getVideos(1, 6, 'date').catch(() => ({ items: [], totalItems: 0 }))
+  ]);
   
   // Check if we got data
   if (!homepageData) {
@@ -154,6 +159,7 @@ async function getHomePageData() {
     categories,
     categorySections,
     popularPosts,
+    featuredVideos: videosData.items || [],
   };
 }
 
@@ -170,6 +176,7 @@ export default async function HomePage() {
     breakingNews,
     categorySections,
     popularPosts,
+    featuredVideos,
     error 
   } = await getHomePageData();
 
@@ -283,6 +290,27 @@ export default async function HomePage() {
                   ))}
                 </div>
               </section>
+
+              {/* Featured Videos Section */}
+              {featuredVideos && featuredVideos.length > 0 && (
+                <div className="mt-12 pt-8 border-t border-gray-300">
+                  <NewsVideoSection
+                    videos={featuredVideos.map(video => ({
+                      guid: video.guid,
+                      title: video.title,
+                      description: video.description ?? '',
+                      thumbnail: video.thumbnail ?? '',
+                      duration: video.duration ?? 0,
+                      dateUploaded: video.dateUploaded ?? new Date().toISOString(),
+                      views: video.views ?? 0,
+                      category: 'News'
+                    }))}
+                    title="Video News"
+                    variant="featured"
+                    showViewAll={true}
+                  />
+                </div>
+              )}
 
               {/* Category Sections */}
               {categorySections.map(({ category, posts }) => (

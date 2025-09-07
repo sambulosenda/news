@@ -16,6 +16,18 @@ const nextConfig = {
     optimizeCss: true,
     scrollRestoration: true,
   },
+  
+  // Webpack configuration for better HMR
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      // Better HMR in development
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
+      };
+    }
+    return config;
+  },
   eslint: {
     // Run ESLint during builds to catch errors early
     ignoreDuringBuilds: false,
@@ -64,6 +76,16 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'openweathermap.org',
         pathname: '/img/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'vz-3e384f11-80b.b-cdn.net',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.b-cdn.net',
+        pathname: '/**',
       },
     ],
     formats: ['image/avif', 'image/webp'],
@@ -116,9 +138,9 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://*.googleapis.com https://fonts.googleapis.com",
               "img-src 'self' data: blob: https: http:",
               "font-src 'self' data: https://*.gstatic.com https://fonts.gstatic.com",
-              "connect-src 'self' https://*.google.com https://*.googleapis.com https://*.google-analytics.com https://*.googletagmanager.com https://*.doubleclick.net https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.sentry.io https://backend.reportfocusnews.com https://newsreportfocus.b-cdn.net https://api.openweathermap.org https://*.algolia.net https://*.algolianet.com https://www.alphavantage.co https://api.exchangerate-api.com wss://*.sentry.io",
-              "frame-src 'self' https://*.google.com https://*.doubleclick.net https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com",
-              "media-src 'self' blob: data:",
+              "connect-src 'self' https://*.google.com https://*.googleapis.com https://*.google-analytics.com https://*.googletagmanager.com https://*.doubleclick.net https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.sentry.io https://backend.reportfocusnews.com https://newsreportfocus.b-cdn.net https://api.openweathermap.org https://*.algolia.net https://*.algolianet.com https://www.alphavantage.co https://api.exchangerate-api.com https://video.bunnycdn.com https://vz-3e384f11-80b.b-cdn.net wss://*.sentry.io",
+              "frame-src 'self' https://*.google.com https://*.doubleclick.net https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com https://iframe.mediadelivery.net",
+              "media-src 'self' blob: data: https://vz-3e384f11-80b.b-cdn.net https://*.b-cdn.net",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",

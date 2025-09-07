@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import video player styles */
+@import '../styles/video-player.css';
+
+/* Hide scrollbar utility */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 /* Animations */
 @keyframes fade-in {
   from {
