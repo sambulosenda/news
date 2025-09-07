@@ -30,19 +30,31 @@ export async function GET() {
 
     // Generate sitemap XML
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${allTags
     .filter(edge => edge.node.count && edge.node.count > 0) // Only include tags with posts
+    .sort((a, b) => (b.node.count || 0) - (a.node.count || 0)) // Sort by post count
     .map(edge => {
       const tag = edge.node;
       const url = `https://reportfocusnews.com/tag/${tag.slug}/`;
       
+      // Dynamic priority based on post count
+      let priority = 0.3; // Base priority
+      if (tag.count && tag.count > 50) priority = 0.7;
+      else if (tag.count && tag.count > 20) priority = 0.6;
+      else if (tag.count && tag.count > 10) priority = 0.5;
+      else if (tag.count && tag.count > 5) priority = 0.4;
+      
+      // Dynamic changefreq based on post count
+      let changefreq = 'monthly';
+      if (tag.count && tag.count > 50) changefreq = 'daily';
+      else if (tag.count && tag.count > 20) changefreq = 'weekly';
+      
       return `
   <url>
     <loc>${url}</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
   </url>`;
     }).join('')}
 </urlset>`;

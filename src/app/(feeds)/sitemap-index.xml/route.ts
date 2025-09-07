@@ -4,7 +4,7 @@ export async function GET() {
   const baseUrl = 'https://reportfocusnews.com';
   const currentDate = new Date().toISOString();
   
-  // Create sitemap index that points only to existing sitemaps
+  // Create sitemap index that points to all sitemaps
   const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
@@ -13,6 +13,14 @@ export async function GET() {
   </sitemap>
   <sitemap>
     <loc>${baseUrl}/news-sitemap.xml</loc>
+    <lastmod>${currentDate}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${baseUrl}/video-sitemap.xml</loc>
+    <lastmod>${currentDate}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${baseUrl}/tag-sitemap.xml</loc>
     <lastmod>${currentDate}</lastmod>
   </sitemap>
 </sitemapindex>`;
