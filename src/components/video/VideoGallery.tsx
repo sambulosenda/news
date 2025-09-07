@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import ProfessionalVideoModal from './ProfessionalVideoModal'
-import CDNImage from '@/components/common/CDNImage'
 
 export interface Video {
   guid: string

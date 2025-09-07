@@ -8,13 +8,14 @@ import VideoSchema, { secondsToISO8601Duration } from '@/components/seo/VideoSch
 import Link from 'next/link'
 
 interface Props {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params
   try {
-    const video = await bunnyStream.getVideo(params.id)
+    const video = await bunnyStream.getVideo(id)
     
     if (!video) {
       return {
@@ -50,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         }]
       }
     }
-  } catch (error) {
+  } catch {
     return {
       title: 'Video | Report Focus News',
       description: 'Watch news videos on Report Focus News'
@@ -59,12 +60,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function VideoPage({ params }: Props) {
+  const { id } = await params
   let video
   
   try {
-    video = await bunnyStream.getVideo(params.id)
+    video = await bunnyStream.getVideo(id)
     if (!video) notFound()
-  } catch (error) {
+  } catch {
     notFound()
   }
 

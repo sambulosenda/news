@@ -160,38 +160,6 @@ class BunnyStreamAPI {
     }
   }
 
-  async getVideo(videoId: string): Promise<Video | null> {
-    try {
-      const response = await fetch(
-        `https://video.bunnycdn.com/library/${this.config.libraryId}/videos/${videoId}`,
-        {
-          headers: this.getHeaders(),
-          next: { revalidate: 60 }
-        }
-      )
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch video: ${response.statusText}`)
-      }
-
-      const video: BunnyVideo = await response.json()
-
-      return {
-        guid: video.guid,
-        title: video.title,
-        description: video.description || '',
-        thumbnail: this.getThumbnailUrl(video.guid, video.thumbnailFileName),
-        duration: video.length,
-        dateUploaded: video.dateUploaded,
-        views: video.views,
-        category: video.category || 'News'
-      }
-    } catch (error) {
-      console.error('Error fetching video from Bunny Stream:', error)
-      return null
-    }
-  }
-
   async getCollections(): Promise<Array<{ guid: string, name: string, videoCount: number }>> {
     try {
       const response = await fetch(
